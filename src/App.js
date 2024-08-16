@@ -22,8 +22,7 @@ const App = ({ message }) => {
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <Link to="/">Hajjrah</Link>
-          {/* <a className="navbar-brand">Hajjrah</a> */}
+          <Link to="/" className="navbar-brand">Hajjrah</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>

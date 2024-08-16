@@ -151,10 +151,10 @@ const Home = ({id, options}) => {
                       </div>
                       <div className="row">
                           <div className="col">
-                              <button type="button" className={`search-holidays-btn btn btn-primary float-end ${loading ? "disable" : ""}`} onClick={handleSearchHolidays}>
-                                <span className="search-holidays-text">Search holidays</span>
-                                {loading && <span className="spinner-border spinner-border-sm" role="status"></span>}
-                              </button>
+                            <button type="button" className={`search-holidays-btn btn btn-primary float-end ${loading ? "disable" : ""}`} onClick={handleSearchHolidays}>
+                              <span className="for-loading-margin">Search holidays</span>
+                              {loading && <span className="spinner-border spinner-border-sm" role="status"></span>}
+                            </button>
                           </div>
                       </div>
                   </div>
