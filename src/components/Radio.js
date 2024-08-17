@@ -26,7 +26,7 @@ const Radio = forwardRef((props, ref) => {
   };
 
   return (
-    <input type="radio" name={name} className="form-check-input" id={id} onClick={handleChange} value={valueRadioName} defaultChecked={value === valueRadioName} />
+    <input type="radio" name={name} className="form-check-input" id={id} onChange={handleChange} value={valueRadioName} defaultChecked={value === valueRadioName} />
   )
 });
 
