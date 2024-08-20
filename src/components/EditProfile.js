@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { changeInputFunc } from '../reducers/myAccountSlice';
@@ -7,7 +7,8 @@ import { handleAPIData } from '../hooks/useCustomApi';
 import Input from './Input';
 import Button from './Button';
 
-const EditProfile = ({ id }) => {
+const EditProfile = forwardRef((props, ref) => {
+  const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef(), useRef()];
   const { updateName, updateEmail, updatePhone, updateAddress } = useSelector(state => {
@@ -20,6 +21,12 @@ const EditProfile = ({ id }) => {
   const handleSaveChangesClick = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
+
+    if (!updateEmail && !updatePhone && !updateName && !updateAddress) {
+      toast.warning('Please enter something to update', toastOptions);
+      return;
+    }
+
 
     if (loading) {
       return;
@@ -83,6 +90,10 @@ const EditProfile = ({ id }) => {
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    handleCancelClick
+  }));
+
   return (
     <div className="tab-pane fade show active" id={id} role="tabpanel" tabIndex="0">
       <div className="row">
@@ -113,6 +124,6 @@ const EditProfile = ({ id }) => {
       </div>
     </div>
   )
-};
+});
 
 export default EditProfile;

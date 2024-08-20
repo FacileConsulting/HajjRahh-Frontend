@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { changeInputFunc } from '../reducers/myAccountSlice';
@@ -7,7 +7,8 @@ import { handleAPIData } from '../hooks/useCustomApi';
 import Input from './Input';
 import Button from './Button';
 
-const ChangePassword = ({ id }) => {
+const ChangePassword = forwardRef((props, ref) => {
+  const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef()];
   const { password, newPassword, confirmPassword } = useSelector(state => {
@@ -70,6 +71,10 @@ const ChangePassword = ({ id }) => {
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    handleResetClick
+  }));
+
   return (
     <div className="tab-pane fade" id={id} role="tabpanel" tabIndex="0">
       <div className="row">
@@ -100,6 +105,6 @@ const ChangePassword = ({ id }) => {
       </div>
     </div>
   )
-};
+});
 
 export default ChangePassword;

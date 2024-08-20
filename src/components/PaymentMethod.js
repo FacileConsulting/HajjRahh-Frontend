@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
@@ -6,7 +6,8 @@ import { handleAPIData } from '../hooks/useCustomApi';
 import Checkbox from './Checkbox';
 import Button from './Button';
 
-const PaymentMethod = ({ id }) => {
+const PaymentMethod = forwardRef((props, ref) => {
+  const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef()];
   const { creditCard, debitCard, upi } = useSelector(state => {
@@ -16,13 +17,6 @@ const PaymentMethod = ({ id }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSaveClick = async () => {
-
-    if (loading) {
-      return;
-    }
-
-    console.log('creditCard, debitCard, upi', creditCard, debitCard, upi );
-    // return;
 
     const paymentSetter = () => {
       const getValues = [];
@@ -34,9 +28,24 @@ const PaymentMethod = ({ id }) => {
       } 
       if (upi) {
         getValues.push('upi');
-      }
+      } 
       return getValues;
     }
+
+    const getArray = paymentSetter();
+    if (getArray.length === 0) {
+      toast.success('Please select atleast one payment method', toastOptions);
+      return;
+    }
+
+    if (loading) {
+      return;
+    }
+
+    console.log('creditCard, debitCard, upi', creditCard, debitCard, upi );
+    // return;
+
+    
 
     const payload = {
       type: 'PAYMENT_METHOD',
@@ -62,6 +71,10 @@ const PaymentMethod = ({ id }) => {
       }
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    handleResetClick
+  }));
 
   return (
     <div className="tab-pane fade" id={id} role="tabpanel" tabIndex="0">
@@ -96,6 +109,6 @@ const PaymentMethod = ({ id }) => {
       </div>
     </div>
   )
-};
+});
 
 export default PaymentMethod;
