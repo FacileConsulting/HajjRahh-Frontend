@@ -18,39 +18,39 @@ const MyAccount = ({id, options}) => {
         </div>
     </div>
     <div className="container-xxl py-5 section-block">
-        <div className="row">
-          <div className="col-3">
-            <div className="row">
-              <DisplayProfile />
-            </div>
+      <div className="row">
+        <div className="col-3">
+          <div className="row">
+            <DisplayProfile />
           </div>
-          <div className="col-9">
-            <ul className="nav nav-tabs justify-content-center" id="my-account-details" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button className="nav-link active" id="edit-profile" data-bs-toggle="tab" data-bs-target="#my-account-edit-profile" type="button" role="tab" aria-selected="true">Edit profile</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="change-password" data-bs-toggle="tab" data-bs-target="#my-account-change-password" type="button" role="tab" aria-selected="false">Change password</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="notification-settings" data-bs-toggle="tab" data-bs-target="#my-account-notification-settings" type="button" role="tab" aria-selected="false">Notification settings</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="payment-methods" data-bs-toggle="tab" data-bs-target="#my-account-payment-method" type="button" role="tab" aria-selected="false">Payment method</button>
-              </li>
-            </ul>
-            <div className="row tab-margin">
-              <div className="col">
-                <div className="tab-content" id="my-account-content">
-                  <EditProfile id={"my-account-edit-profile"} />
-                  <ChangePassword id={"my-account-change-password"} />
-                  <NotificationSettings id={"my-account-notification-settings"} />
-                  <PaymentMethod id={"my-account-payment-method"} />
-                </div>
+        </div>
+        <div className="col-9">
+          <ul className="nav nav-tabs justify-content-center" id="my-account-details" role="tablist">
+            <li className="nav-item" role="presentation">
+              <button className="nav-link active" id="edit-profile" data-bs-toggle="tab" data-bs-target="#my-account-edit-profile" type="button" role="tab" aria-selected="true">Edit profile</button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button className="nav-link" id="change-password" data-bs-toggle="tab" data-bs-target="#my-account-change-password" type="button" role="tab" aria-selected="false">Change password</button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button className="nav-link" id="notification-settings" data-bs-toggle="tab" data-bs-target="#my-account-notification-settings" type="button" role="tab" aria-selected="false">Notification settings</button>
+            </li>
+            <li className="nav-item" role="presentation">
+              <button className="nav-link" id="payment-methods" data-bs-toggle="tab" data-bs-target="#my-account-payment-method" type="button" role="tab" aria-selected="false">Payment method</button>
+            </li>
+          </ul>
+          <div className="row tab-margin">
+            <div className="col">
+              <div className="tab-content" id="my-account-content">
+                <EditProfile id={"my-account-edit-profile"} />
+                <ChangePassword id={"my-account-change-password"} />
+                <NotificationSettings id={"my-account-notification-settings"} />
+                <PaymentMethod id={"my-account-payment-method"} />
               </div>
             </div>
-          </div>              
-        </div>
+          </div>
+        </div>              
+      </div>
     </div>
     </>
   )

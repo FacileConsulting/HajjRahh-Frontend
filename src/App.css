@@ -345,8 +345,79 @@ a:hover {
 }
 .trip-image {
   width: 200px;
-  height: autp;
+  height: auto;
 }
+/* Holidays List Page */
+.section-listing {
+  background: hsla(213, 77%, 14%, 1);
+  background: linear-gradient(180deg, hsla(213, 77%, 14%, 1) 0%, hsla(202, 27%, 45%, 1) 100%);
+  background: -moz-linear-gradient(180deg, hsla(213, 77%, 14%, 1) 0%, hsla(202, 27%, 45%, 1) 100%);
+  background: -webkit-linear-gradient(180deg, hsla(213, 77%, 14%, 1) 0%, hsla(202, 27%, 45%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#08203E", endColorstr="#557C93", GradientType=1 );
+  padding: 12px;
+}
+.section-listing-filter {
+  -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.2);
+  box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.2);
+  background-color: #ffffff;
+  padding: 12px;
+  position: absolute;
+  width: 100%;
+}
+.listing-filters {
+  position: relative;
+  margin: 0;
+}
+.listing-filters .filter-type {
+  width: 210px;
+}
+.listing-filters .filter-type-first {
+  width: 24px;
+  margin-right: 16px;
+}
+.filter-title-link {
+  font-family: 'font-medium';
+}
+.filter-list {
+  margin-top: 12px;
+}
+.filter-list >a {
+  margin-bottom: 8px;
+  display: block;
+}
+.filter-list, .filter-btn {
+  display: none;
+}
+.filter-show {
+  display: block;
+}
+.form-sort {
+  border: 0;
+  height: auto;
+  line-height: 22px;
+}
+.trip-block {
+  background-color: #fafafa;
+  border: 1px solid #dddddd;
+  border-radius: 16px;
+  padding: 12px 0px;
+}
+.tour-features {
+  margin-top: 12px;
+  margin-bottom: 0px;
+}
+.tour-features >li {
+  text-align: center;
+  margin-right: 16px !important;
+}
+.tour-features >li >span{
+  color: #49454F;
+}
+.tour-features >li >p{
+  font-size: 14px;
+}
+/* Holidays List Page ends */
 @media screen and (max-width: 992px) {
   .navbar-nav {
       display: inline-block;
@@ -375,6 +446,24 @@ a:hover {
       background-color: #ffffff;
       padding: 0px 24px;
   }
+  /* Holidays List Page */
+  .listing-filters {
+      /* width: 500px; */
+      display: block !important;
+      margin-left: 8.33%;
+  }
+  .listing-filters .filter-type-first {
+      margin-bottom: 8px;
+      text-align: left !important;
+  }
+  .listing-filters .filter-type {
+      width: 100%;
+      margin-bottom: 8px;
+  }
+  .filter-list {
+      margin-bottom: 24px;
+  }
+  /* Holidays List Page ends */
 }
 
 

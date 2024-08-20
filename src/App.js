@@ -6,6 +6,7 @@ import { DateRangePicker } from 'rsuite';
 import { handleAPIData } from './hooks/useCustomApi';
 import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';
+import Holidays from './pages/Holidays';
 import Trips from './pages/Trips';
 import Select from './components/Select';
 import Counter from './components/Counter';
@@ -77,6 +78,7 @@ const App = ({ message }) => {
         <Route path="/" exact component={Home} />
         <Route path="/myAccount" component={MyAccount} />
         <Route path="/trips" component={Trips} />
+        <Route path="/holidays" component={Holidays} />
       </Switch>
       <div className="section-bg">
         <div className="container-xxl py-5 section-block">

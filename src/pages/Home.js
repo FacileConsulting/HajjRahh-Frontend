@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
 import { handleAPIData } from '../hooks/useCustomApi';
@@ -13,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Home = ({id, options}) => {
   let startDate;
   let endDate;
+  const history = useHistory();
   const { departure, destination, noOfPeople } = useSelector(state => state.home);
 
   const dateStyles = {
@@ -107,6 +109,7 @@ const Home = ({id, options}) => {
     setLoading(true);
     let response = await handleAPIData('/api/searchHolidays', payload);
     if (response.status === 'success' && response.data) {
+      history.push('/holidays');
       console.log('response', response.data);
     } else if (response.status === 'success' && response.data.length === 0) {
       toast.warning('Search Holidays Not Found.', toastOptions);
