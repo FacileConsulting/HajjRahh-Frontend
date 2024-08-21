@@ -54,7 +54,7 @@ const PaymentMethod = forwardRef((props, ref) => {
     }
 
     setLoading(true);
-    let response = await handleAPIData('/api/myAccount', payload);
+    let response = await handleAPIData('POST', '/api/myAccount', payload);
     console.log('response', response);
     if (response.status === 'success' && response.data.paymentMethodType) {
       toast.success('Payment Method types updated successfully', toastOptions);

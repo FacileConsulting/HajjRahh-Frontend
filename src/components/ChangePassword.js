@@ -49,7 +49,7 @@ const ChangePassword = forwardRef((props, ref) => {
     }
 
     setLoading(true);
-    let response = await handleAPIData('/api/myAccount', payload);
+    let response = await handleAPIData('POST', '/api/myAccount', payload);
     console.log('response', response);
     if (response.status === 'success' && response.data.passwordChanged) {
       toast.success(response.data.message, toastOptions);

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
 import { handleAPIData } from '../hooks/useCustomApi';
 import Select from '../components/Select';
 import Counter from '../components/Counter';
 import {toastOptions} from '../toastify';
-import '../App.css';
 import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -107,7 +106,7 @@ const Home = ({id, options}) => {
     }
     console.log('sfsdfdfdf', departure, destination, noOfPeople, dateRange.startDate, dateRange.endDate);
     setLoading(true);
-    let response = await handleAPIData('/api/searchHolidays', payload);
+    let response = await handleAPIData('POST', '/api/searchHolidays', payload);
     if (response.status === 'success' && response.data) {
       history.push('/holidays');
       console.log('response', response.data);

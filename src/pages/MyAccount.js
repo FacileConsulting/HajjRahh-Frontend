@@ -5,7 +5,7 @@ import ChangePassword from '../components/ChangePassword';
 import NotificationSettings from '../components/NotificationSettings';
 import PaymentMethod from '../components/PaymentMethod';
 
-const MyAccount = ({id, options}) => {
+const MyAccount = ({id }) => {
   const editProfileRef = useRef();
   const changePasswordRef = useRef();
   const paymentMethodRef = useRef();

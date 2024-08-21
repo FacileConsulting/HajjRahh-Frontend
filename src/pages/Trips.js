@@ -1,6 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { toastOptions } from '../toastify';
+import { handleAPIData } from '../hooks/useCustomApi';
+import TripContainer from '../components/TripContainer';
 
-const MyAccount = ({ id, options }) => {
+const Trips = ({ id }) => {
+
+  const [tripsData, setTripsData] = useState({ upcomingTrips: [], pastTrips: [] });
+  // State to store loading status
+  const [loading, setLoading] = useState(true);
+  // State to store error (if any)
+  const [error, setError] = useState(null);
+
+  const fetchTripsData = async () => {
+    try {
+      let response = await handleAPIData('GET', '/api/trips');
+      console.log('tripsresponse', response);
+      if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
+        toast.error(response.data.message, toastOptions);
+        setTripsData({ upcomingTrips: [], pastTrips: [] });
+      } else if (response.status === 'success' && response.data.data.length > 0) {
+        let responseData = response.data.data;
+        const upcomingTripsArray = responseData.filter((trip) => trip.status === 'upcoming');
+        const pastTripsArray = responseData.filter((trip) => trip.status !== 'upcoming');
+        setTripsData({
+          upcomingTrips: upcomingTripsArray,
+          pastTrips: pastTripsArray
+        });
+      } else if (response.status === 'error') {
+        setTripsData({ upcomingTrips: [], pastTrips: [] });
+        toast.error(response.data.message, toastOptions);
+      } else {
+        setTripsData({ upcomingTrips: [], pastTrips: [] });
+        toast.error('Something went wrong. Please try again.', toastOptions);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch data when component mounts
+  useEffect(() => {
+    fetchTripsData();
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
     <>
@@ -18,120 +60,25 @@ const MyAccount = ({ id, options }) => {
             <h3>Upcoming Trips</h3>
           </div>
         </div>
-        <div className="row mb-4">
-          <div className="col-5 offset-1">
-            <div className="d-flex flex-row">
-              <div className="trip-image">
-                <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
-              </div>
-              <div className="ps-3">
-                <h3>Novotel Thakher</h3>
-                <p>23-Mar-2024 to 26-Mar-2024</p>
-                <span className="badge text-bg-warning mt-2">Upcoming</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-5 text-end">
-            <button type="button" className="btn btn-primary btn-sm">View details</button>
-            <button type="button" className="btn btn-secondary btn-sm mx-2">End trip</button>
-            <button type="button" className="btn btn-secondary btn-sm">Cancel trip</button>
-          </div>
-        </div>
-        <div className="row mb-4">
-          <div className="col-5 offset-1">
-            <div className="d-flex flex-row">
-              <div className="trip-image">
-                <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
-              </div>
-              <div className="ps-3">
-                <h3>Novotel Thakher</h3>
-                <p>23-Mar-2024 to 26-Mar-2024</p>
-                <span className="badge text-bg-warning mt-2">Upcoming</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-5 text-end">
-            <button type="button" className="btn btn-primary btn-sm">View details</button>
-            <button type="button" className="btn btn-secondary btn-sm mx-2">End trip</button>
-            <button type="button" className="btn btn-secondary btn-sm">Cancel trip</button>
-          </div>
-        </div>
+        {
+          tripsData.upcomingTrips && tripsData.upcomingTrips.length > 0 && tripsData.upcomingTrips.map((trip, index) => {
+            console.log('trip', trip)
+            return (<TripContainer id={`upcomingTrip-${index}`} tripData={trip} statusClass={"warning"} />)
+          })
+        }
         <div className="row mb-2">
           <div className="col-auto me-auto offset-1">
             <h3>Past Trips</h3>
           </div>
         </div>
-        <div className="row mb-4">
-          <div className="col-5 offset-1">
-            <div className="d-flex flex-row">
-              <div className="trip-image">
-                <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
-              </div>
-              <div className="ps-3">
-                <h3>Novotel Thakher</h3>
-                <p>23-Mar-2024 to 26-Mar-2024</p>
-                <span className="badge text-bg-info mt-2">Completed</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-5 text-end">
-            <button type="button" className="btn btn-primary btn-sm">View details</button>
-          </div>
-        </div>
-        <div className="row mb-4">
-          <div className="col-5 offset-1">
-            <div className="d-flex flex-row">
-              <div className="trip-image">
-                <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
-              </div>
-              <div className="ps-3">
-                <h3>Novotel Thakher</h3>
-                <p>23-Mar-2024 to 26-Mar-2024</p>
-                <span className="badge text-bg-info mt-2">Completed</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-5 text-end">
-            <button type="button" className="btn btn-primary btn-sm">View details</button>
-          </div>
-        </div>
-        <div className="row mb-4">
-          <div className="col-5 offset-1">
-            <div className="d-flex flex-row">
-              <div className="trip-image">
-                <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
-              </div>
-              <div className="ps-3">
-                <h3>Novotel Thakher</h3>
-                <p>23-Mar-2024 to 26-Mar-2024</p>
-                <span className="badge text-bg-info mt-2">Completed</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-5 text-end">
-            <button type="button" className="btn btn-primary btn-sm">View details</button>
-          </div>
-        </div>
-        <div className="row mb-4">
-          <div className="col-5 offset-1">
-            <div className="d-flex flex-row">
-              <div className="trip-image">
-                <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
-              </div>
-              <div className="ps-3">
-                <h3>Novotel Thakher</h3>
-                <p>23-Mar-2024 to 26-Mar-2024</p>
-                <span className="badge text-bg-info mt-2">Completed</span>
-              </div>
-            </div>
-          </div>
-          <div className="col-5 text-end">
-            <button type="button" className="btn btn-primary btn-sm">View details</button>
-          </div>
-        </div>
+        {
+          tripsData.pastTrips && tripsData.pastTrips.length > 0 && tripsData.pastTrips.map((trip, index) => {
+            return (<TripContainer id={`pastTrip-${index}`} tripData={trip} statusClass={"info"} />)
+          })
+        }
       </div>
     </>
   )
 };
 
-export default MyAccount;
+export default Trips;

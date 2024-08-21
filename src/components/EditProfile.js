@@ -67,7 +67,7 @@ const EditProfile = forwardRef((props, ref) => {
     }
 
     setLoading(true);
-    let response = await handleAPIData('/api/myAccount', payload);
+    let response = await handleAPIData('POST', '/api/myAccount', payload);
     if (response.status === 'success' && response.data) {
       toast.success('Profile updated successfully', toastOptions);
       handleCancelClick();

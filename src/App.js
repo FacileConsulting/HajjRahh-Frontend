@@ -3,7 +3,6 @@ import { Route, Switch, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
-import { handleAPIData } from './hooks/useCustomApi';
 import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';
 import Holidays from './pages/Holidays';
@@ -14,8 +13,6 @@ import {toastOptions} from './toastify';
 import './App.css';
 import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
-
-const baseurl = "http://localhost:8888";
 
 const App = ({ message }) => {
 

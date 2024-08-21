@@ -1,13 +1,20 @@
 // import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const baseUrl = "http://localhost:8888";
+const baseUrl = "http://localhost:8000";
 
-export const handleAPIData = (url, payload) => {
+export const handleAPIData = async (method, url, payload = null) => {
   const apiUrl = `${baseUrl}${url}`;
   console.log('payload', apiUrl, payload)
-  return axios.post(apiUrl, payload)
-    .then(response => {
+  try {
+      let response;
+      if (method === 'POST') {
+          response = await axios.post(apiUrl, payload);
+      } else if (method === 'GET') {
+          response = await axios.get(apiUrl);
+      }
+
+      console.log('hook response', response)
       if (!response.error && response.data) {
         return {
           data: response.data,          
@@ -21,18 +28,15 @@ export const handleAPIData = (url, payload) => {
       } else {
         const msg = `Error : ${url}`;
         return {
-          data: [],
           status: 'error',
           message: msg
         }
       }
-    })
-    .catch(err => {
-      const msg = `Error : ${url}`;
-      return {
-        data: [],
-        status: 'error',
-        message: msg
-      }
-    });
-}
+  } catch (error) {
+    const msg = `Error : ${url}`;
+    return {
+      status: 'error',
+      message: msg
+    }
+  }
+};
