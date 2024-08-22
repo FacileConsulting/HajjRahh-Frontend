@@ -5,10 +5,10 @@ const DisplayProfile = ({ id }) => {
 
   const { displayName, displayEmail, displayPhone, displayAddress } = useSelector(state => state.myAccount );
   const displayArray = [
-    { label: 'Name', value: displayName },    
-    { label: 'Email', value: displayEmail },    
-    { label: 'Phone', value: displayPhone },    
-    { label: 'Address', value: displayAddress }
+    { label: 'Name', value: displayName || 'demo4' },    
+    { label: 'Email', value: displayEmail || 'demo@gmail.com' },    
+    { label: 'Phone', value: displayPhone || '---' },  
+    { label: 'Address', value: displayAddress || '---' },  
   ]
   return (
     <>
@@ -19,8 +19,8 @@ const DisplayProfile = ({ id }) => {
         displayArray && displayArray.length > 0 && displayArray.map((obj) => {
           return (
             <div className="col-12 mb-4">
-              <h4>{obj.label}</h4>
-              <p>{obj.value || ''}</p>
+              <h4>{ obj.label }</h4>
+              <p>{ obj.value }</p>
             </div>
           )
         })

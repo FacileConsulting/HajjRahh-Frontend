@@ -16,6 +16,13 @@ export const homeSlice = createSlice({
     },
     noOfPeopleFunc: (state, action) => {
       state.noOfPeople = action.payload
+    },
+    resetHomeReducer: (state, action) => {
+      state = {
+        departure: '',
+        destination: '',
+        noOfPeople: 0
+      }
     }
   }
 })
@@ -24,7 +31,8 @@ export const homeSlice = createSlice({
 export const { 
   departureFunc, 
   destinationFunc,
-  noOfPeopleFunc
+  noOfPeopleFunc,
+  resetHomeReducer
  } = homeSlice.actions
 
 export default homeSlice.reducer

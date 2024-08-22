@@ -62,7 +62,7 @@ const Trips = ({ id }) => {
         </div>
         {
           tripsData.upcomingTrips && tripsData.upcomingTrips.length > 0 && tripsData.upcomingTrips.map((trip, index) => {
-            console.log('trip', trip)
+            console.log('trip', trip);
             return (<TripContainer id={`upcomingTrip-${index}`} tripData={trip} statusClass={"warning"} />)
           })
         }

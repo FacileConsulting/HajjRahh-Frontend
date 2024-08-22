@@ -34,9 +34,12 @@ const App = ({ message }) => {
                 <span className="nav-menu-icon img-hotel"></span> <br/>
                 <a className="nav-link" aria-current="page">Hotels</a>
               </li>
+              
               <li className="nav-item text-center">
                 <span className="nav-menu-icon img-holidays"></span> <br/>
-                <a className="nav-link" aria-current="page">Holidays</a>
+                <Link to="/holidays">Holidays
+                  {/* <a className="nav-link" aria-current="page">Holidays</a> */}
+                </Link>                
               </li>
               <li className="nav-item text-center">
                 <span className="nav-menu-icon img-cabs"></span> <br/>

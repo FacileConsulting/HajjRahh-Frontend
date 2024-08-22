@@ -34,7 +34,7 @@ const PaymentMethod = forwardRef((props, ref) => {
 
     const getArray = paymentSetter();
     if (getArray.length === 0) {
-      toast.success('Please select atleast one payment method', toastOptions);
+      toast.info('Please select atleast one payment method', toastOptions);
       return;
     }
 

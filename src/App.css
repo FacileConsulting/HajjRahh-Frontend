@@ -420,6 +420,9 @@ a:hover {
 .trip-status {
   text-transform: capitalize;
 }
+.holiday-cancel-btn {
+  margin-right: 10px;
+}
 
 /* Holidays List Page ends */
 @media screen and (max-width: 992px) {
@@ -478,6 +481,9 @@ a:hover {
 .rs-date-range-input.rs-input,
 .rs-input-group-addon {
   margin-top: 7px;
+}
+.rs-input-group-lg.rs-input-group > .rs-input {
+  height: 46px !important;
 }
 .for-loading-margin {
   margin-right: 10px;

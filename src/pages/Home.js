@@ -3,18 +3,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
+import { resetHomeReducer } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
 import Select from '../components/Select';
 import Counter from '../components/Counter';
-import {toastOptions} from '../toastify';
+import { toastOptions } from '../toastify';
 import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = ({id, options}) => {
+  const dispatch = useDispatch();
   let startDate;
   let endDate;
   const history = useHistory();
   const { departure, destination, noOfPeople } = useSelector(state => state.home);
+  dispatch(resetHomeReducer());
 
   const dateStyles = {
     border: '1px solid #79747E', 
@@ -80,26 +83,35 @@ const Home = ({id, options}) => {
     // console.log('dateRange', startDate, endDate, value[0].getDate() );
   }
 
+  const capitalizeWords = (str) => { 
+    return str.replace(/\b\w/g, char => char.toUpperCase());
+  }
+
   const handleSearchHolidays = async () => {
     if (loading) {
       return;
     }
-    if (!departure) {
-      toast.warning('Please select Departure Place', toastOptions);
-      return;
-    } else if (!destination) {
-      toast.warning('Please select Destination Place', toastOptions);
-      return;
-    } else if (!dateRange.startDate || !dateRange.endDate) {
-      toast.warning('Please select Travelling Dates', toastOptions);
-      return;
-    } else if (!noOfPeople) {
-      toast.warning('Please add Number of People', toastOptions);
+    if (!departure && !destination && !dateRange.startDate && !dateRange.endDate && !dateRange.noOfPeople) {
+      toast.info('Please select atleast one field', toastOptions);
       return;
     }
+    // if (!departure) {
+    //   toast.warning('Please select Departure Place', toastOptions);
+    //   return;
+    // } else if (!destination) {
+    //   toast.warning('Please select Destination Place', toastOptions);
+    //   return;
+    // } else if (!dateRange.startDate || !dateRange.endDate) {
+    //   toast.warning('Please select Travelling Dates', toastOptions);
+    //   return;
+    // } else if (!noOfPeople) {
+    //   toast.warning('Please add Number of People', toastOptions);
+    //   return;
+    // }
+
     const payload = {
-      departure,
-      destination,
+      departure: capitalizeWords(departure),
+      destination: capitalizeWords(destination),
       startDate: dateRange.startDate,
       endDate: dateRange.endDate,
       noOfPeople
@@ -107,10 +119,14 @@ const Home = ({id, options}) => {
     console.log('sfsdfdfdf', departure, destination, noOfPeople, dateRange.startDate, dateRange.endDate);
     setLoading(true);
     let response = await handleAPIData('POST', '/api/searchHolidays', payload);
-    if (response.status === 'success' && response.data) {
-      history.push('/holidays');
-      console.log('response', response.data);
-    } else if (response.status === 'success' && response.data.length === 0) {
+    if (response.status === 'success' && response.data.data.length > 0) {
+      // history.push('/holidays');
+      history.push({
+        pathname: '/holidays',
+        state: { from: 'Search Holidays button', data: response.data.data }
+      });
+      console.log('response', response.data.data);
+    } else if (response.status === 'success' && response.data.data.length === 0) {
       toast.warning('Search Holidays Not Found.', toastOptions);
       console.log('responsezero', response.data);
     } else {
@@ -128,10 +144,10 @@ const Home = ({id, options}) => {
                       <div className="hero-form-title">Book for Hajj and Umrah</div>
                       <div className="row">
                           <div className="col">
-                            <Select id={"departure-select"} options={departureOptions} />
+                            <Select id={"departure-select"} options={departureOptions} classes={"mb-3"} />
                           </div>
                           <div className="col">
-                            <Select id={"destination-select"} options={destinationOptions} />
+                            <Select id={"destination-select"} options={destinationOptions} classes={"mb-3"} />
                           </div>
                       </div>
                       <div className="row">
