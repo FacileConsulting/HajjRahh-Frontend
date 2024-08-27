@@ -14,7 +14,7 @@ const Trips = ({ id }) => {
 
   const fetchTripsData = async () => {
     try {
-      let response = await handleAPIData('GET', '/api/trips');
+      let response = await handleAPIData('POST', '/api/trips', { id: "66cc1ef2a7cb9004d0e8c177" });
       console.log('tripsresponse', response);
       if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
         toast.error(response.data.message, toastOptions);
@@ -31,7 +31,7 @@ const Trips = ({ id }) => {
         });
       } else if (response.status === 'error') {
         setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-        toast.error(response.data.message, toastOptions);
+        toast.error(response.message, toastOptions);
       } else {
         setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
         toast.error('Something went wrong. Please try again.', toastOptions);

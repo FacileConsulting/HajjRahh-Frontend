@@ -20,8 +20,8 @@ const HolidayContainer = ({ id, holidayData }) => {
     <div id={id} key={id} className="row mb-4 trip-block">
       <div className="col-8">
         <div className="d-flex flex-row">
-          <div className="trip-image">
-            <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
+          <div className="trip-image df">
+            <img src={`./assets/images/book_online/${holidayData.image}`} className="img-style" alt="" />
           </div>
           <div className="ps-3">
             <h3>{holidayData.packageName}</h3>
