@@ -26,7 +26,7 @@ const NotificationSettings = ({ id }) => {
 
     const payload = {
       type: 'NOTIFICATION_SETTINGS',
-      _id: '66a0fd5c54a6de2eb066aee9',
+      _id: '66cc1ef2a7cb9004d0e8c177',
       isEnabledEmailNotification: emailSettings
     }
 
@@ -34,7 +34,7 @@ const NotificationSettings = ({ id }) => {
     let response = await handleAPIData('POST', '/api/myAccount', payload);
     console.log('response', response);
     if (response.status === 'success' && response.data.isEnabledEmailNotification) {
-      toast.success(response.data.message, toastOptions);
+      toast.success("Notification Settings Updated Successfully", toastOptions);
     } else {
       toast.error('Something went wrong. Please try again.', toastOptions);
     }

@@ -9,7 +9,7 @@ import Holidays from './pages/Holidays';
 import Trips from './pages/Trips';
 import Select from './components/Select';
 import Counter from './components/Counter';
-import {toastOptions} from './toastify';
+import { toastOptions } from './toastify';
 import './App.css';
 import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,68 +18,73 @@ const App = ({ message }) => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-        <div className="container-fluid">
-          <Link to="/" className="navbar-brand">Hajjrah</Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li className="nav-item text-center">
-                <span className="nav-menu-icon img-flight"></span> <br/>
-                <a className="nav-link" aria-current="page">Flights</a>
-              </li>
-              <li className="nav-item text-center">
-                <span className="nav-menu-icon img-hotel"></span> <br/>
-                <a className="nav-link" aria-current="page">Hotels</a>
-              </li>
-              
-              <li className="nav-item text-center">
-                <span className="nav-menu-icon img-holidays"></span> <br/>
-                <Link to="/holidays">Holidays
-                  {/* <a className="nav-link" aria-current="page">Holidays</a> */}
-                </Link>                
-              </li>
-              <li className="nav-item text-center">
-                <span className="nav-menu-icon img-cabs"></span> <br/>
-                <a className="nav-link" aria-current="page">Cabs</a>
-              </li>
-              <li className="nav-item text-center">
-                <span className="nav-menu-icon img-invest"></span> <br/>
-                <a className="nav-link" aria-current="page">Invest</a>
-              </li>
-            </ul>
+      <section className="section-wrapper">
+        <nav className="navbar navbar-expand-lg bg-body-tertiary header-section">
+          <div className="container-fluid">
+            <Link to="/" className="navbar-brand">
+              <img src="./assets/images/hajjrahh_logo.jpg" className="hajjrahh-logo" alt="..." />
+            </Link>
+            {/* <Link to="/" className="navbar-brand">Hajjrahh</Link> */}
+            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li className="nav-item text-center">
+                  <span className="nav-menu-icon img-flight"></span> <br />
+                  <a className="nav-link" aria-current="page">Flights</a>
+                </li>
+                <li className="nav-item text-center">
+                  <span className="nav-menu-icon img-hotel"></span> <br />
+                  <a className="nav-link" aria-current="page">Hotels</a>
+                </li>
+
+                <li className="nav-item text-center">
+                  <span className="nav-menu-icon img-holidays"></span> <br />
+                  <Link to="/holidays">Holidays
+                    {/* <a className="nav-link" aria-current="page">Holidays</a> */}
+                  </Link>
+                </li>
+                <li className="nav-item text-center">
+                  <span className="nav-menu-icon img-cabs"></span> <br />
+                  <a className="nav-link" aria-current="page">Cabs</a>
+                </li>
+                <li className="nav-item text-center">
+                  <span className="nav-menu-icon img-invest"></span> <br />
+                  <a className="nav-link" aria-current="page">Invest</a>
+                </li>
+              </ul>
               <ul className="navbar-nav mb-2 mb-lg-0 d-flex nav-secondary">
-                  <li className="nav-item dropdown">
-                    <Link to="/myAccount"> My Account
-                      {/* <a className="nav-link dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <li className="nav-item dropdown">
+                  <Link to="/myAccount"> My Account
+                    {/* <a className="nav-link dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         My Account
                       </a> */}
-                    </Link>
-                    <ul className="dropdown-menu">
-                      <li><a className="dropdown-item" href="#">Logout</a></li>
-                    </ul>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/trips">Trips
-                      {/* <a className="nav-link" href="#!">Trips</a> */}
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link" href="#">Support</a>
-                  </li>
+                  </Link>
+                  <ul className="dropdown-menu">
+                    <li><a className="dropdown-item" href="#">Logout</a></li>
+                  </ul>
+                </li>
+                <li className="nav-item">
+                  <Link to="/trips">Trips
+                    {/* <a className="nav-link" href="#!">Trips</a> */}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="#">Support</a>
+                </li>
               </ul>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/myAccount" component={MyAccount} />
-        <Route path="/trips" component={Trips} />
-        <Route path="/holidays" component={Holidays} />
-      </Switch>
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/myAccount" component={MyAccount} />
+          <Route path="/trips" component={Trips} />
+          <Route path="/holidays" component={Holidays} />
+        </Switch>
+      </section>
       <div className="section-bg">
         <div className="container-xxl py-5 section-block">
           <div className="row align-items-center">

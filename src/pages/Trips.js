@@ -6,7 +6,7 @@ import TripContainer from '../components/TripContainer';
 
 const Trips = ({ id }) => {
 
-  const [tripsData, setTripsData] = useState({ upcomingTrips: [], pastTrips: [] });
+  const [tripsData, setTripsData] = useState({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
   // State to store loading status
   const [loading, setLoading] = useState(true);
   // State to store error (if any)
@@ -18,20 +18,22 @@ const Trips = ({ id }) => {
       console.log('tripsresponse', response);
       if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
         toast.error(response.data.message, toastOptions);
-        setTripsData({ upcomingTrips: [], pastTrips: [] });
+        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
       } else if (response.status === 'success' && response.data.data.length > 0) {
         let responseData = response.data.data;
         const upcomingTripsArray = responseData.filter((trip) => trip.status === 'upcoming');
-        const pastTripsArray = responseData.filter((trip) => trip.status !== 'upcoming');
+        const onGoingTripsArray = responseData.filter((trip) => trip.status === 'live');
+        const pastTripsArray = responseData.filter((trip) => trip.status === 'completed');
         setTripsData({
           upcomingTrips: upcomingTripsArray,
+          onGoingTrips: onGoingTripsArray,
           pastTrips: pastTripsArray
         });
       } else if (response.status === 'error') {
-        setTripsData({ upcomingTrips: [], pastTrips: [] });
+        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
         toast.error(response.data.message, toastOptions);
       } else {
-        setTripsData({ upcomingTrips: [], pastTrips: [] });
+        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
         toast.error('Something went wrong. Please try again.', toastOptions);
       }
     } finally {
@@ -64,6 +66,16 @@ const Trips = ({ id }) => {
           tripsData.upcomingTrips && tripsData.upcomingTrips.length > 0 && tripsData.upcomingTrips.map((trip, index) => {
             console.log('trip', trip);
             return (<TripContainer id={`upcomingTrip-${index}`} tripData={trip} statusClass={"warning"} />)
+          })
+        }
+        <div className="row mb-2">
+          <div className="col-auto me-auto offset-1">
+            <h3>On-Going Trips</h3>
+          </div>
+        </div>
+        {
+          tripsData.onGoingTrips && tripsData.onGoingTrips.length > 0 && tripsData.onGoingTrips.map((trip, index) => {
+            return (<TripContainer id={`onGoingTrip-${index}`} tripData={trip} statusClass={"info"} />)
           })
         }
         <div className="row mb-2">

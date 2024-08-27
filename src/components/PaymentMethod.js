@@ -49,7 +49,7 @@ const PaymentMethod = forwardRef((props, ref) => {
 
     const payload = {
       type: 'PAYMENT_METHOD',
-      _id: '66a0fd5c54a6de2eb066aee9',
+      _id: '66cc1ef2a7cb9004d0e8c177',
       paymentMethodType: paymentSetter()
     }
 

@@ -5,8 +5,8 @@ const DisplayProfile = ({ id }) => {
 
   const { displayName, displayEmail, displayPhone, displayAddress } = useSelector(state => state.myAccount );
   const displayArray = [
-    { label: 'Name', value: displayName || 'demo4' },    
-    { label: 'Email', value: displayEmail || 'demo@gmail.com' },    
+    { label: 'Name', value: displayName || 'ramesh' },    
+    { label: 'Email', value: displayEmail || 'ramesh@gmail.com' },    
     { label: 'Phone', value: displayPhone || '---' },  
     { label: 'Address', value: displayAddress || '---' },  
   ]

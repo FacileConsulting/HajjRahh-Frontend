@@ -79,7 +79,7 @@ const HolidaysModifySearch = ({ id, holidaysCallback }) => {
     // console.log('dateRange', startDate, endDate, value[0].getDate() );
   }
 
-  const handleCross = (value) => {  
+  const handleCross = () => {  
     setDateRange({ startDate: '', endDate: '' });
   }
 

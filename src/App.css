@@ -15,11 +15,13 @@
   margin: 0;
   box-sizing: border-box;
 }
-body {
+body, html {
   font-family: 'font-regular', sans-serif;
   font-size: 16px;
   color: #000000;
-  line-height: 1;
+}
+.section-wrapper {
+  min-height: calc(100vh - 150px); 
 }
 .navbar {
   background-color: #ffffff !important;
@@ -422,6 +424,12 @@ a:hover {
 }
 .holiday-cancel-btn {
   margin-right: 10px;
+}
+.hajjrahh-logo {
+  width: 250px;
+}
+.header-section {
+  padding: 0 32px;
 }
 
 /* Holidays List Page ends */

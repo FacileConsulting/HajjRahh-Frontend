@@ -13,8 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Home = ({id, options}) => {
   const dispatch = useDispatch();
-  let startDate;
-  let endDate;
   const history = useHistory();
   const { departure, destination, noOfPeople } = useSelector(state => state.home);
   dispatch(resetHomeReducer());
@@ -81,6 +79,10 @@ const Home = ({id, options}) => {
     const endDate = `${value[1].getDate()}-${value[1].getMonth()+1}-${value[1].getFullYear()}`;
     setDateRange({ startDate, endDate });
     // console.log('dateRange', startDate, endDate, value[0].getDate() );
+  }
+
+  const handleCross = () => {  
+    setDateRange({ startDate: '', endDate: '' });
   }
 
   const capitalizeWords = (str) => { 
@@ -153,7 +155,7 @@ const Home = ({id, options}) => {
                       <div className="row">
                           <div className="col">
                               <div className="input-group mb-3">
-                                <DateRangePicker size="lg" style={dateStyles} placeholder="Travelling dates" onOk={handleOK} format="dd-MM-yyyy" />
+                                <DateRangePicker size="lg" style={dateStyles} placeholder="Travelling dates" onChange={handleCross} onOk={handleOK} format="dd-MM-yyyy" />
                               </div>
                           </div>
                           <div className="col">
