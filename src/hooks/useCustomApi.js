@@ -1,7 +1,7 @@
 // import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const baseUrl = "http://localhost:8000";
+const baseUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
 
 export const handleAPIData = async (method, url, payload = null) => {
   const apiUrl = `${baseUrl}${url}`;

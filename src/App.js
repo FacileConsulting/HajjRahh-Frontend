@@ -9,12 +9,23 @@ import Holidays from './pages/Holidays';
 import Trips from './pages/Trips';
 import Select from './components/Select';
 import Counter from './components/Counter';
+import { handleAPIData } from './hooks/useCustomApi';
 import { toastOptions } from './toastify';
 import './App.css';
 import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ message }) => {
+
+  const fetchHealthData = async () => {
+    let response = await handleAPIData('GET', '/api/health');
+    console.log('/api/health', response);
+  }
+
+  // Fetch data when component mounts
+  useEffect(() => {
+    fetchHealthData();
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
     <>

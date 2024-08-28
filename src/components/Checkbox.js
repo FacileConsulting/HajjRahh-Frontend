@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 
 const Checkbox = forwardRef((props, ref) => {
   let { id, keyName } = props;
-  console.log('sdfsdfsdfsdf@@@@@@@@@', id, keyName);
   const dispatch = useDispatch();
   const [value, setValue] = useState(false);  
 
   const resetRefCalled = (index) => {
+    console.log('sdfsdfsdfsdf@@@@@@@@@', id, keyName);
     $(`#${id}`).prop('checked', false);
     dispatch(resetInputFunc(keyName));
     setValue(false);
@@ -21,6 +21,7 @@ const Checkbox = forwardRef((props, ref) => {
   }));
 
   const handleChange = (event) => {
+    // $(`#${id}`).prop('checked', true);
     console.log('sdfsdfsdfsdf', id, keyName, event.target.checked);
     dispatch(changeInputFunc({ keyName, value: event.target.checked }));
     setValue(event.target.checked);
