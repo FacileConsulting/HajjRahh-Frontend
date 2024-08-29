@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
-import { resetHomeReducer } from '../reducers/homeSlice';
+import { resetHomeFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
 import Select from '../components/Select';
 import Counter from '../components/Counter';
@@ -15,7 +15,7 @@ const Home = ({id, options}) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { departure, destination, noOfPeople } = useSelector(state => state.home);
-  dispatch(resetHomeReducer());
+  dispatch(resetHomeFunc());
 
   const dateStyles = {
     border: '1px solid #79747E', 
@@ -97,19 +97,6 @@ const Home = ({id, options}) => {
       toast.info('Please select atleast one field', toastOptions);
       return;
     }
-    // if (!departure) {
-    //   toast.warning('Please select Departure Place', toastOptions);
-    //   return;
-    // } else if (!destination) {
-    //   toast.warning('Please select Destination Place', toastOptions);
-    //   return;
-    // } else if (!dateRange.startDate || !dateRange.endDate) {
-    //   toast.warning('Please select Travelling Dates', toastOptions);
-    //   return;
-    // } else if (!noOfPeople) {
-    //   toast.warning('Please add Number of People', toastOptions);
-    //   return;
-    // }
 
     const payload = {
       departure: capitalizeWords(departure),

@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Checkbox from './Checkbox';
 import Button from './Button';
@@ -6,17 +6,16 @@ import store from '../store'
 
 
 const HolidaysFilter = forwardRef((props, ref) => {
-  const { id } = props;
+  const { id, loading, holidaysCallback, toCallback, panelClass, handlePanelCallback } = props;
   const childRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef(), useRef()];
-  const [panelClass, setPanelClass] = useState('filter-list');
-  const [loading, setLoading] = useState(false);
+  
 
   const handlePanel = () => {
-    setPanelClass(panelClass === 'filter-list' ? 'filter-show' : 'filter-list');
+    handlePanelCallback();
   }
 
-  const handleSearchClick = async () => {
-
+  const handleSearchClick = () => {
+    holidaysCallback('filter');
   }
 
   const handleCancelClick = () => {
@@ -31,6 +30,11 @@ const HolidaysFilter = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     handleCancelClick
   }));
+
+  // Fetch data when component mounts
+  useEffect(() => {
+    handleCancelClick();
+  }, [toCallback]); // Empty dependency array means this runs once on mount
   
   console.log('store.getState().items;', store.getState());
   return (
@@ -254,8 +258,8 @@ const HolidaysFilter = forwardRef((props, ref) => {
               </li>
             </ul>
             <div className={`text-center mt-3 ${panelClass}`} onClick={handlePanel}>
-              <Button id={"holiday-filter-search-btn"} loading={loading} handleBtnClick={handleSearchClick} btnType={"primary"} classes={"btn-sm"} label={"Search"} />
               <Button id={"holiday-filter-cancel-btn"} handleBtnClick={handleCancelClick} btnType={"secondary"} classes={"btn-sm holiday-cancel-btn"} label={"Cancel"} />
+              <Button id={"holiday-filter-search-btn"} loading={loading} handleBtnClick={handleSearchClick} btnType={"primary"} classes={"btn-sm"} label={"Search"} />
             </div>
           </div>
         </div>

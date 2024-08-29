@@ -1,20 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import Button from './Button';
 
 const HolidayContainer = ({ id, holidayData }) => {
   console.log('holidayData', holidayData)
-
-  // const { displayName, displayEmail, displayPhone, displayAddress } = useSelector(state => state.myAccount);
-  const handleViewDetailsClick = () => {
-
-  }
-  const handleEndTripClick = () => {
-
-  }
-  const handleCancelTripClick = () => {
-
-  }
 
   return (
     <div id={id} key={id} className="row mb-4 trip-block">

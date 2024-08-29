@@ -5,7 +5,12 @@ export const homeSlice = createSlice({
   initialState: {
     departure: '',
     destination: '',
-    noOfPeople: 0
+    holidaySort: '',
+    noOfPeople: 0,
+    date: {
+      startDate: '',
+      endDate: ''
+    }
   },
   reducers: {
     departureFunc: (state, action) => {
@@ -14,14 +19,30 @@ export const homeSlice = createSlice({
     destinationFunc: (state, action) => {
       state.destination = action.payload
     },
+    holidaysSortFunc: (state, action) => {
+      state.holidaySort = action.payload
+    },
     noOfPeopleFunc: (state, action) => {
       state.noOfPeople = action.payload
     },
-    resetHomeReducer: (state, action) => {
+    dateFunc: (state, action) => {
+      state.date.startDate = action.payload.startDate
+      state.date.endDate = action.payload.endDate
+    },
+    dateResetFunc: (state, action) => {
+      state.date.startDate = ''
+      state.date.endDate = ''
+    },
+    resetHomeFunc: (state, action) => {
       state = {
         departure: '',
         destination: '',
-        noOfPeople: 0
+        holidaySort: '',
+        noOfPeople: 0,
+        date: {
+          startDate: '',
+          endDate: ''
+        }
       }
     }
   }
@@ -31,8 +52,11 @@ export const homeSlice = createSlice({
 export const { 
   departureFunc, 
   destinationFunc,
+  holidaysSortFunc,
   noOfPeopleFunc,
-  resetHomeReducer
+  dateFunc,
+  dateResetFunc,
+  resetHomeFunc
  } = homeSlice.actions
 
 export default homeSlice.reducer

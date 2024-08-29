@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { departureFunc, destinationFunc } from '../reducers/homeSlice';
+import { departureFunc, destinationFunc, holidaysSortFunc } from '../reducers/homeSlice';
 import { useDispatch } from 'react-redux';
 
 const Select = ({ id, options, classes }) => {
@@ -12,6 +12,8 @@ const Select = ({ id, options, classes }) => {
       dispatch(departureFunc(event.target.value));
     } else if (id === 'destination-select' || id === 'holidays-modify-search-destination-select') {
       dispatch(destinationFunc(event.target.value));
+    } else if (id === 'holidays-sort') {
+      dispatch(holidaysSortFunc(event.target.value));
     }
     setSelectedOption(event.target.value);
   };

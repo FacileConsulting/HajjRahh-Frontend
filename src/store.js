@@ -1,6 +1,5 @@
-import { applyMiddleware } from 'redux';
 import { configureStore } from '@reduxjs/toolkit'
-import thunkMiddleware from 'redux-thunk';
+import {thunk} from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import homeReducer from './reducers/homeSlice';
 import myAccountReducer from './reducers/myAccountSlice';
@@ -11,7 +10,9 @@ export default configureStore({
   reducer: {
     home: homeReducer,
     myAccount: myAccountReducer
-  }
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(loggerMiddleware, thunk),
 })
 
 
