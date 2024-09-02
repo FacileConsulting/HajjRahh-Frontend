@@ -15,10 +15,11 @@
   margin: 0;
   box-sizing: border-box;
 }
-body, html {
+body {
   font-family: 'font-regular', sans-serif;
   font-size: 16px;
   color: #000000;
+  line-height: 1;
 }
 .section-wrapper {
   min-height: calc(100vh - 150px); 
@@ -201,6 +202,11 @@ a:hover {
 ::placeholder {
   color: #49454F;
 }
+.nav-btn {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 16px !important;
+}
 .btn-primary {
   background-color: #F66F4D;
   padding: 16px 24px;
@@ -225,6 +231,12 @@ a:hover {
 }
 .btn-sm {
   padding: 8px 16px;
+}
+.nav-btn.btn-primary {
+    color: #ffffff;
+}
+.nav-btn.btn-primary:hover {
+    color: #ffffff !important;
 }
 .trending-destination {
   text-align: center;
@@ -395,7 +407,7 @@ a:hover {
   display: block;
 }
 .form-sort {
-  border: 1px solid #000;
+  border: 0;
   height: auto;
   line-height: 22px;
 }
@@ -418,6 +430,12 @@ a:hover {
 }
 .tour-features >li >p{
   font-size: 14px;
+}
+.forgot-link {
+  color: #F66F4D;
+}
+.forgot-link:hover {
+  text-decoration: underline;
 }
 .trip-status {
   text-transform: capitalize;

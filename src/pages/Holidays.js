@@ -22,16 +22,16 @@ const Holidays = ({ id }) => {
     },
     {
       value: 'bydate',
-      label: 'By date'
+      label: 'By Date'
     },
     {
       value: 'byprice',
-      label: 'By price'
+      label: 'By Price'
     },
-    {
-      value: 'bycost',
-      label: 'By cost'
-    }
+    // {
+    //   value: 'bycost',
+    //   label: 'By cost'
+    // }
   ]
 
   const dispatch = useDispatch();

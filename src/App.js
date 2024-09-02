@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';
 import Holidays from './pages/Holidays';
 import Trips from './pages/Trips';
+import LoginRegister from './pages/LoginRegister';
 import Select from './components/Select';
 import Counter from './components/Counter';
 import { handleAPIData } from './hooks/useCustomApi';
@@ -84,6 +85,22 @@ const App = ({ message }) => {
                 <li className="nav-item">
                   <a className="nav-link" href="#">Support</a>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link nav-btn btn-primary" to={{
+                    pathname: "/loginRegister",
+                    state: 'login'
+                  }}>Sign in
+                    {/* <a className="nav-link nav-btn btn-primary" href="#">Sign in</a> */}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link nav-btn btn-secondary" to={{
+                    pathname: "/loginRegister",
+                    state: 'register'
+                  }}>Sign up
+                    {/* <a className="nav-link nav-btn btn-secondary" href="#">Sign up</a> */}
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
@@ -94,6 +111,7 @@ const App = ({ message }) => {
           <Route path="/myAccount" component={MyAccount} />
           <Route path="/trips" component={Trips} />
           <Route path="/holidays" component={Holidays} />
+          <Route path="/loginRegister" component={LoginRegister} />
         </Switch>
       </section>
       <div className="section-bg">
