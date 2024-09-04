@@ -24,7 +24,7 @@ const LoginRegister = (props) => {
 
   const fetchTripsData = async () => {
     try {
-      let response = await handleAPIData('POST', '/api/trips', { id: "66cc1ef2a7cb9004d0e8c177" });
+      let response = await handleAPIData('POST', '/api/trips', { id: "66d80b79accea40075fad94c" });
       console.log('tripsresponse', response);
       if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
         toast.error(response.data.message, toastOptions);

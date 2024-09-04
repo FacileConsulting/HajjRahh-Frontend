@@ -26,7 +26,7 @@ const NotificationSettings = ({ id }) => {
 
     const payload = {
       type: 'NOTIFICATION_SETTINGS',
-      _id: '66cc1ef2a7cb9004d0e8c177',
+      _id: '66d80b79accea40075fad94c',
       isEnabledEmailNotification: emailSettings
     }
 

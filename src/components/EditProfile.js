@@ -47,7 +47,7 @@ const EditProfile = forwardRef((props, ref) => {
 
     const payload = {
       type: 'EDIT_PROFILE',
-      _id: '66cc1ef2a7cb9004d0e8c177'
+      _id: '66d80b79accea40075fad94c'
     }
 
     if (updateName) {
