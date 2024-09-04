@@ -13,7 +13,7 @@ const DisplayProfile = ({ id }) => {
   return (
     <>
       <div className="col-12 mb-4">
-        <img src="./assets/images/profile.webp" className="img-profile" alt="..." />
+        <img src="./assets/images/tab-img.png" className="img-profile" alt="..." />
       </div>
       {
         displayArray && displayArray.length > 0 && displayArray.map((obj) => {
