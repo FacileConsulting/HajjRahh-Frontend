@@ -7,11 +7,15 @@ export const myAccountSlice = createSlice({
   },
   reducers: {
     changeInputFunc: (state, action) => {
-      // console.log(action.payload)
       state[action.payload.keyName] = action.payload.value
     },
     resetInputFunc: (state, action) => {
       state[action.payload] = ''
+    },
+    resetMyAccountFunc: (state, action) => {
+      state = {
+        default: ''
+      }
     }
   }
 })
@@ -19,7 +23,8 @@ export const myAccountSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { 
   changeInputFunc,
-  resetInputFunc
+  resetInputFunc,
+  resetMyAccountFunc
  } = myAccountSlice.actions
 
 export default myAccountSlice.reducer    

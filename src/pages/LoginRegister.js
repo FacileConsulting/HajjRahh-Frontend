@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { GoogleLogin, googleLogout } from '@react-oauth/google';
 import { decodeJwt } from 'jose';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
-import TripContainer from '../components/TripContainer';
+import Register from '../components/Register';
 
 const LoginRegister = (props) => {
   
   const { id } = props;
-  const location = useLocation();
-  const { state } = location;
-  console.log('dsf state ', state)
 
   const [tripsData, setTripsData] = useState({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
   // State to store loading status
@@ -86,18 +82,18 @@ const LoginRegister = (props) => {
           <div className="col-4 offset-4">
             <ul className="nav nav-tabs justify-content-center" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
-                <button className={`nav-link ${state === 'login' ? 'active' : ''}`} id="header-login-btn" data-bs-toggle="tab" data-bs-target="#login-pane" type="button"
+                <button className="nav-link active" id="header-login-btn" data-bs-toggle="tab" data-bs-target="#login-pane" type="button"
                   role="tab" onClick={handleSignInTabClick}>Sign In</button>
               </li>
               <li className="nav-item" role="presentation">
-                <button className={`nav-link ${state === 'register' ? 'active' : ''}`} id="header-register-btn" data-bs-toggle="tab" data-bs-target="#register-pane" type="button"
+                <button className="nav-link" id="header-register-btn" data-bs-toggle="tab" data-bs-target="#register-pane" type="button"
                   role="tab" onClick={handleSignUpTabClick}>Sign Up</button>
               </li>
             </ul>
             <div className="row tab-margin">
               <div className="col">
                 <div className="tab-content" id="login-register-content">
-                  <div className={`tab-pane fade ${state === 'login' ? 'show active' : ''}`} id="login-pane" role="tabpanel" aria-labelledby="tab-1"
+                  <div className="tab-pane fade show active" id="login-pane" role="tabpanel" aria-labelledby="tab-1"
                     tabIndex="0">
                     <div className="row">
                       <div className="col-12 mb-3">
@@ -134,46 +130,7 @@ const LoginRegister = (props) => {
                       </div>
                     </div>
                   </div>
-                  <div className={`tab-pane fade ${state === 'register' ? 'show active' : ''}`} id="register-pane" role="tabpanel" aria-labelledby="tab-2" tabIndex="0">
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Enter name*" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Enter email*" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Enter phone*" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Enter address" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="password" className="form-control" id="exampleFormControlInput1"
-                          placeholder="Enter password*" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="password" className="form-control" id="exampleFormControlInput1"
-                          placeholder="Reenter password*" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col">
-                        <button type="button" className="btn btn-primary float-end">Sign up</button>
-                        <button type="button" className="btn btn-secondary float-end mx-4">Cancel</button>
-                      </div>
-                    </div>
-                  </div>
+                  <Register id={"register-pane"} />
                 </div>
               </div>
             </div>

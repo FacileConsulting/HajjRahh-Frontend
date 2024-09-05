@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch, Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
+import store from './store';
 import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';
 import Holidays from './pages/Holidays';
@@ -11,22 +12,46 @@ import LoginRegister from './pages/LoginRegister';
 import Select from './components/Select';
 import Counter from './components/Counter';
 import { handleAPIData } from './hooks/useCustomApi';
+import { resetMyAccountFunc } from './reducers/myAccountSlice';
 import { toastOptions } from './toastify';
 import './App.css';
 import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = ({ message }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { displayEmail } = useSelector(state => {
+    console.log('state.myAccount register', state)
+    return state.myAccount
+  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   const fetchHealthData = async () => {
     let response = await handleAPIData('GET', '/api/health');
     console.log('/api/health', response);
   }
 
-  // Fetch data when component mounts
+  const handleLogOutClick = () => { 
+    // dispatch(resetMyAccountFunc());
+    setIsLoggedIn(false);  
+    history.push('/');
+  }
+
   useEffect(() => {
     fetchHealthData();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
+
+  useEffect(() => {
+    if (displayEmail) {
+      console.log('true')
+      setIsLoggedIn(true);
+    } else {
+      console.log('false')
+      setIsLoggedIn(false);
+    }    
+    history.push('/');
+  }, [displayEmail]);
 
   return (
     <>
@@ -67,16 +92,12 @@ const App = ({ message }) => {
                 </li>
               </ul>
               <ul className="navbar-nav mb-2 mb-lg-0 d-flex nav-secondary">
-                <li className="nav-item dropdown">
-                  <Link to="/myAccount"> My Account
-                    {/* <a className="nav-link dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        My Account
-                      </a> */}
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" href="#">Logout</a></li>
-                  </ul>
-                </li>
+                {
+                  isLoggedIn &&
+                  <li className="nav-item dropdown">
+                    <Link to="/myAccount"> My Account</Link>
+                  </li>
+                }
                 <li className="nav-item">
                   <Link to="/trips">Trips
                     {/* <a className="nav-link" href="#!">Trips</a> */}
@@ -85,22 +106,15 @@ const App = ({ message }) => {
                 <li className="nav-item">
                   <a className="nav-link" href="#">Support</a>
                 </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-btn btn-primary" to={{
-                    pathname: "/loginRegister",
-                    state: 'login'
-                  }}>Sign in
-                    {/* <a className="nav-link nav-btn btn-primary" href="#">Sign in</a> */}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link nav-btn btn-secondary" to={{
-                    pathname: "/loginRegister",
-                    state: 'register'
-                  }}>Sign up
-                    {/* <a className="nav-link nav-btn btn-secondary" href="#">Sign up</a> */}
-                  </Link>
-                </li>
+                {
+                  isLoggedIn ?
+                    <li className="nav-item" onClick={handleLogOutClick}>
+                      <a className="nav-link" href="#">LogOut</a>
+                    </li> :
+                    <li className="nav-item">
+                      <Link className="nav-link nav-btn btn-secondary" to="/loginRegister">Sign In</Link>
+                    </li>
+                }
               </ul>
             </div>
           </div>
