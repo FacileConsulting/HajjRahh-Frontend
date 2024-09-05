@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 import TripContainer from '../components/TripContainer';
 
 const Trips = ({ id }) => {
-
+  const { displayEmail } = useSelector(state => state.myAccount );
   const [tripsData, setTripsData] = useState({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
   // State to store loading status
   const [loading, setLoading] = useState(true);
@@ -14,7 +15,8 @@ const Trips = ({ id }) => {
 
   const fetchTripsData = async () => {
     try {
-      let response = await handleAPIData('POST', '/api/trips', { id: "66d80b79accea40075fad94c" });
+      setLoading(true);
+      let response = await handleAPIData('POST', '/api/trips', { email: displayEmail });
       console.log('tripsresponse', response);
       if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
         toast.error(response.data.message, toastOptions);

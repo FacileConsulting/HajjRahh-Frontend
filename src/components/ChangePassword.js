@@ -11,7 +11,7 @@ const ChangePassword = forwardRef((props, ref) => {
   const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef()];
-  const { password, newPassword, confirmPassword } = useSelector(state => {
+  const { password, newPassword, confirmPassword, displayEmail } = useSelector(state => {
     console.log('state.myAccount', state)
     return state.myAccount 
   });
@@ -43,7 +43,7 @@ const ChangePassword = forwardRef((props, ref) => {
 
     const payload = {
       type: 'CHANGE_PASSWORD',
-      _id: '66d80b79accea40075fad94c',
+      email: displayEmail,
       password: password.trim(),
       newPassword: newPassword.trim()
     }

@@ -5,67 +5,9 @@ import { decodeJwt } from 'jose';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 import Register from '../components/Register';
+import Login from '../components/Login';
 
-const LoginRegister = (props) => {
-  
-  const { id } = props;
-
-  const [tripsData, setTripsData] = useState({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-  // State to store loading status
-  const [loading, setLoading] = useState(true);
-  const [activeSignInTab, setActiveSignInTab] = useState('show active');
-  const [activeSignUpTab, setActiveSignUpTab] = useState('');
-  // State to store error (if any)
-  const [error, setError] = useState(null);
-
-  const fetchTripsData = async () => {
-    try {
-      let response = await handleAPIData('POST', '/api/trips', { id: "66d80b79accea40075fad94c" });
-      console.log('tripsresponse', response);
-      if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
-        toast.error(response.data.message, toastOptions);
-        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-      } else if (response.status === 'success' && response.data.data.length > 0) {
-        let responseData = response.data.data;
-        const upcomingTripsArray = responseData.filter((trip) => trip.status === 'upcoming');
-        const onGoingTripsArray = responseData.filter((trip) => trip.status === 'live');
-        const pastTripsArray = responseData.filter((trip) => trip.status === 'completed');
-        setTripsData({
-          upcomingTrips: upcomingTripsArray,
-          onGoingTrips: onGoingTripsArray,
-          pastTrips: pastTripsArray
-        });
-      } else if (response.status === 'error') {
-        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-        toast.error(response.message, toastOptions);
-      } else {
-        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-        toast.error('Something went wrong. Please try again.', toastOptions);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch data when component mounts
-  // useEffect(() => {
-  //   console.log('state state ', state)
-  //   // if (state.data === 'login') {
-  //   //   setActiveSignInTab('show active');
-  //   //   setActiveSignUpTab('');
-  //   // } else if (state.data === 'register') {
-  //   //   setActiveSignInTab('');
-  //   //   setActiveSignUpTab('show active');
-  //   // }
-  // }, []); // Empty dependency array means this runs once on mount
-
-  const handleSignInTabClick = () => {
-    googleLogout();
-  }
-
-  const handleSignUpTabClick = () => {
-
-  }
+const LoginRegister = () => {
 
   return (
     <>
@@ -83,53 +25,17 @@ const LoginRegister = (props) => {
             <ul className="nav nav-tabs justify-content-center" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
                 <button className="nav-link active" id="header-login-btn" data-bs-toggle="tab" data-bs-target="#login-pane" type="button"
-                  role="tab" onClick={handleSignInTabClick}>Sign In</button>
+                  role="tab">Sign In</button>
               </li>
               <li className="nav-item" role="presentation">
                 <button className="nav-link" id="header-register-btn" data-bs-toggle="tab" data-bs-target="#register-pane" type="button"
-                  role="tab" onClick={handleSignUpTabClick}>Sign Up</button>
+                  role="tab">Sign Up</button>
               </li>
             </ul>
             <div className="row tab-margin">
               <div className="col">
                 <div className="tab-content" id="login-register-content">
-                  <div className="tab-pane fade show active" id="login-pane" role="tabpanel" aria-labelledby="tab-1"
-                    tabIndex="0">
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="text" className="form-control" id="exampleFormControlInput1"
-                          placeholder="Enter emai/mobile" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <input type="password" className="form-control" id="exampleFormControlInput1"
-                          placeholder="Enter password" />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-12 mb-3">
-                        <a href="#!" className="forgot-link">Forgot password?</a>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col">
-                        {/* <GoogleLogin
-                          onSuccess={credentialResponse => {
-                            console.log('credentialResponse', credentialResponse);
-                            const cred = decodeJwt(credentialResponse.credential);
-                            console.log('Login Success: currentUser: data', cred);
-                          }}
-                          onError={() => {
-                            console.log('Login Failed');
-                          }}
-                        /> */}
-                        <button type="button" className="btn btn-primary float-end">Sign In</button>
-                        <button type="button" className="btn btn-secondary float-end mx-4" onClick={handleSignInTabClick}>Cancel</button>
-
-                      </div>
-                    </div>
-                  </div>
+                  <Login id={"login-pane"} />                  
                   <Register id={"register-pane"} />
                 </div>
               </div>

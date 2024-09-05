@@ -11,7 +11,7 @@ const EditProfile = forwardRef((props, ref) => {
   const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef(), useRef()];
-  const { updateName, updateEmail, updatePhone, updateAddress } = useSelector(state => {
+  const { updateName, updateEmail, updatePhone, updateAddress, displayEmail } = useSelector(state => {
     console.log('state.myAccount', state)
     return state.myAccount 
   });
@@ -22,20 +22,19 @@ const EditProfile = forwardRef((props, ref) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^\d{10}$/;
 
-    if (!updateEmail && !updatePhone && !updateName && !updateAddress) {
+    if (!updatePhone && !updateName && !updateAddress) {
       toast.warning('Please enter something to update', toastOptions);
       return;
     }
-
 
     if (loading) {
       return;
     }
 
-    if (updateEmail && !emailRegex.test(updateEmail)) {
-      toast.warning('Please enter a valid email', toastOptions);
-      return;
-    }
+    // if (updateEmail && !emailRegex.test(updateEmail)) {
+    //   toast.warning('Please enter a valid email', toastOptions);
+    //   return;
+    // }
 
     if (updatePhone && !phoneRegex.test(updatePhone)) {
       toast.warning('Please enter a valid phone number', toastOptions);
@@ -47,16 +46,16 @@ const EditProfile = forwardRef((props, ref) => {
 
     const payload = {
       type: 'EDIT_PROFILE',
-      _id: '66d80b79accea40075fad94c'
+      email: displayEmail
     }
 
     if (updateName) {
       payload.username = updateName.trim();
     }
 
-    if (updateEmail) {
-      payload.email = updateEmail.trim();
-    }
+    // if (updateEmail) {
+    //   payload.email = updateEmail.trim();
+    // }
 
     if (updatePhone) {
       payload.phoneNumber = updatePhone.trim();
@@ -103,7 +102,7 @@ const EditProfile = forwardRef((props, ref) => {
       </div>
       <div className="row">
         <div className="col-4 mb-3">
-          <Input ref={childRefs[1]} id={"my-account-edit-profile-update-email"} keyName={"updateEmail"} placeholder={"Update email"}/>
+          <Input ref={childRefs[1]} id={"my-account-edit-profile-update-email"} disabled={true} keyName={"updateEmail"} placeholder={"Update email"}/>
         </div>
       </div>
       <div className="row">

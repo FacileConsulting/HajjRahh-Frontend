@@ -25,16 +25,16 @@ const App = ({ message }) => {
     console.log('state.myAccount register', state)
     return state.myAccount
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const fetchHealthData = async () => {
     let response = await handleAPIData('GET', '/api/health');
     console.log('/api/health', response);
   }
 
-  const handleLogOutClick = () => { 
+  const handleLogOutClick = () => {
     // dispatch(resetMyAccountFunc());
-    setIsLoggedIn(false);  
+    setIsLoggedIn(false);
     history.push('/');
   }
 
@@ -49,7 +49,7 @@ const App = ({ message }) => {
     } else {
       console.log('false')
       setIsLoggedIn(false);
-    }    
+    }
     history.push('/');
   }, [displayEmail]);
 
@@ -94,15 +94,15 @@ const App = ({ message }) => {
               <ul className="navbar-nav mb-2 mb-lg-0 d-flex nav-secondary">
                 {
                   isLoggedIn &&
-                  <li className="nav-item dropdown">
-                    <Link to="/myAccount"> My Account</Link>
-                  </li>
+                  <>
+                    <li className="nav-item dropdown">
+                      <Link to="/myAccount"> My Account</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link to="/trips">Trips</Link>
+                    </li>
+                  </>
                 }
-                <li className="nav-item">
-                  <Link to="/trips">Trips
-                    {/* <a className="nav-link" href="#!">Trips</a> */}
-                  </Link>
-                </li>
                 <li className="nav-item">
                   <a className="nav-link" href="#">Support</a>
                 </li>

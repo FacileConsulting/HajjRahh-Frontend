@@ -9,7 +9,7 @@ import Button from './Button';
 const NotificationSettings = ({ id }) => {
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef()];
-  const { emailSettings } = useSelector(state => {
+  const { emailSettings, displayEmail } = useSelector(state => {
     console.log('state.myAccount', state)
     return state.myAccount 
   });
@@ -26,7 +26,7 @@ const NotificationSettings = ({ id }) => {
 
     const payload = {
       type: 'NOTIFICATION_SETTINGS',
-      _id: '66d80b79accea40075fad94c',
+      email: displayEmail,
       isEnabledEmailNotification: emailSettings
     }
 

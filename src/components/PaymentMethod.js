@@ -10,7 +10,7 @@ const PaymentMethod = forwardRef((props, ref) => {
   const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef()];
-  const { creditCard, debitCard, upi } = useSelector(state => {
+  const { creditCard, debitCard, upi, displayEmail } = useSelector(state => {
     console.log('state.myAccount', state)
     return state.myAccount 
   });
@@ -45,13 +45,15 @@ const PaymentMethod = forwardRef((props, ref) => {
     console.log('creditCard, debitCard, upi', creditCard, debitCard, upi );
     // return;
 
-    
-
     const payload = {
       type: 'PAYMENT_METHOD',
-      _id: '66d80b79accea40075fad94c',
+      email: displayEmail,
       paymentMethodType: paymentSetter()
     }
+
+    if (payload.paymentMethodType.length === 0) {
+      return;
+    }    
 
     setLoading(true);
     let response = await handleAPIData('POST', '/api/myAccount', payload);
