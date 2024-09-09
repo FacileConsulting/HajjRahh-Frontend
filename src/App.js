@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Link, useHistory } from 'react-router-dom';
+import { Route, Switch, Link, Redirect, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
@@ -21,6 +21,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = ({ message }) => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const isAuthenticated = !!localStorage.getItem('access_token');
+  console.log('isAuthenticated', isAuthenticated)
   const { displayEmail } = useSelector(state => {
     console.log('state.myAccount register', state)
     return state.myAccount
@@ -122,6 +124,15 @@ const App = ({ message }) => {
 
         <Switch>
           <Route path="/" exact component={Home} />
+          {/* <Route path="/myAccount" component={isAuthenticated ? <MyAccount /> : <LoginRegister />} /> */}
+          {/* <Route
+            path="/myAccount" component={MyAccount} render={() => isAuthenticated ? (
+                <Redirect to="/myAccount" />
+              ) : (
+                <LoginRegister />
+              )
+            }
+          /> */}
           <Route path="/myAccount" component={MyAccount} />
           <Route path="/trips" component={Trips} />
           <Route path="/holidays" component={Holidays} />

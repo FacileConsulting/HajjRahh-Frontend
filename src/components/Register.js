@@ -97,10 +97,12 @@ const Register = forwardRef((props, ref) => {
     } else if (response.status === 'success' && response.data.userCreated && response.data.message) {
       toast.success(response.data.message, toastOptions);
       handleCancelClick();
+      localStorage.setItem('access_token', response.data.token);
       dispatch(changeInputFunc({ keyName: 'displayName', value: response.data.username }));
       dispatch(changeInputFunc({ keyName: 'displayEmail', value: response.data.email }));
       dispatch(changeInputFunc({ keyName: 'displayPhone', value: response.data.phoneNumber }));
       dispatch(changeInputFunc({ keyName: 'displayAddress', value: response.data.address }));
+      dispatch(changeInputFunc({ keyName: 'paymentMethodType', value: response.data.paymentMethodType }));
       dispatch(changeInputFunc({ keyName: 'emailSettings', value: response.data.isEnabledEmailNotification }));
       console.log('response', response.data);
     } else if (response.status === 'error' && response.data.message) {

@@ -65,6 +65,7 @@ const Login = forwardRef((props, ref) => {
     } else if (response.status === 'success' && response.data.userLoggedIn && response.data.message) {
       toast.success(response.data.message, toastOptions);
       handleCancelClick();
+      localStorage.setItem('access_token', response.data.token);
       dispatch(changeInputFunc({ keyName: 'displayName', value: response.data.username }));
       dispatch(changeInputFunc({ keyName: 'displayEmail', value: response.data.email }));
       dispatch(changeInputFunc({ keyName: 'displayPhone', value: response.data.phoneNumber }));
