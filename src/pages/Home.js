@@ -109,7 +109,6 @@ const Home = ({id, options}) => {
     setLoading(true);
     let response = await handleAPIData('POST', '/api/searchHolidays', payload);
     if (response.status === 'success' && response.data.data.length > 0) {
-      // history.push('/holidays');
       history.push({
         pathname: '/holidays',
         state: { from: 'Search Holidays button', data: response.data.data }

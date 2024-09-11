@@ -7,6 +7,8 @@ import store from './store';
 import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';
 import Holidays from './pages/Holidays';
+import FlightDetails from './pages/FlightDetails';
+import Flights from './pages/Flights';
 import Trips from './pages/Trips';
 import LoginRegister from './pages/LoginRegister';
 import Select from './components/Select';
@@ -127,19 +129,16 @@ const App = ({ message }) => {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li className="nav-item text-center">
-                  <span className="nav-menu-icon img-flight"></span> <br />
-                  <a className="nav-link" aria-current="page">Flights</a>
+                  <span className="nav-menu-icon img-flight"></span><br />
+                  <Link to="/flights">Flights</Link>
                 </li>
                 <li className="nav-item text-center">
                   <span className="nav-menu-icon img-hotel"></span> <br />
                   <a className="nav-link" aria-current="page">Hotels</a>
                 </li>
-
                 <li className="nav-item text-center">
                   <span className="nav-menu-icon img-holidays"></span> <br />
-                  <Link to="/holidays">Holidays
-                    {/* <a className="nav-link" aria-current="page">Holidays</a> */}
-                  </Link>
+                  <Link to="/holidays">Holidays</Link>
                 </li>
                 <li className="nav-item text-center">
                   <span className="nav-menu-icon img-cabs"></span> <br />
@@ -191,8 +190,10 @@ const App = ({ message }) => {
             }
           /> */}
           <Route path="/myAccount" component={MyAccount} />
-          <Route path="/trips" component={Trips} />
-          <Route path="/holidays" component={Holidays} />
+          <Route path="/trips" component={Trips} /> 
+          <Route path="/holidays" component={Holidays} /> 
+          <Route path="/flights" component={Flights} />
+          <Route path="/flightDetails" component={FlightDetails} />
           <Route path="/loginRegister" component={LoginRegister} />
         </Switch>
       </section>

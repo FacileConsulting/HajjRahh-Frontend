@@ -146,6 +146,12 @@ p {
   font-size: 16px;
   line-height: 26px;
 }
+.small-text {
+    font-family: 'font-regular';
+    color: #484646;
+    font-size: 14px;
+    line-height: 22px;
+}
 p.text-dark {
   color: #000000 !important;
 }
@@ -450,6 +456,237 @@ a:hover {
   padding: 0 32px;
 }
 
+/* flight page css */
+.flight-selection .trip-type {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 40px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    padding: 0px 12px;
+}
+.flight-selection .trip-type:hover {
+    border: 1px solid #F66F4D;
+}
+.flight-selection .trip-type.active {
+    background-color: #F66F4D;
+    border: 1px solid #F66F4D;
+    color: #ffffff;
+}
+.class-guests {
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 40px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+    padding: 0px 12px;
+}
+.class-guests:focus {
+    outline: 0;
+}
+.dropmenu-guest {
+    width: 360px;
+    padding: 12px;
+}
+.dropmenu-guest >li {
+    margin-bottom: 24px;
+}
+.dropmenu-guest .dropdown-item .btn-number {
+    height: 32px;
+    width: 32px;
+    line-height: 32px;
+    border-radius: 16px;
+    text-align: center;
+    background-color: #000000;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+.dropmenu-guest .dropdown-item .input-number {
+    margin-left: 12px !important;
+    margin-right: 12px;
+    height: 32px;
+    width: 24px !important;
+    border-radius: 8px !important;
+    text-align: center;
+}
+.dropmenu-guest >li .dropdown-item:hover, .dropmenu-guest >li .dropdown-item:active {
+    background-color: transparent !important;
+}
+.filter-results {
+    width: 20%;
+}
+.select2-container {
+    margin-right: 12px;
+    margin-bottom: 12px;
+}
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #dddddd;
+    background-color: #fafafa;
+    min-height: 40px;
+    border-radius: 20px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    padding-right: 24px;
+    position: relative;
+}
+.select2-container--default .select2-selection--multiple::after {
+    content: url("../public/assets/images/dropdown-icon.svg");
+    position: absolute;
+    right: 12px;
+    top: 14px;
+    height: 16px;
+    width: 16px;
+}
+.select2-container .select2-search--inline .select2-search__field {
+    margin-left: 12px;
+    margin-top: 10px;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #F66F4D;
+}
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: #F66F4D;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #F66F4D;
+    border: 0px;
+    border-radius: 12px;
+    padding: 4px 8px;
+    padding-left: 32px;
+    margin-top: 4px;
+    color: #ffffff;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border-right: 1px solid #ffffff;
+    color: #ffffff;
+    padding: 4px 8px;
+}
+.flight-block {
+    border: 1px solid #e9e9e9 !important;
+    padding: 24px;
+    border-radius: 16px !important;
+    margin-bottom: 24px;
+    cursor: pointer;
+}
+.flight-logo .img-style {
+    width: 60px;
+    border-radius: 40px;
+}
+.flight-details-link {
+    color: #F66F4D;
+    display: block;
+}
+.flight-details-link:hover {
+    text-decoration: underline;
+}
+.flight-details {
+    margin-top: 24px;
+    border: 1px solid #e9e9e9;
+    background-color: #fafafa;
+    border-radius: 16px;
+    padding: 24px 24px 0px;
+}
+.airport-details {
+    margin-left: 80px;
+    position: relative;
+    margin-bottom: 24px;
+    padding-right: 24px;
+    border-right: 1px solid #dddddd;
+}
+.airport-details .travel-line {
+    position: absolute;
+    left: -32px;
+    top: 16px;
+    height: calc(100% - 40px);
+    border: 1px dashed #dddddd;
+    width: 1px;
+    content: '';
+}
+.airport-details .travel-line:after, .airport-details .travel-line:before {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #fafafa;
+    border: 1px solid #dddddd;
+    border-radius: 12px;
+    content: '';
+    left: -10px;
+}
+.airport-details .travel-line:after {
+    top: -2px;
+}
+.airport-details .travel-line:before {    
+    bottom: -2px;
+}
+.transit-block {
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    padding: 24px 0px;
+    margin: 0px 0px 24px 100px;
+}
+.flight-details.flight-details-big {
+    background-color: #ffffff;
+}
+.flight-details-big .airport-details {
+    width: 100%;
+    border-right: 0px;
+}
+.flight-information {
+    padding: 24px 0px;
+}
+.booking-block {
+    border: 1px solid #e9e9e9;
+    border-radius: 16px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+.booking-title {
+    background-color: #fafafa;
+    border-bottom: 1px solid #e9e9e9;
+    border-radius: 16px 16px 0px 0px;
+    padding: 12px;
+}
+.booking-details-block {
+    padding: 12px;
+}
+.booking-details {
+    margin-bottom: 12px;
+    color: #484646;
+    font-size: 14px;
+}
+.booking-details >span {
+    color: #000000;
+    font-family: 'font-medium', sans-serif;
+    float: right;
+}
+.booking-sub-title {
+    margin-bottom: 12px;
+    color: #484646;
+    font-family: 'font-medium', sans-serif;
+}
+.booking-sub-title >span {
+    float: right;
+}
+/* datepicker */
+.daterangepicker td.active, .daterangepicker td.active:hover, .daterangepicker td.active, .daterangepicker td.active:hover, .daterangepicker td.available:hover, .daterangepicker th.available:hover {
+    background-color: #F66F4D !important;
+}
+.daterangepicker td.available:hover, .daterangepicker th.available:hover {
+    background-color: #484646 !important;
+    color: #ffffff !important;
+    border-radius: 4px;
+}
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+    background-color: #cccccc;
+    border: 1px solid #cccccc;
+    color: #666666;
+}
+.daterangepicker td.in-range {
+    background-color: #FEF3F1;
+}
+
 /* Holidays List Page ends */
 @media screen and (max-width: 992px) {
   .navbar-nav {
@@ -500,7 +737,7 @@ a:hover {
 }
 
 
-/* client\public\assets\css\style.css */
+
 .rs-picker-input-group {
   border: 0!important;
 }

@@ -2,7 +2,8 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { changeInputFunc } from '../reducers/myAccountSlice';
+import { resetHomeFunc } from '../reducers/homeSlice';
+import { changeInputFunc, resetInputFunc } from '../reducers/myAccountSlice';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 import Input from './Input';
@@ -94,6 +95,8 @@ const Login = forwardRef((props, ref) => {
     } else if (response.status === 'success' && response.data.userLoggedIn && response.data.message) {
       toast.success(response.data.message, toastOptions);
       handleCancelClick();
+      // dispatch(resetHomeFunc());
+      // dispatch(resetInputFunc());
       const { username, email, phoneNumber, address, paymentMethodType, isEnabledEmailNotification } = response.data;
       const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
       const userDetails = { username, email, phoneNumber, address, ...allPaymentMethodObj, isEnabledEmailNotification };
