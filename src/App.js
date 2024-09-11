@@ -12,13 +12,17 @@ import LoginRegister from './pages/LoginRegister';
 import Select from './components/Select';
 import Counter from './components/Counter';
 import { handleAPIData } from './hooks/useCustomApi';
-import { resetMyAccountFunc } from './reducers/myAccountSlice';
+import { resetHomeFunc } from './reducers/homeSlice';
+import { changeInputFunc, resetInputFunc } from './reducers/myAccountSlice';
 import { toastOptions } from './toastify';
 import './App.css';
 import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
+
+  
 const App = ({ message }) => {
+  localStorage.setItem('current_route', '/');
   const dispatch = useDispatch();
   const history = useHistory();
   const isAuthenticated = !!localStorage.getItem('access_token');
@@ -35,24 +39,77 @@ const App = ({ message }) => {
   }
 
   const handleLogOutClick = () => {
-    // dispatch(resetMyAccountFunc());
-    setIsLoggedIn(false);
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('current_route');
+    localStorage.removeItem('user_data');
+    dispatch(resetHomeFunc());
+    dispatch(resetInputFunc());
+    // check the reset actually not happened
+    setIsLoggedIn(false); 
     history.push('/');
+    toast.success('You are successfully logged out');
+  }
+
+  const checkTokenRouteUser = () => {
+    const token = localStorage.getItem('access_token');
+    const currRoute = localStorage.getItem('current_route');
+    const userDetailsFromLocalStorage = localStorage.getItem('user_data');
+    if (token && currRoute && userDetailsFromLocalStorage) {
+      return { checked: true, currRoute, userDetailsFromLocalStorage };
+    } else {
+      history.push('/');
+      return { checked: false };
+    }
+  }
+
+  // Check if the page was refreshed
+  const checkPageReload = () => {
+    const navigationEntries = performance.getEntriesByType('navigation');
+    console.log('ddddddd', navigationEntries);
+    if (navigationEntries.length > 0) {
+      const navEntry = navigationEntries[0];
+      if (navEntry.type === 'reload' || navEntry.type === 'navigate') {
+        const { checked, currRoute, userDetailsFromLocalStorage } = checkTokenRouteUser();
+        console.log('###@#QW', checked, currRoute, userDetailsFromLocalStorage)
+        if (checked && userDetailsFromLocalStorage) {
+          console.log('###@#eee eeeeeeeQW', checked, currRoute, userDetailsFromLocalStorage)
+          const { username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage); 
+          dispatch(resetHomeFunc());
+          dispatch(resetInputFunc());
+          dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
+          dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
+          dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
+          dispatch(changeInputFunc({ keyName: 'displayAddress', value: address }));
+          dispatch(changeInputFunc({ keyName: 'creditCard', value: creditCard }));
+          dispatch(changeInputFunc({ keyName: 'debitCard', value: debitCard }));
+          dispatch(changeInputFunc({ keyName: 'upi', value: upi }));
+          dispatch(changeInputFunc({ keyName: 'emailSettings', value: isEnabledEmailNotification }));
+          console.log('Page was refreshed by the browser refresh buttoneeeee'); 
+          history.push(currRoute);
+        } else {
+          history.push('/');
+        }
+      } else {
+        history.push('/');
+      }
+    } else {
+      history.push('/');
+    }
   }
 
   useEffect(() => {
     fetchHealthData();
-  }, []);
+    checkPageReload();
+  }, []); 
 
-  useEffect(() => {
+  useEffect(() => {    
     if (displayEmail) {
-      console.log('true')
+      console.log('yes');
       setIsLoggedIn(true);
     } else {
-      console.log('false')
+      console.log('no');
       setIsLoggedIn(false);
     }
-    history.push('/');
   }, [displayEmail]);
 
   return (

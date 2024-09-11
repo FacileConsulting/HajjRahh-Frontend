@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
+import { changeInputFunc } from '../reducers/myAccountSlice';
 import Checkbox from './Checkbox';
 import Button from './Button';
 
@@ -10,11 +11,48 @@ const PaymentMethod = forwardRef((props, ref) => {
   const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef()];
-  const { creditCard, debitCard, upi, displayEmail } = useSelector(state => {
+
+  const { 
+    displayName, 
+    displayEmail, 
+    displayPhone, 
+    displayAddress, 
+    creditCard, 
+    debitCard,
+    upi,
+    emailSettings 
+  } = useSelector(state => {
     console.log('state.myAccount', state)
     return state.myAccount 
   });
   const [loading, setLoading] = useState(false);
+  
+  const getPaymentMethodType = (arr) => {
+    let obj = {};
+    let creditCard = arr.filter((item) => item === 'creditCard');    
+    let debitCard = arr.filter((item) => item === 'debitCard');    
+    let upi = arr.filter((item) => item === 'upi');
+
+    if (creditCard.length > 0) {
+      obj.creditCard = true;
+    } else {
+      obj.creditCard = false;
+    }
+
+    if (debitCard.length > 0) {
+      obj.debitCard = true;
+    } else {
+      obj.debitCard = false;
+    }
+
+    if (upi.length > 0) {
+      obj.upi = true;
+    } else {
+      obj.upi = false;
+    }
+
+    return obj;
+  }
 
   const handleSaveClick = async () => {
 
@@ -58,7 +96,21 @@ const PaymentMethod = forwardRef((props, ref) => {
     setLoading(true);
     let response = await handleAPIData('POST', '/api/myAccount', payload);
     console.log('response', response);
-    if (response.status === 'success' && response.data.paymentMethodType) {
+    if (response.status === 'success' && response.data?.paymentMethodType) {
+      const { paymentMethodType } = response.data;
+      const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
+      const userDetails = { 
+        username: displayName, 
+        email: displayEmail,
+        phoneNumber: displayPhone, 
+        address: displayAddress,
+        ...allPaymentMethodObj,
+        isEnabledEmailNotification: emailSettings
+      };
+      dispatch(changeInputFunc({ keyName: 'creditCard', value: allPaymentMethodObj.creditCard }));
+      dispatch(changeInputFunc({ keyName: 'debitCard', value: allPaymentMethodObj.debitCard }));
+      dispatch(changeInputFunc({ keyName: 'upi', value: allPaymentMethodObj.upi }));
+      localStorage.setItem('user_data', JSON.stringify(userDetails));
       toast.success('Payment Method types updated successfully', toastOptions);
     } else {
       toast.error('Something went wrong. Please try again.', toastOptions);

@@ -12,10 +12,10 @@ import 'rsuite/DateRangePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = ({id, options}) => {
+  localStorage.setItem('current_route', '/');
   const dispatch = useDispatch();
   const history = useHistory();
   const { departure, destination, noOfPeople } = useSelector(state => state.home);
-  dispatch(resetHomeFunc());
 
   const dateStyles = {
     border: '1px solid #79747E', 

@@ -8,6 +8,7 @@ import Register from '../components/Register';
 import Login from '../components/Login';
 
 const LoginRegister = () => {
+  localStorage.setItem('current_route', '/loginRegister');
 
   return (
     <>

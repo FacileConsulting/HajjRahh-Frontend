@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import { departureFunc, destinationFunc } from '../reducers/homeSlice';
-import { useDispatch } from 'react-redux';
+import React from 'react';
 
 const Button = ({id, btnType, label, classes, handleBtnClick, loading }) => {
-  const dispatch = useDispatch();
-  const [selectedOption, setSelectedOption] = useState('');
 
   return (
     <button type="button" id={id} className={`btn btn-${btnType} ${classes} ${loading ? "disable" : ""}`} onClick={handleBtnClick}>

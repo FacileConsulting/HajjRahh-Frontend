@@ -14,6 +14,7 @@ import store from '../store'
 import 'react-toastify/dist/ReactToastify.css';
 
 const Holidays = ({ id }) => { 
+  localStorage.setItem('current_route', '/holidays');
 
   const sortOptions = [
     {

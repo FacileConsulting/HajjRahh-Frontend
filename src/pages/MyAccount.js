@@ -6,6 +6,7 @@ import NotificationSettings from '../components/NotificationSettings';
 import PaymentMethod from '../components/PaymentMethod';
 
 const MyAccount = ({id }) => {
+  localStorage.setItem('current_route', '/myAccount');
   const editProfileRef = useRef();
   const changePasswordRef = useRef();
   const paymentMethodRef = useRef();

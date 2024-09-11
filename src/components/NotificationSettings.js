@@ -3,13 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
+import { changeInputFunc } from '../reducers/myAccountSlice';
 import Radio from './Radio';
 import Button from './Button';
 
 const NotificationSettings = ({ id }) => {
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef()];
-  const { emailSettings, displayEmail } = useSelector(state => {
+  const { 
+    displayName, 
+    displayEmail, 
+    displayPhone, 
+    displayAddress, 
+    creditCard, 
+    debitCard,
+    upi,
+    emailSettings 
+  } = useSelector(state => {
     console.log('state.myAccount', state)
     return state.myAccount 
   });
@@ -20,8 +30,6 @@ const NotificationSettings = ({ id }) => {
     if (loading) {
       return;
     }
-
-    console.log('emailSettings', emailSettings );
     // return;
 
     const payload = {
@@ -33,7 +41,20 @@ const NotificationSettings = ({ id }) => {
     setLoading(true);
     let response = await handleAPIData('POST', '/api/myAccount', payload);
     console.log('response', response);
-    if (response.status === 'success' && response.data.isEnabledEmailNotification) {
+    if (response.status === 'success' && response.data?.isEnabledEmailNotification) {
+      const { isEnabledEmailNotification } = response.data;
+      const userDetails = { 
+        username: displayName, 
+        email: displayEmail,
+        phoneNumber: displayPhone, 
+        address: displayAddress,
+        creditCard,
+        debitCard,
+        upi, 
+        isEnabledEmailNotification,
+      };
+      dispatch(changeInputFunc({ keyName: 'emailSettings', value: isEnabledEmailNotification }));
+      localStorage.setItem('user_data', JSON.stringify(userDetails));
       toast.success("Notification Settings Updated Successfully", toastOptions);
     } else {
       toast.error('Something went wrong. Please try again.', toastOptions);

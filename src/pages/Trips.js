@@ -6,6 +6,7 @@ import { handleAPIData } from '../hooks/useCustomApi';
 import TripContainer from '../components/TripContainer';
 
 const Trips = ({ id }) => {
+  localStorage.setItem('current_route', '/trips');
   const { displayEmail } = useSelector(state => state.myAccount );
   const [tripsData, setTripsData] = useState({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
   // State to store loading status
@@ -45,8 +46,11 @@ const Trips = ({ id }) => {
 
   // Fetch data when component mounts
   useEffect(() => {
-    fetchTripsData();
-  }, []); // Empty dependency array means this runs once on mount
+    if (displayEmail) {
+      fetchTripsData();
+    }
+    
+  }, [displayEmail]); // Empty dependency array means this runs once on mount
 
   return (
     <>

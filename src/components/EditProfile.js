@@ -11,7 +11,20 @@ const EditProfile = forwardRef((props, ref) => {
   const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef(), useRef()];
-  const { updateName, updateEmail, updatePhone, updateAddress, displayEmail } = useSelector(state => {
+  const { 
+    updateName, 
+    updateEmail, 
+    updatePhone, 
+    updateAddress, 
+    displayName, 
+    displayEmail, 
+    displayPhone, 
+    displayAddress, 
+    creditCard, 
+    debitCard,
+    upi,
+    emailSettings 
+  } = useSelector(state => {
     console.log('state.myAccount', state)
     return state.myAccount 
   });
@@ -69,12 +82,23 @@ const EditProfile = forwardRef((props, ref) => {
     let response = await handleAPIData('POST', '/api/myAccount', payload);
     if (response.status === 'success' && response.data) {
       toast.success('Profile updated successfully', toastOptions);
+      const { username, email, phoneNumber, address } = response.data;
+      const userDetails = { 
+        username, 
+        email,
+        phoneNumber, 
+        address,
+        creditCard,
+        debitCard,
+        upi, 
+        isEnabledEmailNotification: emailSettings,
+      };
       handleCancelClick();
-      dispatch(changeInputFunc({ keyName: 'displayName', value: response.data.username }));
-      dispatch(changeInputFunc({ keyName: 'displayEmail', value: response.data.email }));
-      dispatch(changeInputFunc({ keyName: 'displayPhone', value: response.data.phoneNumber }));
-      dispatch(changeInputFunc({ keyName: 'displayAddress', value: response.data.address }));
-      console.log('response', response.data);
+      dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
+      dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
+      dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
+      dispatch(changeInputFunc({ keyName: 'displayAddress', value: address }));
+      localStorage.setItem('user_data', JSON.stringify(userDetails));
     } else {
       toast.error('Something went wrong. Please try again.', toastOptions);
     }

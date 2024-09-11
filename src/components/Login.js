@@ -1,4 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { changeInputFunc } from '../reducers/myAccountSlice';
@@ -10,12 +11,40 @@ import Button from './Button';
 const Login = forwardRef((props, ref) => {
   const { id } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   const childRefs = [useRef(), useRef()];
   const { enterEmailLogin, enterPasswordLogin } = useSelector(state => {
     console.log('state.myAccount login', state)
     return state.myAccount
   });
   const [loading, setLoading] = useState(false);
+  
+  const getPaymentMethodType = (arr) => {
+    let obj = {};
+    let creditCard = arr.filter((item) => item === 'creditCard');    
+    let debitCard = arr.filter((item) => item === 'debitCard');    
+    let upi = arr.filter((item) => item === 'upi');
+
+    if (creditCard.length > 0) {
+      obj.creditCard = true;
+    } else {
+      obj.creditCard = false;
+    }
+
+    if (debitCard.length > 0) {
+      obj.debitCard = true;
+    } else {
+      obj.debitCard = false;
+    }
+
+    if (upi.length > 0) {
+      obj.upi = true;
+    } else {
+      obj.upi = false;
+    }
+
+    return obj;
+  }
 
 
   const handleSignInClick = async () => {
@@ -65,13 +94,20 @@ const Login = forwardRef((props, ref) => {
     } else if (response.status === 'success' && response.data.userLoggedIn && response.data.message) {
       toast.success(response.data.message, toastOptions);
       handleCancelClick();
+      const { username, email, phoneNumber, address, paymentMethodType, isEnabledEmailNotification } = response.data;
+      const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
+      const userDetails = { username, email, phoneNumber, address, ...allPaymentMethodObj, isEnabledEmailNotification };
+      dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
+      dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
+      dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
+      dispatch(changeInputFunc({ keyName: 'displayAddress', value: address }));
+      dispatch(changeInputFunc({ keyName: 'creditCard', value: allPaymentMethodObj.creditCard }));
+      dispatch(changeInputFunc({ keyName: 'debitCard', value: allPaymentMethodObj.debitCard }));
+      dispatch(changeInputFunc({ keyName: 'upi', value: allPaymentMethodObj.upi }));
+      dispatch(changeInputFunc({ keyName: 'emailSettings', value: isEnabledEmailNotification }));
       localStorage.setItem('access_token', response.data.token);
-      dispatch(changeInputFunc({ keyName: 'displayName', value: response.data.username }));
-      dispatch(changeInputFunc({ keyName: 'displayEmail', value: response.data.email }));
-      dispatch(changeInputFunc({ keyName: 'displayPhone', value: response.data.phoneNumber }));
-      dispatch(changeInputFunc({ keyName: 'displayAddress', value: response.data.address }));
-      dispatch(changeInputFunc({ keyName: 'paymentMethodType', value: response.data.paymentMethodType }));
-      dispatch(changeInputFunc({ keyName: 'emailSettings', value: response.data.isEnabledEmailNotification }));
+      localStorage.setItem('user_data', JSON.stringify(userDetails));
+      history.push('/');
       console.log('response', response.data);
     } else if (response.status === 'error' && response.data.message) {
       toast.error(response.data.message, toastOptions);
