@@ -21,6 +21,37 @@ const Flights = ({ id }) => {
     history.push('/flightDetails');
   }
 
+  const fetchFlightsData = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        departureCode: 'BLR',
+        destinationCode: 'AUH',
+        departureDate: '2024-09-17',
+        adults: 1
+      }
+      let response = await handleAPIData('POST', '/api/searchFlights', payload);
+      console.log('tripsresponse', response);
+      if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
+        // toast.error(response.data.message, toastOptions);
+        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
+      } else if (response.status === 'error') {
+        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
+        // toast.error(response.message, toastOptions);
+      } else {
+        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
+        // toast.error('Something went wrong. Please try again.', toastOptions);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch data when component mounts
+  useEffect(() => {
+    fetchFlightsData();    
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <>
       <div className="section-listing">
@@ -165,7 +196,7 @@ const Flights = ({ id }) => {
           </div>
         </div>
         <div className="row mb-5 mt-5 align-items-end">
-          <div className="col-auto me-auto">
+          {/*<div className="col-auto me-auto">
             <h4><i className="bi bi-funnel"></i> Filter</h4>
             <select className="filter-results" id="airlines" name="states[]" multiple="multiple">
               <option value="AL">Emirates</option>
@@ -188,7 +219,7 @@ const Flights = ({ id }) => {
               <option value="WY">Afternoon (12:00 pm to 04:00 pm)</option>
             </select>
             <a href="#!">Reset filter</a>
-          </div>
+          </div>*/}
           <div className="col-auto">
             <div className="row g-1 align-items-center mb-2">
               <div className="col-auto">

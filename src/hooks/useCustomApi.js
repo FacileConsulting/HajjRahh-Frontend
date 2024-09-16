@@ -6,7 +6,7 @@ const baseURL = "https://hajjrahh-backend-feg9fhcuhzbxd4a0.eastus-01.azurewebsit
 
 const axiosInstance = axios.create({
   baseURL, // Adjust to your backend URL
-  timeout: 5000,
+  timeout: 15000,
   headers: { 'Content-Type': 'application/json' }
 });
 
