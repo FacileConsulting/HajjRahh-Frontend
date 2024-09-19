@@ -118,8 +118,6 @@ const Holidays = ({ id }) => {
     setPanelClass(panelClass === 'filter-list' ? 'filter-show' : 'filter-list');
   }
 
-  
-
   const holidaySortBy = (type, holidaysData) => {
     if (type === 'byprice') {
       let sortedHolidaysData = holidaysData.sort((a, b) => new Date(a.price) - new Date(b.price));
@@ -134,7 +132,6 @@ const Holidays = ({ id }) => {
       console.log('bydate', sortedDates);
       setHolidaysData([...sortedDates]);
     }
-    
   }
 
   useEffect(() => {
@@ -160,7 +157,6 @@ const Holidays = ({ id }) => {
               </div>
               <div className="col-auto">
                 <Select id={"holidays-sort"} options={sortOptions} classes={"form-sort"} />
-                
               </div>
             </div>
           </div>

@@ -504,8 +504,8 @@ a:hover {
     color: #ffffff;
 }
 .dropmenu-guest .dropdown-item .input-number {
-    margin-left: 12px !important;
-    margin-right: 12px;
+    margin-left: 7px !important;
+    margin-right: 7px;
     height: 32px;
     width: 24px !important;
     border-radius: 8px !important;
@@ -754,4 +754,7 @@ a:hover {
 .search-holidays-btn.disable {
   cursor: not-allowed;
   opacity: 0.5;
+}
+#flights-search .rs-input-group-lg.rs-input-group > .rs-input {
+  height: 53px !important;
 }

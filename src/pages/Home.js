@@ -93,7 +93,7 @@ const Home = ({id, options}) => {
     if (loading) {
       return;
     }
-    if (!departure && !destination && !dateRange.startDate && !dateRange.endDate && !dateRange.noOfPeople) {
+    if (!departure && !destination && !dateRange.startDate && !dateRange.endDate && !noOfPeople) {
       toast.info('Please select atleast one field', toastOptions);
       return;
     }
@@ -150,7 +150,7 @@ const Home = ({id, options}) => {
                               <label>How many people ?</label>
                             </div>
                             <div className="col">
-                              <Counter />
+                              <Counter id="how-many-people" />
                             </div>
                           </div>
                           </div>

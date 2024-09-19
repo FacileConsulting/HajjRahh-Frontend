@@ -4,197 +4,267 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
-import TripContainer from '../components/TripContainer';
+import FlightsSearch from '../components/FlightsSearch';
+import FlightContainer from '../components/FlightContainer';
+import NoDataAvailable from '../components/NoDataAvailable';
 
 const Flights = ({ id }) => {
   localStorage.setItem('current_route', '/flights');
   const history = useHistory();
+  const { roundOneWay, adults, children, infants, travelClass, flyingFrom, flyingTo, flightDepartureDate, flightReturnDate } = useSelector(state => state.home);
   const { displayEmail } = useSelector(state => state.myAccount);
-  const [tripsData, setTripsData] = useState({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-  // State to store loading status
-  const [loading, setLoading] = useState(true);
-  // State to store error (if any)
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [flightsData, setFlightsData] = useState({ data: [], dictionaries: {}, meta: {} });
+  const [heading, setHeading] = useState({
+    flyingFrom: '',
+    flyingTo: '',
+    guests: 0,
+    roundOneWay: '',
+    travelClass: ''
+  });
 
-  
-  const handleFlightCardClick = () => {
+  const flightCardCallback = () => {
     history.push('/flightDetails');
   }
 
-  const fetchFlightsData = async () => {
-    try {
-      setLoading(true);
-      const payload = {
-        departureCode: 'BLR',
-        destinationCode: 'AUH',
-        departureDate: '2024-09-17',
-        adults: 1
-      }
-      let response = await handleAPIData('POST', '/api/searchFlights', payload);
-      console.log('tripsresponse', response);
-      if (response.status === 'success' && response.data.message && response.data.data.length === 0) {
-        // toast.error(response.data.message, toastOptions);
-        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-      } else if (response.status === 'error') {
-        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-        // toast.error(response.message, toastOptions);
-      } else {
-        setTripsData({ upcomingTrips: [], onGoingTrips: [], pastTrips: [] });
-        // toast.error('Something went wrong. Please try again.', toastOptions);
-      }
-    } finally {
-      setLoading(false);
+  const convertDate = (dateStr) => {
+    if (!dateStr) {
+      return ''
     }
-  };
+    const [day, month, year] = dateStr.split('-');
+    const date = new Date(year, month - 1, day);
+    const formattedYear = date.getFullYear();
+    const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+    const formattedDay = String(date.getDate()).padStart(2, '0');
+    return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+  }
 
-  // Fetch data when component mounts
-  useEffect(() => {
-    fetchFlightsData();    
-  }, []); // Empty dependency array means this runs once on mount
+  const preparePayload = () => {
+    return {
+      flyingFrom: flyingFrom.split('^')[0],
+      flyingTo: flyingTo.split('^')[0],
+      flightDepartureDate: convertDate(flightDepartureDate),
+      flightReturnDate: convertDate(flightReturnDate),
+      adults,
+      children,
+      infants,
+      travelClass: travelClass.split('^')[0]
+    }
+  }
+
+  const handleFlightSearchFilter = async (type) => {
+    let payload = {};
+    // setPanelClass('filter-list');
+    if (loading) {
+      return;
+    }
+
+    // if (type === 'filter' && !trip3 && !trip4 && !trip7 && !trip11 && !trip16 && !star5 && !star4 && !star3 && !transBus && !transLandOnly && !transFlight && !transCruise && !transOptional && !themeAdventure && !themeAffordable && !themeArtCulture && !themeBeach && !themeBestSeller && !priceLt1000 && !priceGt1000 && !priceGt2000 && !priceGt4000 && !priceGt8000) {
+    //   toast.info('Please select atleast one filter', toastOptions);
+    //   return;
+    // }
+    // if (type === 'filter' && (holidaysData === null || holidaysData.length === 0)) {
+    //   setToCallback(!toCallback);
+    //   toast.info('Please select atleast one search field', toastOptions);
+    //   return;
+    // }
+
+    // let payload = {
+    //   ...preparePayload(),
+    //   trip3, trip4, trip7, trip11, trip16, star5, star4, star3, transBus, transLandOnly, transFlight, transCruise, transOptional, themeAdventure, themeAffordable, themeArtCulture, themeBeach, themeBestSeller, priceLt1000, priceGt1000, priceGt2000, priceGt4000, priceGt8000
+    // }
+
+    if (type === 'search') {
+      // setToCallback(!toCallback);
+      if (!flyingFrom && !flyingTo && !flightDepartureDate && !flightReturnDate) {
+        toast.info('Please select atleast one field', toastOptions);
+        return;
+      } else if (!flyingFrom) {
+        toast.info('Please select Flying From field', toastOptions);
+        return;
+      } else if (!flyingTo) {
+        toast.info('Please select Flying To field', toastOptions);
+        return;
+      } else if (!flightDepartureDate) {
+        toast.info('Please select Departure Date', toastOptions);
+        return;
+      }
+    }
+    setLoading(true);
+    payload = {
+      ...preparePayload()
+    }
+    let response = await handleAPIData('POST', '/api/searchFlights', payload);
+    console.log('tripsreresponseresponseresponsesponse', response);
+    if (response?.status === 'success' && response?.data?.data?.data.length > 0) {
+      const { data, dictionaries, meta } = response?.data?.data;
+      setFlightsData({ data, dictionaries, meta });
+      setHeading({
+        flyingFrom: `${flyingFrom.split('^')[1]} (${flyingFrom.split('^')[0]})`,
+        flyingTo: `${flyingTo.split('^')[1]} (${flyingTo.split('^')[0]})`,
+        guests: adults + children + infants,
+        roundOneWay,
+        travelClass: travelClass.split('^')[1]
+      });
+    } else {
+      setFlightsData({ data: [], dictionaries: {}, meta: {} });
+      setHeading({
+        flyingFrom: '',
+        flyingTo: '',
+        guests: 0,
+        roundOneWay: '',
+        travelClass: ''
+      });
+      toast.error('Something went wrong. Please try again.', toastOptions);
+    }
+
+    // if (response.status === 'success' && response.data.data.length > 0) {
+    //   console.log('response', response.data.data);
+    //   if (holidaySort) { 
+    //     holidaySortBy(holidaySort, response.data.data);
+    //   } else {
+    //     setHolidaysData(response.data.data);
+    //   }
+    // } else if (response.status === 'success' && response.data.data.length === 0) {
+    //   toast.warning('Search Holidays Not Found.', toastOptions);
+    //   setHolidaysData([]);
+    //   console.log('responsezero', response.data.data);
+    // } else {
+    //   toast.error('Something went wrong. Please try again.', toastOptions);
+    // }
+    setLoading(false);
+  }
+
+  const convertISODurationToReadable = (duration) => {
+    let totalMinutes = 0;
+
+    const regex = /P(?:(\d+)D)?T(?:(\d+)H)?(?:(\d+)M)?/;
+    const matches = duration.match(regex);
+
+    if (matches) {
+      const days = parseInt(matches[1]) || 0; 
+      const hours = parseInt(matches[2]) || 0; 
+      const minutes = parseInt(matches[3]) || 0; 
+
+      totalMinutes = (days * 24 * 60) + (hours * 60) + minutes;
+    }
+    return totalMinutes;
+  }
+
+  const formatFromToCodes = (arr) => {
+    let newArray = [];
+    for (let z = 0; z < arr.length; z++) {
+      newArray.push([...new Set(arr[z])].join('-'));
+    }
+    return newArray;
+  }
+
+  const sumAndCovertToDHM = (arr) => {
+    let totalMinutes = arr.reduce((accumulator, current) => accumulator + current, 0);
+
+    const minutesInHour = 60;
+    let minutesInDay = 24 * minutesInHour;
+
+    const days = Math.floor(totalMinutes / minutesInDay);
+    totalMinutes %= minutesInDay; 
+
+    const hours = Math.floor(totalMinutes / minutesInHour);
+    const minutes = totalMinutes % minutesInHour;
+
+    let displayed = '';
+
+    if (days) {
+      displayed = `${days} day${days !== 1 ? 's' : ''}`
+    }
+    if (hours) {
+      displayed = `${displayed}  ${hours} hour${hours !== 1 ? 's' : ''}`
+    }
+    if (minutes) {
+      displayed = `${displayed}  ${minutes} minute${minutes !== 1 ? 's' : ''}`
+    }
+
+    return displayed.trim();
+  }
+
+  const formatTimeArray = (arr) => {
+    const start = arr[0];
+    const end = arr[arr.length-1];
+    const part1 = start.split('T')[1];
+    const part2 = end.split('T')[1];
+    const startTime = `${part1.split(':')[0]}:${part1.split(':')[1]}`;
+    const endTime = `${part2.split(':')[0]}:${part2.split(':')[1]}`;
+    return `${startTime} - ${endTime}`.trim();
+  }
+
+  const formatHalts = (arr) => {  
+    const returned = [];
+    for (let z = 0; z < arr.length; z++) {
+      const part0 = arr[z].split('^')[0];
+      const part1 = new Date(arr[z].split('^')[1]);
+      const part2 = new Date(arr[z].split('^')[2]);
+      const differenceInMilliseconds = part1 - part2;
+      const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
+      const formatted = sumAndCovertToDHM([differenceInMinutes]);
+      returned.push(`${formatted} | ${part0}`);
+    } 
+    return returned;
+  }
+
+  const modifyFlightData = (datum) => {
+    const dictionaries = flightsData.dictionaries.carriers;
+    // 11.00 - 16.40
+    const timeArray = [];
+    // BLR-SSD-AUH
+    const fromToCodes = [];
+    // 2 days 4 hours
+    const durationArray = [];
+    // 2 days 4 hours | HYD
+    let halts = [];
+    for (let x = 0; x < datum.itineraries.length; x++) {
+      durationArray.push(convertISODurationToReadable(datum.itineraries[x].duration));
+      let fromToCodesTemp = [];
+      for (let y = 0; y < datum.itineraries[x].segments.length; y++) {
+        fromToCodesTemp.push(datum.itineraries[x].segments[y].departure.iataCode);
+        timeArray.push(datum.itineraries[x].segments[y].departure.at);
+        fromToCodesTemp.push(datum.itineraries[x].segments[y].arrival.iataCode);
+        timeArray.push(datum.itineraries[x].segments[y].arrival.at);
+
+        if (y > 0) {
+          const departureCode = datum.itineraries[x].segments[y].departure.iataCode;
+          const arrivalAt = datum.itineraries[x].segments[y-1].arrival.at;
+          const departureAt = datum.itineraries[x].segments[y].departure.at;
+          halts.push(`${departureCode}^${departureAt}^${arrivalAt}`); 
+        }
+      }
+      fromToCodes.push(fromToCodesTemp);
+    }
+    return {
+      ...datum,
+      roundOneWay: heading.roundOneWay === 'roundTrip' ? 'Round Trip' : 'One Way',
+      halts: formatHalts(halts),
+      time: formatTimeArray(timeArray),
+      duration: sumAndCovertToDHM(durationArray),
+      fromToCodes: formatFromToCodes(fromToCodes),
+      validatingAirlineCodes: datum.validatingAirlineCodes.map(item => `${item}^${dictionaries[item]}`)
+    }
+  }
+
+  const renderHeading = () => {
+    return (
+      <div className="row mb-4 mt-4">
+        <div className="col">
+          <h2 className="mb-2">{heading.flyingFrom} - {heading.flyingTo}</h2>
+          <p>{flightsData.meta.count} Flights &nbsp;&nbsp; · &nbsp;&nbsp; {heading.roundOneWay === 'roundTrip' ? 'Round Trip' : 'One Way'} &nbsp;&nbsp; · &nbsp;&nbsp; {heading.travelClass} &nbsp;&nbsp; · &nbsp;&nbsp; {heading.guests} Guests</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
-      <div className="section-listing">
-        <div className="container-xxl">
-          <div className="row">
-            <ul className="list-inline flight-selection">
-              <li className="list-inline-item">
-                <a href="#!" className="trip-type active">Round trip</a>
-              </li>
-              <li className="list-inline-item">
-                <a href="#!" className="trip-type">One way</a>
-              </li>
-              <li className="list-inline-item">
-                <div className="dropdown">
-                  <a className="class-guests dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Economy
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" href="#">Economy</a></li>
-                    <li><a className="dropdown-item" href="#">Business</a></li>
-                    <li><a className="dropdown-item" href="#">First Class</a></li>
-                  </ul>
-                </div>
-              </li>
-              <li className="list-inline-item">
-                <div className="dropdown">
-                  <a className="class-guests dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="dropdownMenuClickableInside" data-bs-auto-close="outside" aria-expanded="false">
-                    Guests
-                  </a>
-                  <ul className="dropdown-menu dropmenu-guest" aria-labelledby="dropdownMenuClickableInside">
-                    <li>
-                      <div className="row">
-                        <div className="col">
-                          <h4 className="mb-0">Adult</h4> <p className="small-text">Ages 13 or above</p>
-                        </div>
-                        <div className="col">
-                          <a className="dropdown-item" href="#">
-                            <div className="input-group">
-                              <span className="input-group-btn">
-                                <button type="button" className="btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                  <span className="bi bi-dash"></span>
-                                </button>
-                              </span>
-                              <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1" max="10" />
-                              <span className="input-group-btn">
-                                <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
-                                  <span className="bi bi-plus"></span>
-                                </button>
-                              </span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="row">
-                        <div className="col">
-                          <h4 className="mb-0">Children</h4> <p className="small-text">Ages 2-12</p>
-                        </div>
-                        <div className="col">
-                          <a className="dropdown-item" href="#">
-                            <div className="input-group">
-                              <span className="input-group-btn">
-                                <button type="button" className="btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                  <span className="bi bi-dash"></span>
-                                </button>
-                              </span>
-                              <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1" max="10" />
-                              <span className="input-group-btn">
-                                <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
-                                  <span className="bi bi-plus"></span>
-                                </button>
-                              </span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="row">
-                        <div className="col">
-                          <h4 className="mb-0">Infants</h4> <p className="small-text">0-2</p>
-                        </div>
-                        <div className="col">
-                          <a className="dropdown-item" href="#">
-                            <div className="input-group">
-                              <span className="input-group-btn">
-                                <button type="button" className="btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                  <span className="bi bi-dash"></span>
-                                </button>
-                              </span>
-                              <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1" max="10" />
-                              <span className="input-group-btn">
-                                <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
-                                  <span className="bi bi-plus"></span>
-                                </button>
-                              </span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="row">
-            <div className="col">
-              <select className="form-select form-select-lg" aria-label="Large select example">
-                <option selected>Flying from</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div className="col">
-              <select className="form-select form-select-lg" aria-label="Large select example">
-                <option selected>Flying to</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div className="col">
-              <div className="input-group">
-                <input type="text" name="daterange" className="form-control form-addon calendar-selection" value="01/01/2018 - 01/15/2018" />
-                <span className="input-group-text calendar-selection" id="basic-addon2"><i className="bi bi-calendar-event"></i></span>
-              </div>
-            </div>
-            <div className="col">
-              <button type="button" className="btn btn-primary">search</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <FlightsSearch id={"flights-search"} loading={loading} flightsCallback={handleFlightSearchFilter} />
       <div className="container-xxl py-5 section-block">
-        <div className="row mb-4 mt-4">
-          <div className="col">
-            <h2 className="mb-2">India - Abu dhabu</h2>
-            <p>22 flights &nbsp;&nbsp; · &nbsp;&nbsp; Round trip &nbsp;&nbsp; · &nbsp;&nbsp; 2 Guests</p>
-          </div>
-        </div>
+        {flightsData.data.length > 0 && renderHeading()}
         <div className="row mb-5 mt-5 align-items-end">
           {/*<div className="col-auto me-auto">
             <h4><i className="bi bi-funnel"></i> Filter</h4>
@@ -236,235 +306,23 @@ const Flights = ({ id }) => {
             </div>
           </div>
         </div>
-        <div className="accordion" id="accordionExample">
-          <div className="accordion-item flight-block" onClick={handleFlightCardClick}>
-            <h2 className="accordion-header">
-              <div className="row">
-                <div className="col-md-8 col-sm-12">
-                  <div className="d-flex flex-row">
-                    <div className="flight-logo">
-                      <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                    </div>
-                    <div className="ps-5">
-                      <h3>11:00 - 16:40</h3>
-                      <p>Emirates airlines</p>
-                    </div>
-                    <div className="ps-5">
-                      <h3>5 hours 40 minutes</h3>
-                      <p>BLR - AUH</p>
-                    </div>
-                    <div className="ps-5">
-                      <h3>1 stop</h3>
-                      <p>1 hour 30 minutes | HYD</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4 col-sm-12 text-end">
-                  <div className="d-flex justify-content-end">
-                    <div>
-                      <h2 className="mb-2">$999</h2>
-                      <p>Round trip</p>
-                    </div>
-                    <div className="ps-5 text-center">
-                      <a href="#!" className="btn btn-primary btn-sm mb-2">Book now</a>
-                      <a href="#!" className="flight-details-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Quick view</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </h2>
-            <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div className="accordion-body flight-details">
-                <div className="d-flex flex-row">
-                  <div className="flight-logo">
-                    <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                  </div>
-                  <div className="airport-details">
-                    <span className="travel-line"></span>
-                    <p>Monday, August 12 · 11:00</p>
-                    <h3>Bangalore International Airport (BLR)</h3>
-                    <p className="mt-4">Monday, August 12 · 13:00</p>
-                    <h3>Hyderabad International Airport (Hyd)</h3>
-                  </div>
-                  <div className="ps-5">
-                    <p className="small-text">Trip time: 2 hours</p>
-                    <p className="small-text">ANA · Business class · Boeing 787 · NH 847</p>
-                  </div>
-                </div>
-                <div className="transit-block">
-                  Transit time: 1 hours 30 minutes - Hyderabad International Airport (HYD)
-                </div>
-                <div className="d-flex flex-row">
-                  <div className="flight-logo">
-                    <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                  </div>
-                  <div className="airport-details">
-                    <span className="travel-line"></span>
-                    <p>Monday, August 12 · 14:30</p>
-                    <h3>Hyderabad International Airport (Hyd)</h3>
-                    <p className="mt-4">Monday, August 12 · 16:40</p>
-                    <h3>Abudhabi International Airport (AUH)</h3>
-                  </div>
-                  <div className="ps-5">
-                    <p className="small-text">Trip time: 2 hours 10 minutes</p>
-                    <p className="small-text">ANA · Business class · Boeing 787 · NH 847</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="accordion-item flight-block">
-            <h2 className="accordion-header">
-              <div className="row">
-                <div className="col-md-8 col-sm-12">
-                  <div className="d-flex flex-row">
-                    <div className="flight-logo">
-                      <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                    </div>
-                    <div className="ps-5">
-                      <h3>11:00 - 16:40</h3>
-                      <p>Emirates airlines</p>
-                    </div>
-                    <div className="ps-5">
-                      <h3>5 hours 40 minutes</h3>
-                      <p>BLR - AUH</p>
-                    </div>
-                    <div className="ps-5">
-                      <h3>1 stop</h3>
-                      <p>1 hour 30 minutes | HYD</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4 col-sm-12 text-end">
-                  <div className="d-flex justify-content-end">
-                    <div>
-                      <h2 className="mb-2">$999</h2>
-                      <p>Round trip</p>
-                    </div>
-                    <div className="ps-5 text-center">
-                      <a href="#!" className="btn btn-primary btn-sm mb-2">Book now</a>
-                      <a href="#!" className="flight-details-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Quick view</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </h2>
-            <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div className="accordion-body flight-details">
-                <div className="d-flex flex-row">
-                  <div className="flight-logo">
-                    <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                  </div>
-                  <div className="airport-details">
-                    <span className="travel-line"></span>
-                    <p>Monday, August 12 · 11:00</p>
-                    <h3>Bangalore International Airport (BLR)</h3>
-                    <p className="mt-4">Monday, August 12 · 13:00</p>
-                    <h3>Hyderabad International Airport (Hyd)</h3>
-                  </div>
-                  <div className="ps-5">
-                    <p className="small-text">Trip time: 2 hours</p>
-                    <p className="small-text">ANA · Business class · Boeing 787 · NH 847</p>
-                  </div>
-                </div>
-                <div className="d-flex flex-row transit-block">
-                  Transit time: 1 hours 30 minutes - Hyderabad International Airport (HYD)
-                </div>
-                <div className="d-flex flex-row">
-                  <div className="flight-logo">
-                    <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                  </div>
-                  <div className="airport-details">
-                    <span className="travel-line"></span>
-                    <p>Monday, August 12 · 14:30</p>
-                    <h3>Hyderabad International Airport (Hyd)</h3>
-                    <p className="mt-4">Monday, August 12 · 16:40</p>
-                    <h3>Abudhabi International Airport (AUH)</h3>
-                  </div>
-                  <div className="ps-5">
-                    <p className="small-text">Trip time: 2 hours 10 minutes</p>
-                    <p className="small-text">ANA · Business class · Boeing 787 · NH 847</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="accordion-item flight-block">
-            <h2 className="accordion-header">
-              <div className="row">
-                <div className="col-md-8 col-sm-12">
-                  <div className="d-flex flex-row">
-                    <div className="flight-logo">
-                      <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                    </div>
-                    <div className="ps-5">
-                      <h3>11:00 - 16:40</h3>
-                      <p>Emirates airlines</p>
-                    </div>
-                    <div className="ps-5">
-                      <h3>5 hours 40 minutes</h3>
-                      <p>BLR - AUH</p>
-                    </div>
-                    <div className="ps-5">
-                      <h3>1 stop</h3>
-                      <p>1 hour 30 minutes | HYD</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4 col-sm-12 text-end">
-                  <div className="d-flex justify-content-end">
-                    <div>
-                      <h2 className="mb-2">$999</h2>
-                      <p>Round trip</p>
-                    </div>
-                    <div className="ps-5 text-center">
-                      <a href="#!" className="btn btn-primary btn-sm mb-2">Book now</a>
-                      <a href="#!" className="flight-details-link collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Quick view</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </h2>
-            <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-              <div className="accordion-body flight-details">
-                <div className="d-flex flex-row">
-                  <div className="flight-logo">
-                    <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                  </div>
-                  <div className="airport-details">
-                    <span className="travel-line"></span>
-                    <p>Monday, August 12 · 11:00</p>
-                    <h3>Bangalore International Airport (BLR)</h3>
-                    <p className="mt-4">Monday, August 12 · 13:00</p>
-                    <h3>Hyderabad International Airport (Hyd)</h3>
-                  </div>
-                  <div className="ps-5">
-                    <p className="small-text">Trip time: 2 hours</p>
-                    <p className="small-text">ANA · Business class · Boeing 787 · NH 847</p>
-                  </div>
-                </div>
-                <div className="d-flex flex-row transit-block">
-                  Transit time: 1 hours 30 minutes - Hyderabad International Airport (HYD)
-                </div>
-                <div className="d-flex flex-row">
-                  <div className="flight-logo">
-                    <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                  </div>
-                  <div className="airport-details">
-                    <span className="travel-line"></span>
-                    <p>Monday, August 12 · 14:30</p>
-                    <h3>Hyderabad International Airport (Hyd)</h3>
-                    <p className="mt-4">Monday, August 12 · 16:40</p>
-                    <h3>Abudhabi International Airport (AUH)</h3>
-                  </div>
-                  <div className="ps-5">
-                    <p className="small-text">Trip time: 2 hours 10 minutes</p>
-                    <p className="small-text">ANA · Business class · Boeing 787 · NH 847</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="accordion" id="flight-contain">
+          {
+            Array.isArray(flightsData.data) && flightsData.data.length > 0 &&
+            (
+              <>
+                {
+                  Array.isArray(flightsData.data) && flightsData.data.length > 0 && flightsData.data.map((flight, index) => {
+                    return (<FlightContainer id={`flight-${index}`} flightData={modifyFlightData(flight)} flightCardCallback={flightCardCallback} />)
+                  })
+                }
+              </>
+            )
+          }
+          {
+            Array.isArray(flightsData.data) && flightsData.data.length === 0 &&
+            <NoDataAvailable text={"No Data Available. Please modify or perform your search"} />
+          }
         </div>
       </div>
     </>

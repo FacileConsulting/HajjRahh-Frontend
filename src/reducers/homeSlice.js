@@ -1,29 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const homeState = {
+  roundOneWay: 'roundTrip',
+  travelClass: 'ECONOMY^Economy',
+  noOfPeople: 1,
+  adults: 1,
+  children: 0,
+  infants: 0,
+  date: {
+    startDate: '',
+    endDate: ''
+  }
+};
 export const homeSlice = createSlice({
   name: 'home',
-  initialState: {
-    departure: '',
-    destination: '',
-    holidaySort: '',
-    noOfPeople: 0,
-    date: {
-      startDate: '',
-      endDate: ''
-    }
-  },
+  initialState: homeState,
   reducers: {
-    departureFunc: (state, action) => {
-      state.departure = action.payload
+    roundOneWayFunc: (state, action) => {
+      state.roundOneWay = action.payload;
     },
-    destinationFunc: (state, action) => {
-      state.destination = action.payload
-    },
-    holidaysSortFunc: (state, action) => {
-      state.holidaySort = action.payload
-    },
-    noOfPeopleFunc: (state, action) => {
-      state.noOfPeople = action.payload
+    updateFunc: (state, action) => {
+      state[action.payload.keyName] = action.payload.value;
     },
     dateFunc: (state, action) => {
       state.date.startDate = action.payload.startDate
@@ -34,26 +31,15 @@ export const homeSlice = createSlice({
       state.date.endDate = ''
     },
     resetHomeFunc: (state, action) => {
-      state = {
-        departure: '',
-        destination: '',
-        holidaySort: '',
-        noOfPeople: 0,
-        date: {
-          startDate: '',
-          endDate: ''
-        }
-      }
+      return homeState
     }
   }
 })
 
 // Action creators are generated for each case reducer function
 export const { 
-  departureFunc, 
-  destinationFunc,
-  holidaysSortFunc,
-  noOfPeopleFunc,
+  roundOneWayFunc,
+  updateFunc,
   dateFunc,
   dateResetFunc,
   resetHomeFunc

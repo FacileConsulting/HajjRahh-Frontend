@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Link, Redirect, useHistory } from 'react-router-dom';
+import { Route, Switch, Link, Redirect, useHistory, useLocation  } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
@@ -14,7 +14,7 @@ import LoginRegister from './pages/LoginRegister';
 import Select from './components/Select';
 import Counter from './components/Counter';
 import { handleAPIData } from './hooks/useCustomApi';
-import { resetHomeFunc } from './reducers/homeSlice';
+import { resetHomeFunc, updateFunc } from './reducers/homeSlice';
 import { changeInputFunc, resetInputFunc } from './reducers/myAccountSlice';
 import { toastOptions } from './toastify';
 import './App.css';
@@ -26,6 +26,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const App = ({ message }) => {
   localStorage.setItem('current_route', '/');
   const dispatch = useDispatch();
+  const location = useLocation();
   const history = useHistory();
   const isAuthenticated = !!localStorage.getItem('access_token');
   console.log('isAuthenticated', isAuthenticated)
@@ -103,6 +104,11 @@ const App = ({ message }) => {
     fetchHealthData();
     checkPageReload();
   }, []); 
+
+  useEffect(() => {
+    dispatch(resetHomeFunc());
+    console.log("Route changed to:", location.pathname);
+  }, [location.pathname]);
 
   useEffect(() => {    
     if (displayEmail) {
