@@ -15,7 +15,7 @@ import Select from './components/Select';
 import Counter from './components/Counter';
 import { handleAPIData } from './hooks/useCustomApi';
 import { resetHomeFunc, updateFunc } from './reducers/homeSlice';
-import { changeInputFunc, resetInputFunc } from './reducers/myAccountSlice';
+import { changeInputFunc, resetInputFunc, resetMyAccountFunc } from './reducers/myAccountSlice';
 import { toastOptions } from './toastify';
 import './App.css';
 import 'rsuite/DateRangePicker/styles/index.css';
@@ -46,8 +46,7 @@ const App = ({ message }) => {
     localStorage.removeItem('current_route');
     localStorage.removeItem('user_data');
     dispatch(resetHomeFunc());
-    dispatch(resetInputFunc());
-    // check the reset actually not happened
+    dispatch(resetMyAccountFunc());
     setIsLoggedIn(false); 
     history.push('/');
     toast.success('You are successfully logged out');
@@ -78,7 +77,7 @@ const App = ({ message }) => {
           console.log('###@#eee eeeeeeeQW', checked, currRoute, userDetailsFromLocalStorage)
           const { username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage); 
           dispatch(resetHomeFunc());
-          dispatch(resetInputFunc());
+          dispatch(resetMyAccountFunc());
           dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
           dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
           dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
@@ -110,12 +109,10 @@ const App = ({ message }) => {
     console.log("Route changed to:", location.pathname);
   }, [location.pathname]);
 
-  useEffect(() => {    
+  useEffect(() => { 
     if (displayEmail) {
-      console.log('yes');
       setIsLoggedIn(true);
     } else {
-      console.log('no');
       setIsLoggedIn(false);
     }
   }, [displayEmail]);

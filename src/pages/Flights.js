@@ -290,7 +290,7 @@ const Flights = ({ id }) => {
             </select>
             <a href="#!">Reset filter</a>
           </div>*/}
-          <div className="col-auto">
+          {/* <div className="col-auto">
             <div className="row g-1 align-items-center mb-2">
               <div className="col-auto">
                 <span>Sort by:</span>
@@ -304,7 +304,7 @@ const Flights = ({ id }) => {
                 </select>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="accordion" id="flight-contain">
           {

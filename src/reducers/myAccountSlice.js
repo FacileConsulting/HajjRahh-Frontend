@@ -13,7 +13,7 @@ export const myAccountSlice = createSlice({
       state[action.payload] = ''
     },
     resetMyAccountFunc: (state, action) => {
-      state = {
+      return {
         default: ''
       }
     }
