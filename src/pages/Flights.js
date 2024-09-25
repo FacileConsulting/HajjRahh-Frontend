@@ -4,7 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
-import FlightsSearch from '../components/FlightsSearch';
+import FlightsFilter from '../components/FlightsFilter';
+import FlightsSearch from '../components/FlightsSearch'; 
 import FlightContainer from '../components/FlightContainer';
 import NoDataAvailable from '../components/NoDataAvailable';
 
@@ -12,8 +13,11 @@ const Flights = ({ id }) => {
   localStorage.setItem('current_route', '/flights');
   const history = useHistory();
   const { roundOneWay, adults, children, infants, travelClass, flyingFrom, flyingTo, flightDepartureDate, flightReturnDate } = useSelector(state => state.home);
-  const { displayEmail } = useSelector(state => state.myAccount);
-  const [loading, setLoading] = useState(false);
+  const { displayEmail, emirates, lufthansa, qatarAiraways, etihadAiraways, egyptair, twoFourHour, fourSixHour, zeroStop, oneStop, aboveOneStop, egg, nonVeg, morning, afternoon, evening, night } = useSelector(state => state.myAccount);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [filterLoading, setFilterLoading] = useState(false);
+  const [toCallback, setToCallback] = useState(false);
+  const [panelClass, setPanelClass] = useState('filter-list');
   const [flightsData, setFlightsData] = useState({ data: [], dictionaries: {}, meta: {} });
   const [heading, setHeading] = useState({
     flyingFrom: '',
@@ -25,6 +29,10 @@ const Flights = ({ id }) => {
 
   const flightCardCallback = () => {
     history.push('/flightDetails');
+  }
+  
+  const handlePanelCallbackParent = () => {
+    setPanelClass(panelClass === 'filter-list' ? 'filter-show' : 'filter-list');
   }
 
   const convertDate = (dateStr) => {
@@ -54,28 +62,31 @@ const Flights = ({ id }) => {
 
   const handleFlightSearchFilter = async (type) => {
     let payload = {};
-    // setPanelClass('filter-list');
-    if (loading) {
+    setPanelClass('filter-list');
+    if (searchLoading || filterLoading) {
       return;
     }
 
-    // if (type === 'filter' && !trip3 && !trip4 && !trip7 && !trip11 && !trip16 && !star5 && !star4 && !star3 && !transBus && !transLandOnly && !transFlight && !transCruise && !transOptional && !themeAdventure && !themeAffordable && !themeArtCulture && !themeBeach && !themeBestSeller && !priceLt1000 && !priceGt1000 && !priceGt2000 && !priceGt4000 && !priceGt8000) {
-    //   toast.info('Please select atleast one filter', toastOptions);
-    //   return;
-    // }
-    // if (type === 'filter' && (holidaysData === null || holidaysData.length === 0)) {
-    //   setToCallback(!toCallback);
-    //   toast.info('Please select atleast one search field', toastOptions);
-    //   return;
-    // }
-
-    // let payload = {
-    //   ...preparePayload(),
-    //   trip3, trip4, trip7, trip11, trip16, star5, star4, star3, transBus, transLandOnly, transFlight, transCruise, transOptional, themeAdventure, themeAffordable, themeArtCulture, themeBeach, themeBestSeller, priceLt1000, priceGt1000, priceGt2000, priceGt4000, priceGt8000
-    // }
+    if (type === 'filter') {
+      if (!emirates && !lufthansa && !qatarAiraways && !etihadAiraways && !egyptair && !twoFourHour && !fourSixHour && !zeroStop && !oneStop && !aboveOneStop && !egg && !nonVeg && !morning && !afternoon && !evening && !night) {
+        toast.info('Please select atleast one filter', toastOptions);
+        return;
+      }
+      if (flightsData == null || flightsData?.data.length === 0) {
+        setToCallback(!toCallback);
+        toast.info('Please select atleast one search field', toastOptions);
+        return;
+      }
+      payload = {
+        ...preparePayload(),
+        emirates, lufthansa, qatarAiraways, etihadAiraways, egyptair, twoFourHour, fourSixHour, zeroStop, oneStop, aboveOneStop, egg, nonVeg, morning, afternoon, evening, night
+      }
+      setFilterLoading(true);
+    }   
+    
 
     if (type === 'search') {
-      // setToCallback(!toCallback);
+      setToCallback(!toCallback);
       if (!flyingFrom && !flyingTo && !flightDepartureDate && !flightReturnDate) {
         toast.info('Please select atleast one field', toastOptions);
         return;
@@ -88,12 +99,13 @@ const Flights = ({ id }) => {
       } else if (!flightDepartureDate) {
         toast.info('Please select Departure Date', toastOptions);
         return;
+      }      
+      payload = {
+        ...preparePayload()
       }
+      setSearchLoading(true);
     }
-    setLoading(true);
-    payload = {
-      ...preparePayload()
-    }
+    
     let response = await handleAPIData('POST', '/api/searchFlights', payload);
     console.log('tripsreresponseresponseresponsesponse', response);
     if (response?.status === 'success' && response?.data?.data?.data.length > 0) {
@@ -116,23 +128,13 @@ const Flights = ({ id }) => {
         travelClass: ''
       });
       toast.error('Something went wrong. Please try again.', toastOptions);
+    }   
+    
+    if (type === 'search') {
+      setSearchLoading(false);
+    } else if (type === 'filter') {
+      setFilterLoading(false);
     }
-
-    // if (response.status === 'success' && response.data.data.length > 0) {
-    //   console.log('response', response.data.data);
-    //   if (holidaySort) { 
-    //     holidaySortBy(holidaySort, response.data.data);
-    //   } else {
-    //     setHolidaysData(response.data.data);
-    //   }
-    // } else if (response.status === 'success' && response.data.data.length === 0) {
-    //   toast.warning('Search Holidays Not Found.', toastOptions);
-    //   setHolidaysData([]);
-    //   console.log('responsezero', response.data.data);
-    // } else {
-    //   toast.error('Something went wrong. Please try again.', toastOptions);
-    // }
-    setLoading(false);
   }
 
   const convertISODurationToReadable = (duration) => {
@@ -262,35 +264,13 @@ const Flights = ({ id }) => {
 
   return (
     <>
-      <FlightsSearch id={"flights-search"} loading={loading} flightsCallback={handleFlightSearchFilter} />
+      <FlightsSearch id={"flights-search"} loading={searchLoading} flightsCallback={handleFlightSearchFilter} />
+      <FlightsFilter id={"flights-filter"} loading={filterLoading} toCallback={toCallback} panelClass={panelClass} flightsCallback={handleFlightSearchFilter} handlePanelCallback={handlePanelCallbackParent} airlines={flightsData?.dictionaries?.carriers} />      
       <div className="container-xxl py-5 section-block">
         {flightsData.data.length > 0 && renderHeading()}
+        
         <div className="row mb-5 mt-5 align-items-end">
-          {/*<div className="col-auto me-auto">
-            <h4><i className="bi bi-funnel"></i> Filter</h4>
-            <select className="filter-results" id="airlines" name="states[]" multiple="multiple">
-              <option value="AL">Emirates</option>
-              <option value="WY">Airasia</option>
-            </select>
-            <select className="filter-results" id="travel-time" name="states[]" multiple="multiple">
-              <option value="AL">2-4 hours</option>
-              <option value="WY">4-6 hours</option>
-            </select>
-            <select className="filter-results" id="stop-points" name="states[]" multiple="multiple">
-              <option value="AL">1 stop</option>
-              <option value="WY">non stop</option>
-            </select>
-            <select className="filter-results" id="halal-meal" name="states[]" multiple="multiple">
-              <option value="AL">Egg</option>
-              <option value="WY">Non veg</option>
-            </select>
-            <select className="filter-results" id="flight-time" name="states[]" multiple="multiple">
-              <option value="AL">Morning (06:00 am to 11:59am)</option>
-              <option value="WY">Afternoon (12:00 pm to 04:00 pm)</option>
-            </select>
-            <a href="#!">Reset filter</a>
-          </div>*/}
-          {/* <div className="col-auto">
+          {/* <div className="col-auto">x`
             <div className="row g-1 align-items-center mb-2">
               <div className="col-auto">
                 <span>Sort by:</span>

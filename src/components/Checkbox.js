@@ -4,7 +4,7 @@ import { changeInputFunc, resetInputFunc } from '../reducers/myAccountSlice';
 import { useDispatch } from 'react-redux';
 
 const Checkbox = forwardRef((props, ref) => {
-  let { id, keyName } = props;
+  let { id, keyName, disabled } = props;
   const dispatch = useDispatch();
   const [value, setValue] = useState(false);  
 
@@ -28,7 +28,7 @@ const Checkbox = forwardRef((props, ref) => {
   };
 
   return (
-    <input type="checkbox" name={keyName} className="form-check-input" id={id} onChange={handleChange} defaultChecked={value} />
+    <input type="checkbox" name={keyName} className="form-check-input" id={id} onChange={handleChange} defaultChecked={value} disabled={disabled} />
   )
 });
 

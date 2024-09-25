@@ -446,7 +446,8 @@ a:hover {
 .trip-status {
   text-transform: capitalize;
 }
-.holiday-cancel-btn {
+.holiday-cancel-btn,
+.flight-cancel-btn {
   margin-right: 10px;
 }
 .hajjrahh-logo {
@@ -760,4 +761,7 @@ a:hover {
 }
 .d-flex {
   align-items: center;
+}
+.flight-time {
+  width: 100%;
 }
