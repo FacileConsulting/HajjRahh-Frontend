@@ -13,6 +13,8 @@ const Select = ({ id, options, classes, selectIsList }) => {
       dispatch(updateFunc({ keyName: 'destination', value: event.target.value }));
     } else if (id === 'holidays-sort') {
       dispatch(updateFunc({ keyName: 'holidaySort', value: event.target.value }));
+    } else if (id === 'flights-sort') {
+      dispatch(updateFunc({ keyName: 'flightSort', value: event.target.value }));
     } else if (id === 'flights-search-flying-from') {
       dispatch(updateFunc({ keyName: 'flyingFrom', value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
     } else if (id === 'flights-search-flying-to') {

@@ -8,11 +8,32 @@ import FlightsFilter from '../components/FlightsFilter';
 import FlightsSearch from '../components/FlightsSearch'; 
 import FlightContainer from '../components/FlightContainer';
 import NoDataAvailable from '../components/NoDataAvailable';
+import Select from '../components/Select';
 
 const Flights = ({ id }) => {
   localStorage.setItem('current_route', '/flights');
   const history = useHistory();
-  const { roundOneWay, adults, children, infants, travelClass, flyingFrom, flyingTo, flightDepartureDate, flightReturnDate } = useSelector(state => state.home);
+
+  const sortOptions = [
+    {
+      value: '',
+      label: 'Select'
+    },
+    {
+      value: 'byduration',
+      label: 'By Duration'
+    },
+    {
+      value: 'byprice',
+      label: 'By Price'
+    },
+    // {
+    //   value: 'bycost',
+    //   label: 'By cost'
+    // }
+  ]
+
+  const { roundOneWay, adults, children, infants, travelClass, flyingFrom, flyingTo, flightDepartureDate, flightReturnDate, flightSort } = useSelector(state => state.home);
   const { displayEmail, emirates, lufthansa, qatarAiraways, etihadAiraways, egyptair, twoFourHour, fourSixHour, zeroStop, oneStop, aboveOneStop, egg, nonVeg, morning, afternoon, evening, night } = useSelector(state => state.myAccount);
   const [searchLoading, setSearchLoading] = useState(false);
   const [filterLoading, setFilterLoading] = useState(false);
@@ -26,6 +47,14 @@ const Flights = ({ id }) => {
     roundOneWay: '',
     travelClass: ''
   });
+
+  useEffect(() => {
+    console.log("flightSort updated: ", flightSort);
+    if (flightsData.data && flightsData.data.length > 0) {
+      const { data, dictionaries, meta } = flightsData;
+      flightSortBy(flightSort, data, dictionaries, meta);
+    }    
+  }, [flightSort]);
 
   const flightCardCallback = () => {
     history.push('/flightDetails');
@@ -110,14 +139,20 @@ const Flights = ({ id }) => {
     console.log('tripsreresponseresponseresponsesponse', response);
     if (response?.status === 'success' && response?.data?.data?.data.length > 0) {
       const { data, dictionaries, meta } = response?.data?.data;
-      setFlightsData({ data, dictionaries, meta });
-      setHeading({
-        flyingFrom: `${flyingFrom.split('^')[1]} (${flyingFrom.split('^')[0]})`,
-        flyingTo: `${flyingTo.split('^')[1]} (${flyingTo.split('^')[0]})`,
-        guests: adults + children + infants,
-        roundOneWay,
-        travelClass: travelClass.split('^')[1]
-      });
+      if (flightSort) { 
+        flightSortBy(flightSort, data, dictionaries, meta);
+      } else {
+        setFlightsData({ data, dictionaries, meta });
+        setHeading({
+          flyingFrom: `${flyingFrom.split('^')[1]} (${flyingFrom.split('^')[0]})`,
+          flyingTo: `${flyingTo.split('^')[1]} (${flyingTo.split('^')[0]})`,
+          guests: adults + children + infants,
+          roundOneWay,
+          travelClass: travelClass.split('^')[1]
+        });
+      }
+
+      
     } else {
       setFlightsData({ data: [], dictionaries: {}, meta: {} });
       setHeading({
@@ -134,6 +169,24 @@ const Flights = ({ id }) => {
       setSearchLoading(false);
     } else if (type === 'filter') {
       setFilterLoading(false);
+    }
+  }
+
+  const flightSortBy = (type, flightsData, dictionaries, meta) => {
+    if (type === 'byprice') {
+      let sortedFlightsData = flightsData.sort((a, b) => a.price.grandTotal - b.price.grandTotal);
+      console.log('dsf', sortedFlightsData);
+      setFlightsData({ data: [...sortedFlightsData], dictionaries, meta });
+    } else if (type === 'byduration') {
+      for (let y = 0; y < flightsData.length; y++) {
+        let durationArray = [];
+        for (let x = 0; x < flightsData[y].itineraries.length; x++) {
+          durationArray.push(convertISODurationToReadable(flightsData[y].itineraries[x].duration));
+        }        
+        flightsData[y].totalDurationInMin = durationArray.reduce((accumulator, current) => accumulator + current, 0);
+      }
+      let sortedFlightsData = flightsData.sort((a, b) => a.totalDurationInMin - b.totalDurationInMin);
+      setFlightsData({ data: [...sortedFlightsData], dictionaries, meta });
     }
   }
 
@@ -269,22 +322,17 @@ const Flights = ({ id }) => {
       <div className="container-xxl py-5 section-block">
         {flightsData.data.length > 0 && renderHeading()}
         
-        <div className="row mb-5 mt-5 align-items-end">
-          {/* <div className="col-auto">x`
+        <div className="row mb-5 mt-5 d-flex justify-content-end">
+          <div className="col-auto">
             <div className="row g-1 align-items-center mb-2">
               <div className="col-auto">
                 <span>Sort by:</span>
               </div>
               <div className="col-auto">
-                <select className="form-select form-sort" aria-label="Large select example">
-                  <option selected="">Select</option>
-                  <option value="1">By date</option>
-                  <option value="2">By price</option>
-                  <option value="3">By cost</option>
-                </select>
+                <Select id={"flights-sort"} options={sortOptions} classes={"form-sort"} /> 
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
         <div className="accordion" id="flight-contain">
           {
