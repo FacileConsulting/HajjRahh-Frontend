@@ -450,6 +450,10 @@ a:hover {
 .flight-cancel-btn {
   margin-right: 10px;
 }
+.padding-top-btm {
+  padding-top: 0;
+  padding: 10px 0 10px;
+}
 .hajjrahh-logo {
   width: 250px;
 }
@@ -587,7 +591,9 @@ a:hover {
     border: 1px solid #e9e9e9;
     background-color: #fafafa;
     border-radius: 16px;
-    padding: 24px 24px 0px;
+}
+.flight-details-pad {
+  padding: 24px 24px 0px;
 }
 .airport-details {
     margin-left: 80px;

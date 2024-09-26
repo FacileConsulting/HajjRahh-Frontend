@@ -29,7 +29,7 @@ const FlightDetails = ({ id }) => {
       <div className="container-xxl section-block mb-5">
         <div className="row">
           <div className="col-md-8 col-sm-12">
-            <div className="flight-details flight-details-big">
+            <div className="flight-details flight-details-big flight-details-pad">
               <div className="d-flex flex-row">
                 <div className="flight-logo">
                   <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />

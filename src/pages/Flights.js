@@ -214,9 +214,8 @@ const Flights = ({ id }) => {
     return newArray;
   }
 
-  const sumAndCovertToDHM = (arr) => {
-    let totalMinutes = arr.reduce((accumulator, current) => accumulator + current, 0);
-
+  const internalCovertToDHM = (mins) => {
+    let totalMinutes = mins;
     const minutesInHour = 60;
     let minutesInDay = 24 * minutesInHour;
 
@@ -237,8 +236,12 @@ const Flights = ({ id }) => {
     if (minutes) {
       displayed = `${displayed}  ${minutes} minute${minutes !== 1 ? 's' : ''}`
     }
-
     return displayed.trim();
+  }
+
+  const sumAndCovertToDHM = (arr) => {
+    let totalMinutes = arr.reduce((accumulator, current) => accumulator + current, 0);
+    return internalCovertToDHM(totalMinutes);    
   }
 
   const formatTimeArray = (arr) => {
@@ -265,6 +268,40 @@ const Flights = ({ id }) => {
     return returned;
   }
 
+  const formatToTxtDate = (dateString) => {
+    const options = { weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false };
+    const date = new Date(dateString);
+
+    // Format the date and time
+    const datePart = date.toLocaleString('en-US', options);
+    return datePart;
+  }
+
+  const getTripTime = (dateString1, dateString2) => {
+    const date1 = new Date(dateString1);
+    const date2 = new Date(dateString2);
+    
+    // Calculate the difference in milliseconds
+    const differenceInMilliseconds = date2 - date1;
+
+    // Convert milliseconds to minutes
+    const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
+    
+    return differenceInMinutes;
+  }
+
+  const getAircraft = (code) => {
+    if(flightsData?.dictionaries?.aircraft) {
+      return flightsData?.dictionaries?.aircraft[code];
+    }
+  }
+
+  const getPlaceName = (code) => {
+    if(flightsData?.dictionaries?.locations) {
+      return `${code}-${flightsData?.dictionaries?.locations[code].countryCode}`;
+    }
+  }
+
   const modifyFlightData = (datum) => {
     const dictionaries = flightsData.dictionaries.carriers;
     // 11.00 - 16.40
@@ -284,11 +321,33 @@ const Flights = ({ id }) => {
         fromToCodesTemp.push(datum.itineraries[x].segments[y].arrival.iataCode);
         timeArray.push(datum.itineraries[x].segments[y].arrival.at);
 
+        // Quick view
+        const departureAt = datum.itineraries[x].segments[y].departure.at;
+        const departureIataCode = datum.itineraries[x].segments[y].departure.iataCode;
+        const arrivalAt = datum.itineraries[x].segments[y].arrival.at;
+        const arrivalIataCode = datum.itineraries[x].segments[y].arrival.iataCode;
+        const aeroplane = datum.itineraries[x].segments[y].aircraft.code;
+
+        datum.itineraries[x].segments[y].departureFormattedDate = formatToTxtDate(departureAt);
+        datum.itineraries[x].segments[y].departurePlace = getPlaceName(departureIataCode);
+
+        datum.itineraries[x].segments[y].arrivalFormattedDate = formatToTxtDate(arrivalAt);
+        datum.itineraries[x].segments[y].arrivalPlace = getPlaceName(arrivalIataCode);
+
+        datum.itineraries[x].segments[y].tripTime = internalCovertToDHM(getTripTime(departureAt, arrivalAt));
+        datum.itineraries[x].segments[y].aeroplane = getAircraft(aeroplane);
+
         if (y > 0) {
           const departureCode = datum.itineraries[x].segments[y].departure.iataCode;
           const arrivalAt = datum.itineraries[x].segments[y-1].arrival.at;
           const departureAt = datum.itineraries[x].segments[y].departure.at;
           halts.push(`${departureCode}^${departureAt}^${arrivalAt}`); 
+
+          // Quick View
+          const arrivalIataCode = datum.itineraries[x].segments[y-1].arrival.iataCode;
+
+          datum.itineraries[x].segments[y].transitTime = internalCovertToDHM(getTripTime(arrivalAt, departureAt));          
+          datum.itineraries[x].segments[y].haltPlace = getPlaceName(arrivalIataCode);
         }
       }
       fromToCodes.push(fromToCodesTemp);
