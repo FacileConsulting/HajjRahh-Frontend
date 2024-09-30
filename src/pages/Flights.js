@@ -56,8 +56,11 @@ const Flights = ({ id }) => {
     }    
   }, [flightSort]);
 
-  const flightCardCallback = () => {
-    history.push('/flightDetails');
+  const flightCardCallback = (data) => {
+    history.push({
+      pathname: '/flightDetails',
+      state: { from: 'Flight Card click', data: data }
+    });
   }
   
   const handlePanelCallbackParent = () => {
@@ -381,7 +384,7 @@ const Flights = ({ id }) => {
       <div className="container-xxl py-5 section-block">
         {flightsData.data.length > 0 && renderHeading()}
         
-        <div className="row mb-5 mt-5 d-flex justify-content-end">
+        <div className="row mb-4 mt-4 d-flex justify-content-end">
           <div className="col-auto">
             <div className="row g-1 align-items-center mb-2">
               <div className="col-auto">

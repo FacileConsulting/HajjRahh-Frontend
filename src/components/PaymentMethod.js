@@ -22,7 +22,7 @@ const PaymentMethod = forwardRef((props, ref) => {
     upi,
     emailSettings 
   } = useSelector(state => {
-    console.log('state.myAccount', state)
+    console.log('state.myAccount.apyment', state)
     return state.myAccount 
   });
   const [loading, setLoading] = useState(false);
@@ -136,19 +136,19 @@ const PaymentMethod = forwardRef((props, ref) => {
         <div className="col-4 mb-3">
           <p className="mb-1">Select mode of payments</p>
           <div className="form-check">
-            <Checkbox ref={childRefs[0]} id={"my-account-payment-method-credit-card"} keyName={"creditCard"} />
+            <Checkbox ref={childRefs[0]} id={"my-account-payment-method-credit-card"} keyName={"creditCard"} defaultValue={creditCard} />
             <label className="form-check-label mt-1" htmlFor="creditCardFor">
               Credit card
             </label>
           </div>
           <div className="form-check">
-            <Checkbox ref={childRefs[1]} id={"my-account-payment-method--debit-card"} keyName={"debitCard"} />
+            <Checkbox ref={childRefs[1]} id={"my-account-payment-method--debit-card"} keyName={"debitCard"} defaultValue={debitCard} />
             <label className="form-check-label mt-1" htmlFor="debitCardFor">
               Debit card
             </label>
           </div>
           <div className="form-check">
-            <Checkbox ref={childRefs[2]} id={"my-account-payment-method-upi"} keyName={"upi"} />
+            <Checkbox ref={childRefs[2]} id={"my-account-payment-method-upi"} keyName={"upi"} defaultValue={upi} />
             <label className="form-check-label mt-1" htmlFor="upiFor">
               UPI
             </label>

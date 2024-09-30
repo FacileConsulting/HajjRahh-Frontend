@@ -80,14 +80,13 @@ const NotificationSettings = ({ id }) => {
         <div className="col-4 mb-3">
         <p className="mb-1">Notification email</p>
           <div className="form-check">
-            <Radio ref={childRefs[0]} id={"my-account-notification-settings-email-enable"} name={"notification-settings-radio"} keyName={"emailSettings"} valueRadioName={"emailEnabled"} />
-            {/* <input className="form-check-input" type="radio" value="" id="flexRadioDefault1" checked /> */}
+            <Radio ref={childRefs[0]} id={"my-account-notification-settings-email-enable"} name={"notification-settings-radio"} keyName={"emailSettings"} valueRadioName={"emailEnabled"} defaultValue={emailSettings} />
             <label className="form-check-label mt-1" htmlFor="emailEnabledFor">
               Enable
             </label>
           </div>
           <div className="form-check">
-            <Radio ref={childRefs[1]} id={"my-account-notification-settings-email-disable"} name={"notification-settings-radio"} keyName={"emailSettings"} valueRadioName={"emailDisabled"} />
+            <Radio ref={childRefs[1]} id={"my-account-notification-settings-email-disable"} name={"notification-settings-radio"} keyName={"emailSettings"} valueRadioName={"emailDisabled"} defaultValue={emailSettings} />
             {/* <input className="form-check-input" type="radio" value="" id="flexRadioDefault2" /> */}
             <label className="form-check-label mt-1" htmlFor="emailDisabledFor">
               Disable

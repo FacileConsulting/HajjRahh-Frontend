@@ -184,7 +184,7 @@ const Register = forwardRef((props, ref) => {
       </div>
       <div className="row">
         <div className="col-12 mb-3">
-          <Input ref={childRefs[4]} id={"register-enter-password"} keyName={"enterPassword"} placeholder={"Enter password *"} />
+          <Input ref={childRefs[4]} id={"register-enter-password"} keyName={"enterPassword"} placeholder={"Enter password *"} type={"password"} />
         </div>
       </div>
       <div className="row">

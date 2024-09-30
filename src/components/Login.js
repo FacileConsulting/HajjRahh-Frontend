@@ -142,7 +142,7 @@ const Login = forwardRef((props, ref) => {
       </div>
       <div className="row">
         <div className="col-12 mb-3">
-          <Input ref={childRefs[1]} id={"register-enter-password"} keyName={"enterPasswordLogin"} placeholder={"Enter password"} />
+          <Input ref={childRefs[1]} id={"register-enter-password"} keyName={"enterPasswordLogin"} placeholder={"Enter password"} type={"password"} />
         </div>
       </div>
       <div className="row">

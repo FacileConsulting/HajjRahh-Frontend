@@ -4,9 +4,10 @@ import { changeInputFunc } from '../reducers/myAccountSlice';
 import { useDispatch } from 'react-redux';
 
 const Radio = forwardRef((props, ref) => {
-  let { id, keyName, name, valueRadioName } = props;
+  let { id, keyName, name, valueRadioName, defaultValue } = props;
   const dispatch = useDispatch();
-  const [value, setValue] = useState('');  
+  $(`#${id}`).prop('checked', defaultValue === valueRadioName);
+  const [value, setValue] = useState(defaultValue);  
 
   const resetRefCalled = (enableId, keyName, vals) => {
     $(`#${enableId}`).prop('checked', true);

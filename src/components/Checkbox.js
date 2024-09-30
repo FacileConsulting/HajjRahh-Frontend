@@ -4,9 +4,10 @@ import { changeInputFunc, resetInputFunc } from '../reducers/myAccountSlice';
 import { useDispatch } from 'react-redux';
 
 const Checkbox = forwardRef((props, ref) => {
-  let { id, keyName, disabled } = props;
-  const dispatch = useDispatch();
-  const [value, setValue] = useState(false);  
+  let { id, keyName, disabled, defaultValue } = props;
+  const dispatch = useDispatch();  
+  $(`#${id}`).prop('checked', defaultValue);
+  const [value, setValue] = useState(defaultValue);  
 
   const resetRefCalled = (index) => {
     console.log('sdfsdfsdfsdf@@@@@@@@@', id, keyName);
@@ -28,7 +29,7 @@ const Checkbox = forwardRef((props, ref) => {
   };
 
   return (
-    <input type="checkbox" name={keyName} className="form-check-input" id={id} onChange={handleChange} defaultChecked={value} disabled={disabled} />
+    <input type="checkbox" name={keyName} className="form-check-input" id={id} onChange={handleChange} defaultChecked={defaultValue} disabled={disabled} />
   )
 });
 

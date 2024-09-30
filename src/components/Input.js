@@ -3,7 +3,7 @@ import { changeInputFunc, resetInputFunc } from '../reducers/myAccountSlice';
 import { useDispatch } from 'react-redux';
 
 const Input = forwardRef((props, ref) => {
-  let { id, keyName, placeholder, disabled } = props;
+  let { id, keyName, placeholder, disabled, type } = props;
   const dispatch = useDispatch();
   const [value, setValue] = useState('');  
 
@@ -24,7 +24,7 @@ const Input = forwardRef((props, ref) => {
   };
 
   return (
-    <input type="text" className="form-control" disabled={disabled} id={id} placeholder={placeholder} onChange={handleChange} value={value} />
+    <input type={type ? type : "text"} className="form-control" disabled={disabled} id={id} placeholder={placeholder} onChange={handleChange} value={value} />
   )
 });
 
