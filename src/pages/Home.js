@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
 import { resetHomeFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
+import { updateFunc, roundOneWayFunc } from '../reducers/homeSlice';
 import Select from '../components/Select';
 import Counter from '../components/Counter';
 import { toastOptions } from '../toastify';
@@ -31,21 +32,25 @@ const Home = ({id, options}) => {
       label: 'Where to'
     },
     {
-      value: 'mecca',
-      label: 'Mecca'
+      value: 'AUH',
+      label: 'Abu Dhabi'
     },
     {
-      value: 'mount-arafat',
-      label: 'Mount Arafat'
+      value: 'DXB',
+      label: 'Dubai'
     },
     {
-      value: 'kaaba',
-      label: 'Kaaba'
+      value: 'SYD',
+      label: 'Sydney'
     },
     {
-      value: 'jabal-al-nour',
-      label: 'Jabal Al Nour'
+      value: 'LGA',
+      label: 'New York'
     },
+    {
+      value: 'LON',
+      label: 'London'
+    }
   ]
 
   const departureOptions = [
@@ -54,31 +59,40 @@ const Home = ({id, options}) => {
       label: 'Travelling From'
     },
     {
-      value: 'delhi',
-      label: 'Delhi'
+      value: 'BLR',
+      label: 'Bengaluru'
     },
     {
-      value: 'mumbai',
+      value: 'BOM',
       label: 'Mumbai'
     },
     {
-      value: 'kolkata',
+      value: 'CCU',
       label: 'Kolkata'
     },
     {
-      value: 'chennai',
+      value: 'MAA',
       label: 'Chennai'
     },
+    {
+      value: 'DEL',
+      label: 'Delhi'
+    }
   ]
 
   const [dateRange, setDateRange] = useState({ startDate: '', endDate: ''});
   const [loading, setLoading] = useState(false);
 
-  const handleOK = (value) => {  
-    const startDate = `${value[0].getDate()}-${value[0].getMonth()+1}-${value[0].getFullYear()}`; 
-    const endDate = `${value[1].getDate()}-${value[1].getMonth()+1}-${value[1].getFullYear()}`;
-    setDateRange({ startDate, endDate });
-    // console.log('dateRange', startDate, endDate, value[0].getDate() );
+  const handleOK = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: '' }));
+      setDateRange({ startDate: '', endDate: '' });
+    } else { 
+      const startDate = `${value[0].getDate()}-${value[0].getMonth()+1}-${value[0].getFullYear()}`; 
+      const endDate = `${value[1].getDate()}-${value[1].getMonth()+1}-${value[1].getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: startDate }));
+      setDateRange({ startDate, endDate });
+    }    
   }
 
   const handleCross = () => {  
@@ -97,21 +111,43 @@ const Home = ({id, options}) => {
       toast.info('Please select atleast one field', toastOptions);
       return;
     }
+    
+    const convertDate = (dateStr) => {
+      if (!dateStr) {
+        return ''
+      }
+      const [day, month, year] = dateStr.split('-');
+      const date = new Date(year, month - 1, day);
+      const formattedYear = date.getFullYear();
+      const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+      const formattedDay = String(date.getDate()).padStart(2, '0');
+      return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+    }
 
     const payload = {
-      departure: capitalizeWords(departure),
-      destination: capitalizeWords(destination),
+      departure: departure,
+      destination: destination,
       startDate: dateRange.startDate,
       endDate: dateRange.endDate,
       noOfPeople
-    }
-    console.log('sfsdfdfdf', departure, destination, noOfPeople, dateRange.startDate, dateRange.endDate);
+    };
+
+    const flightPayload = {
+      flyingFrom: departure,
+      flyingTo: destination,
+      flightDepartureDate: convertDate(dateRange.startDate)
+    };
+
+    console.log('sfsdfdfdf',flightPayload , departure, destination, noOfPeople, dateRange.startDate, dateRange.endDate);
     setLoading(true);
     let response = await handleAPIData('POST', '/api/searchHolidays', payload);
+    let resFlights = await handleAPIData('POST', '/api/searchFlights', flightPayload);
+    console.log('#resHolidaysresHolidayresHolidayss', resFlights);
     if (response.status === 'success' && response.data.data.length > 0) {
       history.push({
         pathname: '/holidays',
-        state: { from: 'Search Holidays button', data: response.data.data }
+        state: { from: 'Search Holidays button', data: { holidaysData: response.data.data, flightsData: resFlights?.data?.data || { data: [], dictionaries: {}, meta: {} }} }
+        // state: { from: 'Search Holidays button', data: response.data.data }
       });
       console.log('response', response.data.data);
     } else if (response.status === 'success' && response.data.data.length === 0) {
@@ -132,10 +168,10 @@ const Home = ({id, options}) => {
                       <div className="hero-form-title">Book for Hajj and Umrah</div>
                       <div className="row">
                           <div className="col">
-                            <Select id={"departure-select"} options={departureOptions} classes={"mb-3"} />
+                            <Select id={"departure-select"} options={departureOptions} keyName={"departure"} eventType={1} classes={"mb-3"} />
                           </div>
                           <div className="col">
-                            <Select id={"destination-select"} options={destinationOptions} classes={"mb-3"} />
+                            <Select id={"destination-select"} options={destinationOptions} keyName={"destination"} eventType={1} classes={"mb-3"} />
                           </div>
                       </div>
                       <div className="row">

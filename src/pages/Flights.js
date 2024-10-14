@@ -391,7 +391,7 @@ const Flights = ({ id }) => {
                 <span>Sort by:</span>
               </div>
               <div className="col-auto">
-                <Select id={"flights-sort"} options={sortOptions} classes={"form-sort"} /> 
+                <Select id={"flights-sort"} keyName={"flightSort"} eventType={1} options={sortOptions} classes={"form-sort"} /> 
               </div>
             </div>
           </div>

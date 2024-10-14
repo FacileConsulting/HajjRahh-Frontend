@@ -7,6 +7,7 @@ import store from './store';
 import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';
 import Holidays from './pages/Holidays';
+import HolidayDetails from './pages/HolidayDetails';
 import FlightDetails from './pages/FlightDetails';
 import Flights from './pages/Flights';
 import Trips from './pages/Trips';
@@ -105,7 +106,9 @@ const App = ({ message }) => {
   }, []); 
 
   useEffect(() => {
-    dispatch(resetHomeFunc());
+    if (location.pathname !== '/holidays') {
+      dispatch(resetHomeFunc());
+    }    
     console.log("Route changed to:", location.pathname);
   }, [location.pathname]);
 
@@ -195,6 +198,7 @@ const App = ({ message }) => {
           <Route path="/myAccount" component={MyAccount} />
           <Route path="/trips" component={Trips} /> 
           <Route path="/holidays" component={Holidays} /> 
+          <Route path="/holidayDetails" component={HolidayDetails} />
           <Route path="/flights" component={Flights} />
           <Route path="/flightDetails" component={FlightDetails} />
           <Route path="/loginRegister" component={LoginRegister} />

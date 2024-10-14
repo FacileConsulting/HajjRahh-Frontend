@@ -2,24 +2,31 @@ import React, { useState } from 'react';
 import { updateFunc } from '../reducers/homeSlice';
 import { useDispatch } from 'react-redux';
 
-const Select = ({ id, options, classes, selectIsList }) => {
+const Select = ({ id, options, classes, keyName, eventType, selectIsList, value }) => {
   const dispatch = useDispatch();
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState(value);
 
   const handleChange = (event) => {
-    if (id === 'departure-select' || id === 'holidays-modify-search-departure-select') {
-      dispatch(updateFunc({ keyName: 'departure', value: event.target.value }));
-    } else if (id === 'destination-select' || id === 'holidays-modify-search-destination-select') {
-      dispatch(updateFunc({ keyName: 'destination', value: event.target.value }));
-    } else if (id === 'holidays-sort') {
-      dispatch(updateFunc({ keyName: 'holidaySort', value: event.target.value }));
-    } else if (id === 'flights-sort') {
-      dispatch(updateFunc({ keyName: 'flightSort', value: event.target.value }));
-    } else if (id === 'flights-search-flying-from') {
-      dispatch(updateFunc({ keyName: 'flyingFrom', value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
-    } else if (id === 'flights-search-flying-to') {
-      dispatch(updateFunc({ keyName: 'flyingTo', value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
+    if (eventType === 1) {
+      dispatch(updateFunc({ keyName, value: event.target.value }));
+    } else if (eventType === 2) {
+      dispatch(updateFunc({ keyName, value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
     }
+    // if (id === 'departure-select' || id === 'holidays-modify-search-departure-select') {
+    //   dispatch(updateFunc({ keyName: 'departure', value: event.target.value }));
+    // } else if (id === 'destination-select' || id === 'holidays-modify-search-destination-select') {
+    //   dispatch(updateFunc({ keyName: 'destination', value: event.target.value }));
+    // } else if (id === 'holidays-sort') {
+    //   dispatch(updateFunc({ keyName: 'holidaySort', value: event.target.value }));
+    // } else if (id === 'flights-sort') {
+    //   dispatch(updateFunc({ keyName: 'flightSort', value: event.target.value }));
+    // } else if (id === 'flights-search-flying-from') {
+    //   dispatch(updateFunc({ keyName: 'flyingFrom', value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
+    // } else if (id === 'flights-search-flying-to') {
+    //   dispatch(updateFunc({ keyName: 'flyingTo', value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
+    // } else {
+
+    // }
     setSelectedOption(event.target.value);
   };
 

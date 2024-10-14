@@ -207,10 +207,10 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
         </div>
         <div className="row">
           <div className="col">
-            <Select id={"flights-search-flying-from"} options={flyingFromOptions} />
+            <Select id={"flights-search-flying-from"} keyName={"flyingFrom"} eventType={2} options={flyingFromOptions} />
           </div>
           <div className="col">
-            <Select id={"flights-search-flying-to"} options={flyingToOptions} />
+            <Select id={"flights-search-flying-to"} keyName={"flyingTo"} eventType={2} options={flyingToOptions} />
           </div>
           <div className="col">
             <div className="input-group">

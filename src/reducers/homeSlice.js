@@ -3,6 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const homeState = {
   roundOneWay: 'roundTrip',
   travelClass: 'ECONOMY^Economy',
+  flightClass: 'ECONOMY',
+  flightType: 'direct',
   noOfPeople: 1,
   adults: 1,
   children: 0,
