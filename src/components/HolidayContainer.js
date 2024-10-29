@@ -1,11 +1,13 @@
 import React from 'react';
 import Button from './Button';
 
-const HolidayContainer = ({ id, holidayData, flightsDatum, holidayCardCallback }) => {
+const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destination, holidayCardCallback }) => {
   console.log('holidayData', holidayData, flightsDatum);
 
   const handleHolidayViewDetailsClick = async (event) => {
     event.stopPropagation();
+    holidayData.departurePlace = departure;
+    holidayData.destinationPlace = destination;
     holidayCardCallback({ flightsDatum, holidayData });
   }
 
@@ -184,7 +186,8 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, holidayCardCallback }
     }
   }
 
-  const FlightButton = ({ id, flData }) => {
+  const FlightButton = ({ index, id, flData }) => {
+    flightsDatum.data[index] = { ...flData} ;
     return (
       <div id={id} key={id} className="cust-flight">
         <div className="d-flex flex-row">
@@ -242,7 +245,7 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, holidayCardCallback }
               (<>
                 {
                   Array.isArray(flightsDatum.data) && flightsDatum.data.length > 0 && flightsDatum.data.map((flight, index) => {
-                    return (<FlightButton id={`fl-${index}`} flData={modifyFlightData(flight, index)} />)
+                    return (<FlightButton index={index} id={`fl-${index}`} flData={modifyFlightData(flight, index)} />)
                   })
                 }
               </>

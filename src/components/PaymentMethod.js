@@ -13,6 +13,7 @@ const PaymentMethod = forwardRef((props, ref) => {
   const childRefs = [useRef(), useRef(), useRef()];
 
   const { 
+    userId,
     displayName, 
     displayEmail, 
     displayPhone, 
@@ -100,6 +101,7 @@ const PaymentMethod = forwardRef((props, ref) => {
       const { paymentMethodType } = response.data;
       const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
       const userDetails = { 
+        userId,
         username: displayName, 
         email: displayEmail,
         phoneNumber: displayPhone, 

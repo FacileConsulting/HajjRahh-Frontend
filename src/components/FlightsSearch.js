@@ -5,7 +5,7 @@ import { DatePicker } from 'rsuite';
 import Select from './Select';
 import Counter from './Counter';
 import Button from './Button';
-import { updateFunc, roundOneWayFunc } from '../reducers/homeSlice';
+import { updateFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
 import { toastOptions } from '../toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -136,15 +136,15 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
   const handleRoundTripClick = () => {
     setRoundTrip('active');
     setOneWay('');
-    dispatch(roundOneWayFunc('roundTrip'));
+    dispatch(updateFunc({ keyName: 'roundOneWay', value: 'roundTrip' }));
   }
 
   const handleOneWayClick = () => {
     setRoundTrip('');
     setOneWay('active');
     setFlightReturnDate(null);
+    dispatch(updateFunc({ keyName: 'roundOneWay', value: 'oneWay' }));
     dispatch(updateFunc({ keyName: 'flightReturnDate', value: '' }));
-    dispatch(roundOneWayFunc('oneWay'));
   }
 
   const renderGender = () => {
@@ -166,7 +166,7 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
                   </div>
                   <div className="col">
                     <a className="dropdown-item" href="#">
-                      <Counter id={`flights-search-${obj.id}`} counterByOther={true} defaultValue={obj.defaultValue} />
+                      <Counter id={`flights-search-${obj.id}`} counterByOther={true} defaultValue={obj.defaultValue} keyName={obj.id} />
                     </a>
                   </div>
                 </div>

@@ -8,6 +8,10 @@ import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';
 import Holidays from './pages/Holidays';
 import HolidayDetails from './pages/HolidayDetails';
+import HolidayBooking from './pages/HolidayBooking';
+import HolidayConfirmed from './pages/HolidayConfirmed';
+import Cabs from './pages/Cabs';
+import CabDetails from './pages/CabDetails';
 import FlightDetails from './pages/FlightDetails';
 import Flights from './pages/Flights';
 import Trips from './pages/Trips';
@@ -76,9 +80,10 @@ const App = ({ message }) => {
         console.log('###@#QW', checked, currRoute, userDetailsFromLocalStorage)
         if (checked && userDetailsFromLocalStorage) {
           console.log('###@#eee eeeeeeeQW', checked, currRoute, userDetailsFromLocalStorage)
-          const { username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage); 
+          const { userId, username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage); 
           dispatch(resetHomeFunc());
           dispatch(resetMyAccountFunc());
+          dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
           dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
           dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
           dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
@@ -148,7 +153,7 @@ const App = ({ message }) => {
                 </li>
                 <li className="nav-item text-center">
                   <span className="nav-menu-icon img-cabs"></span> <br />
-                  <a className="nav-link" aria-current="page">Cabs</a>
+                  <Link to="/cabs">Cabs</Link>
                 </li>
                 <li className="nav-item text-center">
                   <span className="nav-menu-icon img-invest"></span> <br />
@@ -168,7 +173,8 @@ const App = ({ message }) => {
                   </>
                 }
                 <li className="nav-item">
-                  <a className="nav-link" href="#">Support</a>
+                  <Link to="/holidayBooking">Support</Link>  
+                  {/* <a className="nav-link" href="#">Support</a> */}
                 </li>
                 {
                   isLoggedIn ?
@@ -199,6 +205,10 @@ const App = ({ message }) => {
           <Route path="/trips" component={Trips} /> 
           <Route path="/holidays" component={Holidays} /> 
           <Route path="/holidayDetails" component={HolidayDetails} />
+          <Route path="/holidayBooking" component={HolidayBooking} /> 
+          <Route path="/holidayConfirmed" component={HolidayConfirmed} />
+          <Route path="/cabs" component={Cabs} />
+          <Route path="/cabDetails" component={CabDetails} />
           <Route path="/flights" component={Flights} />
           <Route path="/flightDetails" component={FlightDetails} />
           <Route path="/loginRegister" component={LoginRegister} />

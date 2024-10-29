@@ -82,8 +82,9 @@ const EditProfile = forwardRef((props, ref) => {
     let response = await handleAPIData('POST', '/api/myAccount', payload);
     if (response.status === 'success' && response.data) {
       toast.success('Profile updated successfully', toastOptions);
-      const { username, email, phoneNumber, address } = response.data;
-      const userDetails = { 
+      const { username, email, phoneNumber, address, userId } = response.data;
+      const userDetails = {
+        userId, 
         username, 
         email,
         phoneNumber, 
@@ -94,6 +95,7 @@ const EditProfile = forwardRef((props, ref) => {
         isEnabledEmailNotification: emailSettings,
       };
       handleCancelClick();
+      dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
       dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
       dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
       dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));

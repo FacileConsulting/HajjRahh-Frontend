@@ -11,6 +11,7 @@ const NotificationSettings = ({ id }) => {
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef()];
   const { 
+    userId,
     displayName, 
     displayEmail, 
     displayPhone, 
@@ -44,6 +45,7 @@ const NotificationSettings = ({ id }) => {
     if (response.status === 'success' && response.data?.isEnabledEmailNotification) {
       const { isEnabledEmailNotification } = response.data;
       const userDetails = { 
+        userId,
         username: displayName, 
         email: displayEmail,
         phoneNumber: displayPhone, 

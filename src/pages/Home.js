@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
 import { resetHomeFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
-import { updateFunc, roundOneWayFunc } from '../reducers/homeSlice';
+import { updateFunc } from '../reducers/homeSlice';
 import Select from '../components/Select';
 import Counter from '../components/Counter';
 import { toastOptions } from '../toastify';
@@ -186,7 +186,7 @@ const Home = ({id, options}) => {
                               <label>How many people ?</label>
                             </div>
                             <div className="col">
-                              <Counter id="how-many-people" />
+                              <Counter id="how-many-people" keyName="noOfPeople" />
                             </div>
                           </div>
                           </div>

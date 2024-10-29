@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const homeState = {
+  cabTripType: 'roundTrip',
   roundOneWay: 'roundTrip',
   travelClass: 'ECONOMY^Economy',
   flightClass: 'ECONOMY',
@@ -18,9 +19,6 @@ export const homeSlice = createSlice({
   name: 'home',
   initialState: homeState,
   reducers: {
-    roundOneWayFunc: (state, action) => {
-      state.roundOneWay = action.payload;
-    },
     updateFunc: (state, action) => {
       state[action.payload.keyName] = action.payload.value;
     },
@@ -40,7 +38,6 @@ export const homeSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { 
-  roundOneWayFunc,
   updateFunc,
   dateFunc,
   dateResetFunc,

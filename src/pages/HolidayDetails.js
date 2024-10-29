@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Counter from '../components/Counter';
+import Button from '../components/Button';
+import { updateFunc, dateFunc, dateResetFunc } from '../reducers/homeSlice';
 import { DatePicker } from 'rsuite';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 
+// 022 68446530 
+
+
+
 const HolidayDetails = ({ id }) => {
   localStorage.setItem('current_route', '/holidayDetails');
+  const { departure, destination, roundOneWay, adults, children, infants, holidayDetailsStartDate, holidayDetailsEndDate } = useSelector(state => state.home);
   const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
   const { state } = location;
-  const [flightData, setFlightData] = useState({});
+  const [flightData, setFlightData] = useState({}); 
   const [flightsDatum, setFlightsDatum] = useState(state?.data?.flightsDatum || null);
   const [holidayData, setHolidayData] = useState(state?.data?.holidayData || null);
   const [loading, setLoading] = useState(false);
@@ -25,6 +34,82 @@ const HolidayDetails = ({ id }) => {
     lineHeight: '50px',
     borderRadius: '6px'
   };
+  
+  const departureArray = [
+    {
+      value: 'BLR',
+      label: 'Bengaluru'
+    },
+    {
+      value: 'BOM',
+      label: 'Mumbai'
+    },
+    {
+      value: 'CCU',
+      label: 'Kolkata'
+    },
+    {
+      value: 'MAA',
+      label: 'Chennai'
+    },
+    {
+      value: 'DEL',
+      label: 'Delhi'
+    }
+  ];
+  
+  const destinationArray = [
+    {
+      value: 'AUH',
+      label: 'Abu Dhabi'
+    },
+    {
+      value: 'DXB',
+      label: 'Dubai'
+    },
+    {
+      value: 'SYD',
+      label: 'Sydney'
+    },
+    {
+      value: 'LGA',
+      label: 'New York'
+    },
+    {
+      value: 'LON',
+      label: 'London'
+    }
+  ];
+
+  const handleBookNowClick = () => {
+    const filteredFlightActive = flightsDatum.data.filter(o => o.holidayDetailActive === 'active');
+    if (!holidayDetailsStartDate) {
+      toast.info('Please select state date', toastOptions);
+      return;
+    }
+    if (!holidayDetailsEndDate) {
+      toast.info('Please select end date', toastOptions);
+      return;
+    }
+    if (filteredFlightActive.length ===  1) {
+      const obDep = departureArray.find( obj => obj.value === holidayData.departurePlace);
+      const obDes = destinationArray.find( obj => obj.value === holidayData.destinationPlace);
+      holidayData.departurePlaceLabel = obDep.label;
+      holidayData.destinationPlaceLabel = obDes.label;
+      holidayData.holidayDetailsStartDate = formatToTxtDateOther(holidayDetailsStartDate);
+      holidayData.holidayDetailsEndDate = formatToTxtDateOther(holidayDetailsEndDate);
+      flightData.adults = adults;
+      flightData.children = children;
+      flightData.infants = infants;
+      console.log('WWWWWWWWWW', flightData, holidayData);
+      history.push({
+        pathname: '/holidayBooking',
+        state: { from: 'Holiday Book Now', data: { flightData, holidayData } }
+      });
+    } else {
+      toast.info('Please select atleast one flight', toastOptions);
+    }
+  }
 
 
   const handleFlightButtonClick = (event, index) => {
@@ -41,13 +126,23 @@ const HolidayDetails = ({ id }) => {
     console.log('flightsDatumflightsDatumflightsDatumflightsDatum', flightsDatum);
     setFlightsDatum(flightsDatum);
   }
-
-  const handleHolidayStartDate = () => {
-
+  
+  const handleHolidayStartDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'holidayDetailsStartDate', value: '' }));
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'holidayDetailsStartDate', value: date }));
+    }    
   }
-
-  const handleHolidayEndDate = () => {
-
+  
+  const handleHolidayEndDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'holidayDetailsEndDate', value: '' }));
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'holidayDetailsEndDate', value: date }));
+    }    
   }
 
   const renderGender = () => {
@@ -69,7 +164,7 @@ const HolidayDetails = ({ id }) => {
                   </div>
                   <div className="col">
                     <a className="dropdown-item" href="#">
-                      <Counter id={`holiday-details-${obj.id}`} counterByOther={true} defaultValue={obj.defaultValue} />
+                      <Counter id={`holiday-details-${obj.id}`} counterByOther={true} defaultValue={obj.defaultValue} keyName={obj.id} />
                     </a>
                   </div>
                 </div>
@@ -157,6 +252,26 @@ const HolidayDetails = ({ id }) => {
       returned.push(`${formatted} | ${part0}`);
     }
     return returned;
+  }
+  
+  const formatToTxtDateOther = (inputDate) => {
+    // Split the input string by '-'
+    const [day, month, year] = inputDate.split('-').map(Number);
+    
+    // Create a new Date object (month - 1 because months are 0-indexed)
+    const date = new Date(year, month - 1, day);
+
+    // Define options for formatting
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    
+    // Format the date
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    
+    // Replace the weekday with the correct short format
+    const [weekday, monthName, dayNum, yearNum] = formattedDate.split(' ');
+    
+    // Return the final formatted date
+    return `${weekday} ${monthName} ${dayNum} ${yearNum}`;
   }
 
   const formatToTxtDate = (dateString) => {
@@ -571,9 +686,7 @@ const HolidayDetails = ({ id }) => {
               <div className="booking-details-block booking-dates">
                 <div className="input-group mb-3">
                   <DatePicker oneTap id="holiday-details-start-date-datepicker" size="lg" style={dateStyles} placeholder="Start Date" onChange={handleHolidayStartDate} format="dd-MM-yyyy" />
-                  {/* <input type="text" className="form-control form-addon" placeholder="Start date" aria-label="Travelling dates"
-                        aria-describedby="basic-addon2" />
-                        <span className="input-group-text" id="basic-addon2"><i className="bi bi-calendar-event"></i></span> */}
+                  
                 </div>
                 <div className="input-group">
                   <DatePicker oneTap id="holiday-details-end-date-datepicker" size="lg" style={dateStyles} placeholder="End Date" onChange={handleHolidayEndDate} format="dd-MM-yyyy" />
@@ -585,91 +698,10 @@ const HolidayDetails = ({ id }) => {
                   </a>
                   <ul className="dropdown-menu dropmenu-guest" aria-labelledby="dropdownMenuClickableInside">
                     {renderGender()}
-                    {/* <li>
-                          <div className="row">
-                            <div className="col">
-                              <h4 className="mb-0">Adult</h4>
-                              <p className="small-text">Ages 13 or above</p>
-                            </div>
-                            <div className="col">
-                              <a className="dropdown-item" href="#">
-                                <div className="input-group">
-                                  <span className="input-group-btn">
-                                    <button type="button" className="btn-number" disabled="disabled" data-type="minus"
-                                      data-field="quant[1]">
-                                      <span className="bi bi-dash"></span>
-                                    </button>
-                                  </span>
-                                  <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1"
-                                    max="10" />
-                                    <span className="input-group-btn">
-                                      <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
-                                        <span className="bi bi-plus"></span>
-                                      </button>
-                                    </span>
-                                </div>
-                              </a>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="row">
-                            <div className="col">
-                              <h4 className="mb-0">Children</h4>
-                              <p className="small-text">Ages 2-12</p>
-                            </div>
-                            <div className="col">
-                              <a className="dropdown-item" href="#">
-                                <div className="input-group">
-                                  <span className="input-group-btn">
-                                    <button type="button" className="btn-number" disabled="disabled" data-type="minus"
-                                      data-field="quant[1]">
-                                      <span className="bi bi-dash"></span>
-                                    </button>
-                                  </span>
-                                  <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1"
-                                    max="10" />
-                                    <span className="input-group-btn">
-                                      <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
-                                        <span className="bi bi-plus"></span>
-                                      </button>
-                                    </span>
-                                </div>
-                              </a>
-                            </div>
-                          </div>
-                        </li>
-                        <li>
-                          <div className="row">
-                            <div className="col">
-                              <h4 className="mb-0">Infants</h4>
-                              <p className="small-text">0-2</p>
-                            </div>
-                            <div className="col">
-                              <a className="dropdown-item" href="#">
-                                <div className="input-group">
-                                  <span className="input-group-btn">
-                                    <button type="button" className="btn-number" disabled="disabled" data-type="minus"
-                                      data-field="quant[1]">
-                                      <span className="bi bi-dash"></span>
-                                    </button>
-                                  </span>
-                                  <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1"
-                                    max="10" />
-                                    <span className="input-group-btn">
-                                      <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
-                                        <span className="bi bi-plus"></span>
-                                      </button>
-                                    </span>
-                                </div>
-                              </a>
-                            </div>
-                          </div>
-                        </li> */}
                   </ul>
                 </div>
-                <div className="d-grid gap-2 mt-3">
-                  <a href="#!" className="btn btn-primary btn-block">Book now</a>
+                <div className="d-grid gap-2 mt-3">                                    
+                  <Button id={"holiday-details-book-now-btn"} handleBtnClick={handleBookNowClick} btnType={"primary"} classes={"btn-block"} label={"Book Now"} />
                 </div>
               </div>
             </div>

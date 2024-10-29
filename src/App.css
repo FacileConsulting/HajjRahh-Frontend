@@ -166,6 +166,12 @@ a:hover {
   color: #F66F4D;
   text-decoration: none;
 }
+a.coloured-link {
+  color: #F66F4D;
+}
+a.coloured-link:hover {
+  text-decoration: underline;
+}
 .colour-title {
   color: #F66F4D;
   font-family: 'font-regular';
@@ -178,11 +184,18 @@ a:hover {
   font-size: 18px;
   line-height: 28px;
 }
+.hero-text >span {
+  font-family: 'font-medium';
+  color: #000000;
+}
 .form-select, .form-control {
   border: 1px solid #79747E;
   height: 56px;
   font-size: 16px;
   line-height: 38px;
+}
+.form-control-sm {
+  height: 40px;
 }
 .form-select:focus, .form-control:focus {
   box-shadow: none;
@@ -512,8 +525,8 @@ a:hover {
     color: #ffffff;
 }
 .dropmenu-guest .dropdown-item .input-number {
-    margin-left: 7px !important;
-    margin-right: 7px;
+    margin-left: 12px !important;
+    margin-right: 12px;
     height: 32px;
     width: 24px !important;
     border-radius: 8px !important;
@@ -646,6 +659,7 @@ a:hover {
 }
 .flight-details.flight-details-big {
     background-color: #ffffff;
+    padding: 12px;
 }
 .flight-details-big .airport-details {
     width: 100%;
@@ -850,6 +864,91 @@ a:hover {
 }
 
 /* Holidays List Page ends */
+
+.trip-summary {
+  background-color: #fafafa;
+  border: 1px solid #e9e9e9;
+  border-radius: 16px;
+  padding: 16px;
+}
+.coupon-type .coupon-name {
+  background-color: #e9e9e9;
+  border-radius: 4px;
+  padding: 4px;
+  font-family: 'font-medium';
+}
+.coupon-type >a {
+  color: #F66F4D;
+}
+.coupon-type >a:hover {
+  text-decoration: underline;
+}
+.booking-grand-total {
+  background-color: #e9e9e9;
+  padding: 12px;
+  border-radius: 0px 0px 16px 16px;
+}
+.booking-grand-total >h2 {
+  margin-bottom: 0px;
+  margin-top: 8px;
+}
+.booking-grand-total >h2 >span {
+  font-size: 14px;
+  font-family: 'font-regular';
+}
+.tabs-cards .nav-link{
+  color: #000000;
+  text-align: left;
+  margin: 8px 0px;
+  padding: 8px 0px;
+}
+.tabs-cards .nav-link.active {
+  color: #F66F4D;
+  border-bottom: 1px solid #F66F4D;
+}
+.confirmed-image {
+  max-width: 200px;
+  margin-top: 80px;
+}
+.cabs-block {
+  border: 1px solid #e9e9e9;
+  padding: 24px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+.offer {
+  color: #ff0000;
+}
+.cab-image {
+  width: 128px;
+  height: 64px;
+  background-color: #FEF3F1;
+  border-radius: 16px;
+  padding: 16px;
+  overflow: hidden;
+}
+.cab-price {
+  margin-bottom: 4px;
+}
+.cab-price >span {
+  text-decoration: line-through;
+  color: #484646;
+  font-size: 24px;
+  font-family: 'font-regular';
+}
+.cab-conditions >li {
+  margin-bottom: 12px;
+  color: #484646;
+}
+.cab-conditions, .cab-conditions >li:last-child {
+  margin-bottom: 0px;
+}
+.cabs-separator {
+  margin: 16px 0px;
+  background-color: #e9e9e9;
+  height: 1px;
+  width: 100%;
+}
 @media screen and (max-width: 992px) {
   .navbar-nav {
       display: inline-block;
@@ -932,7 +1031,10 @@ a:hover {
 .mb-16 {
   margin-bottom: 16px;
 }
-.booking-details-block.booking-dates .rs-picker.rs-picker-date  {
+.booking-details-block.booking-dates .rs-picker.rs-picker-date {
   height: unset !important;
   width: 100%;
+}
+.passengers-booking .rs-picker.rs-picker-date {
+  height: 53px !important;
 }

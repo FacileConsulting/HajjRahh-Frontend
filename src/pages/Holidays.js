@@ -243,7 +243,7 @@ const Holidays = ({ id }) => {
               <>
                 {
                   Array.isArray(holidaysData) && holidaysData.length > 0 && holidaysData.map((holiday, index) => {
-                    return (<HolidayContainer id={`holiday-${index}`} holidayData={holiday} flightsDatum={flightsDatum} holidayCardCallback={holidayCardCallback} />)
+                    return (<HolidayContainer id={`holiday-${index}`} holidayData={holiday} flightsDatum={flightsDatum} departure={departure} destination={destination} holidayCardCallback={holidayCardCallback} />)
                   })
                 }
               </>

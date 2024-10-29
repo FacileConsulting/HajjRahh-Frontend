@@ -87,6 +87,7 @@ const Login = forwardRef((props, ref) => {
 
     setLoading(true);
     let response = await handleAPIData('POST', '/api/login', payload);
+    console.log('QQQQQQQQQQQQQQQQQQQQQQQ', response);
     if (response.status === 'success' && response.data.invalidPassword && response.data.message) {
       toast.error(response.data.message, toastOptions);
     } else if (response.status === 'success' && response.data.invalidUser && response.data.message) {
@@ -97,9 +98,10 @@ const Login = forwardRef((props, ref) => {
       handleCancelClick();
       // dispatch(resetHomeFunc());
       // dispatch(resetInputFunc());
-      const { username, email, phoneNumber, address, paymentMethodType, isEnabledEmailNotification } = response.data;
+      const { userId, username, email, phoneNumber, address, paymentMethodType, isEnabledEmailNotification } = response.data;
       const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
-      const userDetails = { username, email, phoneNumber, address, ...allPaymentMethodObj, isEnabledEmailNotification };
+      const userDetails = { userId, username, email, phoneNumber, address, ...allPaymentMethodObj, isEnabledEmailNotification };
+      dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
       dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
       dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
       dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
