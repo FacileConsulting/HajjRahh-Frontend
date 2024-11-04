@@ -2,574 +2,396 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { DateRangePicker } from 'rsuite';
+import { DatePicker } from 'rsuite';
 import { resetHomeFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
 import { updateFunc } from '../reducers/homeSlice';
 import Select from '../components/Select';
+import SearchInput from '../components/SearchInput';
+import DefaultBody from '../components/DefaultBody';
 import Counter from '../components/Counter';
-import { toastOptions } from '../toastify';
-import 'rsuite/DateRangePicker/styles/index.css';
-import 'react-toastify/dist/ReactToastify.css';
-
-const Home = ({id, options}) => {
+import Button from '../components/Button';
+import Traveller from '../components/Traveller';
+const Home = ({ id, options }) => {
   localStorage.setItem('current_route', '/');
   const dispatch = useDispatch();
   const history = useHistory();
-  const { departure, destination, noOfPeople } = useSelector(state => state.home);
+  const { adults, children, infants, travelClass, flyingFrom, flyingTo, flightDepartureDate, flightReturnDate } = useSelector(state => state.home);
+  
 
   const dateStyles = {
-    border: '1px solid #79747E', 
-    height: '56px', 
-    fontSize:'16px', 
+    border: '1px solid #79747E',
+    height: '56px',
+    fontSize: '16px',
     lineHeight: '38px',
     borderRadius: '6px'
   }
 
-  const destinationOptions = [
-    {
-      value: '',
-      label: 'Where to'
-    },
+  const destinationOptions = [    
     {
       value: 'AUH',
-      label: 'Abu Dhabi'
-    },
+      label: 'Abu Dhabi',
+      airport: 'Zayed International Airport',
+      country: 'UAE'
+    },   
     {
       value: 'DXB',
-      label: 'Dubai'
-    },
+      label: 'Dubai',
+      airport: 'Dubai International Airport',
+      country: 'UAE'
+    },   
     {
       value: 'SYD',
-      label: 'Sydney'
-    },
+      label: 'Sydney',
+      airport: 'Sydney Airport',
+      country: 'Australia'
+    }, 
     {
       value: 'LGA',
-      label: 'New York'
+      label: 'New York',
+      airport: 'LaGuardia Airport',
+      country: 'USA'
     },
     {
       value: 'LON',
-      label: 'London'
+      label: 'London',
+      airport: 'London City Airport',
+      country: 'England'
     }
   ]
 
   const departureOptions = [
     {
-      value: '',
-      label: 'Travelling From'
-    },
-    {
       value: 'BLR',
-      label: 'Bengaluru'
+      label: 'Bengaluru',
+      airport: 'Kempegowda International Airport',
+      country: 'India'
     },
     {
       value: 'BOM',
-      label: 'Mumbai'
+      label: 'Mumbai',
+      airport: 'Chhatrapati Shivaji Maharaj International Airport',
+      country: 'India'
     },
     {
       value: 'CCU',
-      label: 'Kolkata'
+      label: 'Kolkata',
+      airport: 'Netaji Subhas Chandra Bose International Airport',
+      country: 'India'
     },
     {
       value: 'MAA',
-      label: 'Chennai'
+      label: 'Chennai',
+      airport: 'Chennai International Airport',
+      country: 'India'
     },
     {
       value: 'DEL',
-      label: 'Delhi'
+      label: 'Delhi',
+      airport: 'Indira Gandhi International Airport',
+      country: 'India'
+    },
+    {
+      value: 'DEL',
+      label: 'New Delhi',
+      airport: 'Indira Gandhi International Airport',
+      country: 'India'
+    },
+    {
+      value: 'DEL',
+      label: 'Delhi Dil',
+      airport: 'Indira Gandhi International Airport',
+      country: 'India'
     }
   ]
 
-  const [dateRange, setDateRange] = useState({ startDate: '', endDate: ''});
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  const [departureDate, setDepartureDate] = useState(null);
+  const [departureDay, setDepartureDay] = useState('');
+  const [returnDate, setReturnDate] = useState(null);
+  const [returnDay, setReturnDay] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleOK = (value) => {
+  
+
+  const handleDepartureDate = (value) => {
     if (value == null) {
-      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: '' }));
-      setDateRange({ startDate: '', endDate: '' });
-    } else { 
-      const startDate = `${value[0].getDate()}-${value[0].getMonth()+1}-${value[0].getFullYear()}`; 
-      const endDate = `${value[1].getDate()}-${value[1].getMonth()+1}-${value[1].getFullYear()}`;
-      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: startDate }));
-      setDateRange({ startDate, endDate });
+      dispatch(updateFunc({ keyName: 'flightDepartureDate', value: '' }));
+      setDepartureDate(null);
+      setDepartureDay('');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'flightDepartureDate', value: date }));
+      setDepartureDate(value);
+      setDepartureDay(daysOfWeek[value.getDay()]);
     }    
   }
 
-  const handleCross = () => {  
-    setDateRange({ startDate: '', endDate: '' });
+  const handleReturnDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'flightReturnDate', value: '' }));
+      setReturnDate(null);
+      setReturnDay('');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'flightReturnDate', value: date }));
+      setReturnDate(value);
+      setReturnDay(daysOfWeek[value.getDay()]);
+    }    
   }
 
-  const capitalizeWords = (str) => { 
+  const capitalizeWords = (str) => {
     return str.replace(/\b\w/g, char => char.toUpperCase());
   }
 
-  const handleSearchHolidays = async () => {
-    if (loading) {
-      return;
-    }
-    if (!departure && !destination && !dateRange.startDate && !dateRange.endDate && !noOfPeople) {
-      toast.info('Please select atleast one field', toastOptions);
-      return;
-    }
-    
-    const convertDate = (dateStr) => {
-      if (!dateStr) {
-        return ''
-      }
-      const [day, month, year] = dateStr.split('-');
-      const date = new Date(year, month - 1, day);
-      const formattedYear = date.getFullYear();
-      const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
-      const formattedDay = String(date.getDate()).padStart(2, '0');
-      return `${formattedYear}-${formattedMonth}-${formattedDay}`;
-    }
+  const handleSearchHolidays = () => {
 
-    const payload = {
-      departure: departure,
-      destination: destination,
-      startDate: dateRange.startDate,
-      endDate: dateRange.endDate,
-      noOfPeople
-    };
-
-    const flightPayload = {
-      flyingFrom: departure,
-      flyingTo: destination,
-      flightDepartureDate: convertDate(dateRange.startDate)
-    };
-
-    console.log('sfsdfdfdf',flightPayload , departure, destination, noOfPeople, dateRange.startDate, dateRange.endDate);
-    setLoading(true);
-    let response = await handleAPIData('POST', '/api/searchHolidays', payload);
-    let resFlights = await handleAPIData('POST', '/api/searchFlights', flightPayload);
-    console.log('#resHolidaysresHolidayresHolidayss', resFlights);
-    if (response.status === 'success' && response.data.data.length > 0) {
-      history.push({
-        pathname: '/holidays',
-        state: { from: 'Search Holidays button', data: { holidaysData: response.data.data, flightsData: resFlights?.data?.data || { data: [], dictionaries: {}, meta: {} }} }
-        // state: { from: 'Search Holidays button', data: response.data.data }
-      });
-      console.log('response', response.data.data);
-    } else if (response.status === 'success' && response.data.data.length === 0) {
-      toast.warning('Search Holidays Not Found.', toastOptions);
-      console.log('responsezero', response.data);
-    } else {
-      toast.error('Something went wrong. Please try again.', toastOptions);
-    }
-    setLoading(false);
   }
+
+  //   const convertDate = (dateStr) => {
+  //     if (!dateStr) {
+  //       return ''
+  //     }
+  //     const [day, month, year] = dateStr.split('-');
+  //     const date = new Date(year, month - 1, day);
+  //     const formattedYear = date.getFullYear();
+  //     const formattedMonth = String(date.getMonth() + 1).padStart(2, '0');
+  //     const formattedDay = String(date.getDate()).padStart(2, '0');
+  //     return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+  //   }
+
+  //   const payload = {
+  //     departure: departure,
+  //     destination: destination,
+  //     startDate: departureDate,
+  //     endDate: returnDate,
+  //     noOfPeople
+  //   };
+
+  //   const flightPayload = {
+  //     flyingFrom: departure,
+  //     flyingTo: destination,
+  //     flightDepartureDate: convertDate(departureDate),
+  //     flightReturnDate: convertDate(returnDate)
+  //   };
+
+  //   console.log('sfsdfdfdf', flightPayload, departure, destination, noOfPeople);
+  //   setLoading(true);
+  //   let response = await handleAPIData('POST', '/api/searchHolidays', payload);
+  //   let resFlights = await handleAPIData('POST', '/api/searchFlights', flightPayload);
+  //   console.log('#resHolidaysresHolidayresHolidayss', resFlights);
+  //   if (response.status === 'success' && response.data.data.length > 0) {
+  //     history.push({
+  //       pathname: '/holidays',
+  //       state: { from: 'Search Holidays button', data: { holidaysData: response.data.data, flightsData: resFlights?.data?.data || { data: [], dictionaries: {}, meta: {} } } }
+  //       // state: { from: 'Search Holidays button', data: response.data.data }
+  //     });
+  //     console.log('response', response.data.data);
+  //   } else if (response.status === 'success' && response.data.data.length === 0) {
+  //     toast.warning('Search Holidays Not Found.', toastOptions);
+  //     console.log('responsezero', response.data);
+  //   } else {
+  //     toast.error('Something went wrong. Please try again.', toastOptions);
+  //   }
+  //   setLoading(false);
+  // }
 
   return (
     <>
-      <div className="container-xxl py-5 section-block-hero">
-          <div className="row align-items-center">
-              <div className="col-lg-6 col-md-12 order-md-2 order-lg-1">
-                  <div className="booking-form">
-                      <div className="hero-form-title">Book for Hajj and Umrah</div>
-                      <div className="row">
-                          <div className="col">
-                            <Select id={"departure-select"} options={departureOptions} keyName={"departure"} eventType={1} classes={"mb-3"} />
-                          </div>
-                          <div className="col">
-                            <Select id={"destination-select"} options={destinationOptions} keyName={"destination"} eventType={1} classes={"mb-3"} />
-                          </div>
+      <div className="container section-block-hero">
+        <div className="row">
+          <div className="col-lg-12 col-md-12 text-center">
+            <h1 className="mb-2 hero-title">Embark on a Sacred Journey with Us</h1>
+            <p className="hero-text mb-4">Your Trusted Companion for a Hassle-Free Hajj and Umrah Experience</p>
+          </div>
+          <div className="col-lg-12 col-md-12">
+            <div className="booking-form">
+              <div className="hero-form-title">Book for Hajj and Umrah</div>
+              <div className="row">
+                <div className="col">
+                  <div className="mb-3">
+                    <SearchInput
+                      id={"departure-search-input"}
+                      keyName={"flyingFrom"}
+                      placeholder={"Travelling from"}
+                      lowerOne={"DEL"}
+                      middle={"New Delhi"}
+                      lowerTwo={"Indira Gandhi International Airport"}
+                      options={departureOptions}
+                    /> 
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="mb-3">
+                    <SearchInput
+                      id={"destination-search-input"}
+                      keyName={"flyingTo"}
+                      placeholder={"Travelling to"}
+                      lowerOne={"AUH"}
+                      middle={"Abu Dhabi"}
+                      lowerTwo={"Zayed International Airport"}
+                      options={destinationOptions}
+                    /> 
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="mb-3 departure-date-home-page">
+                    <a href="#!" className="form-selection">
+                      <label htmlFor="depature" className="form-label">Depature Date</label>
+                      <div className="input-group">
+                        <DatePicker oneTap id="flights-search-home-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} format="dd-MM-yyyy" />
+                        {/* <DateRangePicker size="lg" style={dateStyles} placeholder="Travelling dates" onChange={handleCross} onOk={handleOK} format="dd-MM-yyyy" /> */}
+                        {/* <input type="text" className="form-control header-form" placeholder="23-Oct-2024" aria-label="Travelling dates" aria-describedby="depature" /> */}
+                        {/* <span className="input-group-text header-form-addon" id="depature"><i className="bi bi-calendar-event"></i></span> */}
                       </div>
-                      <div className="row">
-                          <div className="col">
-                              <div className="input-group mb-3">
-                                <DateRangePicker size="lg" style={dateStyles} placeholder="Travelling dates" onChange={handleCross} onOk={handleOK} format="dd-MM-yyyy" />
-                              </div>
-                          </div>
-                          <div className="col">
+                      <div className="helper-text">{departureDay}</div>
+                    </a>
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="mb-3 departure-date-home-page">
+                    <a href="#!" className="form-selection">
+                      <label htmlFor="return" className="form-label">Return Date</label>
+                      <div className="input-group">
+                        <DatePicker oneTap id="flights-search-home-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} format="dd-MM-yyyy" />
+                        {/* <input type="text" className="form-control header-form" placeholder="26-Oct-2024" aria-label="Travelling dates" aria-describedby="return" /> */}
+                        {/* <span className="input-group-text header-form-addon" id="return"><i className="bi bi-calendar-event"></i></span> */}
+                      </div>
+                      <div className="helper-text">{returnDay}</div>
+                    </a>
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="mb-3">
+                    <Traveller
+                      id={"flight-traveller"}
+                      keyName={"travelClass"}
+                      placeholder={"Travelers & Class"}
+                      defaultTravellers={"1"}
+                      defaultFlightClass={"Economy"}
+                      defaultValue={travelClass}
+                    /> 
+                    {/* <div className="dropdown">
+                      <a className="form-selection" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <label for="travelers" className="form-label">Travelers & Class</label>
+                        <div className="header-form">2 Travellers</div>
+                        <div className="helper-text">Economy</div>
+                      </a>
+                      <ul className="dropdown-menu dropmenu-guest" aria-labelledby="dropdownMenuClickableInside">
+                        <li>
                           <div className="row">
                             <div className="col">
-                              <label>How many people ?</label>
+                              <h4 className="mb-0">Adult</h4> <p className="small-text">Ages 13 or above</p>
                             </div>
                             <div className="col">
-                              <Counter id="how-many-people" keyName="noOfPeople" />
+                              <a className="dropdown-item" href="#">
+                                <div className="input-group">
+                                  <span className="input-group-btn">
+                                    <button type="button" className="btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                      <span className="bi bi-dash"></span>
+                                    </button>
+                                  </span>
+                                  <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1" max="10" />
+                                  <span className="input-group-btn">
+                                    <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
+                                      <span className="bi bi-plus"></span>
+                                    </button>
+                                  </span>
+                                </div>
+                              </a>
                             </div>
                           </div>
+                        </li>
+                        <li>
+                          <div className="row">
+                            <div className="col">
+                              <h4 className="mb-0">Children</h4> <p className="small-text">Ages 2-12</p>
+                            </div>
+                            <div className="col">
+                              <a className="dropdown-item" href="#">
+                                <div className="input-group">
+                                  <span className="input-group-btn">
+                                    <button type="button" className="btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                      <span className="bi bi-dash"></span>
+                                    </button>
+                                  </span>
+                                  <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1" max="10" />
+                                  <span className="input-group-btn">
+                                    <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
+                                      <span className="bi bi-plus"></span>
+                                    </button>
+                                  </span>
+                                </div>
+                              </a>
+                            </div>
                           </div>
-                      </div>
-                      <div className="row">
-                          <div className="col">
-                            <button type="button" className={`search-holidays-btn btn btn-primary float-end ${loading ? "disable" : ""}`} onClick={handleSearchHolidays}>
-                              <span className="for-loading-margin">Search holidays</span>
-                              {loading && <span className="spinner-border spinner-border-sm" role="status"></span>}
-                            </button>
+                        </li>
+                        <li>
+                          <div className="row">
+                            <div className="col">
+                              <h4 className="mb-0">Infants</h4> <p className="small-text">0-2</p>
+                            </div>
+                            <div className="col">
+                              <a className="dropdown-item" href="#">
+                                <div className="input-group">
+                                  <span className="input-group-btn">
+                                    <button type="button" className="btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                      <span className="bi bi-dash"></span>
+                                    </button>
+                                  </span>
+                                  <input type="text" name="quant[1]" className="form-control input-number" value="1" min="1" max="10" />
+                                  <span className="input-group-btn">
+                                    <button type="button" className="btn-number" data-type="plus" data-field="quant[1]">
+                                      <span className="bi bi-plus"></span>
+                                    </button>
+                                  </span>
+                                </div>
+                              </a>
+                            </div>
                           </div>
-                      </div>
-                  </div>
-              </div>
-              <div className="col-lg-6 col-md-12 order-md-1 order-lg-2">
-                  <h1 className="mb-4">Embark on a Sacred Journey with Us</h1>
-                  <p className="hero-text mb-5">Your Trusted Companion for a Hassle-Free Hajj and Umrah Experience</p>
-              </div>
-          </div>
-      </div>
-      <div className="container-xxl py-5 section-block">
-        <div className="row">
-            <div className="col-auto me-auto">
-                <h2>Trending destinations</h2>
-            </div>
-            <div className="col-auto">
-                <a>See all <i className="bi bi-arrow-right"></i></a>
-            </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div className="owl-carousel">
-              <a className="trending-destination">
-                <img src={"./assets/images/destination_images/img-1.png"} alt=""/>
-                <h3 className="mt-3">Mecca</h3>
-                <p>20+ tours</p>
-              </a>
-              <a className="trending-destination">
-                <img src="./assets/images/destination_images/img-2.png" alt=""/>
-                <h3 className="mt-3">Mecca</h3>
-                <p>20+ tours</p>
-              </a>
-              <a className="trending-destination">
-                <img src="./assets/images/destination_images/img-3.png" alt=""/>
-                <h3 className="mt-3">Mecca</h3>
-                <p>20+ tours</p>
-              </a>
-              <a className="trending-destination">
-                <img src="./assets/images/destination_images/img-4.png" alt=""/>
-                <h3 className="mt-3">Mecca</h3>
-                <p>20+ tours</p>
-              </a>
-              <a className="trending-destination">
-                <img src="./assets/images/destination_images/img-5.png" alt=""/>
-                <h3 className="mt-3">Mecca</h3>
-                <p>20+ tours</p>
-              </a>
-              <a className="trending-destination">
-                <img src="./assets/images/destination_images/img-6.png" alt=""/>
-                <h3 className="mt-3">Mecca</h3>
-                <p>20+ tours</p>
-              </a>
-              <a className="trending-destination">
-                <img src="./assets/images/destination_images/img-3.png" alt=""/>
-                <h3 className="mt-3">Mecca</h3>
-                <p>20+ tours</p>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container-xxl py-5 section-block">
-        <div className="row">
-          <div className="col">
-            <div className="colour-title">Find more places around you</div>
-            <h2>Discover muslim-friendly places around you</h2>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <a>
-              <img src="./assets/images/discover_images/img-1.png" className="img-style" alt=""/>
-              <h3 className="mt-3">Find restaurants near you</h3>
-              <p>Discover a variety of delicious and authentic dining options in the holy city</p>
-            </a>
-          </div>
-          <div className="col">
-            <a>
-              <img src="./assets/images/discover_images/img-2.png" className="img-style" alt=""/>
-              <h3 className="mt-3">Find restaurants near you</h3>
-              <p>Discover a variety of delicious and authentic dining options in the holy city</p>
-            </a>
-          </div>
-          <div className="col">
-            <a>
-              <img src="./assets/images/discover_images/img-3.png" className="img-style" alt=""/>
-              <h3 className="mt-3">Find restaurants near you</h3>
-              <p>Discover a variety of delicious and authentic dining options in the holy city</p>
-            </a>
-          </div>
-        </div>
-      </div> 
-      <div className="container-xxl py-5 section-block">
-        <div className="row">
-          <div className="col-auto me-auto">
-            <div className="colour-title">Book online</div>
-            <h2>Halal friendly holidays, activities, and hotels</h2>
-          </div>
-          <div className="col-auto">
-              <a>See all <i className="bi bi-arrow-right"></i></a>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <a>
-              <img src="./assets/images/book_online/img-1.png" className="img-style" alt=""/>
-              <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
-              <h3>Novotel Thakher</h3>
-              <p>Makkah</p>
-              <h3 className="price">$39.00</h3>
-              <p>per night <br/>
-                $78.00 total <br/>
-                inclusive taxes and fees</p>
-              </a>
-          </div>
-          <div className="col">
-            <a>
-              <img src="./assets/images/book_online/img-2.png" className="img-style" alt=""/>
-              <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
-              <h3>Novotel Thakher</h3>
-              <p>Makkah</p>
-              <h3 className="price">$39.00</h3>
-              <p>per night <br/>
-                $78.00 total <br/>
-                inclusive taxes and fees</p>
-              </a>
-          </div>
-          <div className="col">
-            <a>
-              <img src="./assets/images/book_online/img-3.png" className="img-style" alt=""/>
-              <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
-              <h3>Novotel Thakher</h3>
-              <p>Makkah</p>
-              <h3 className="price">$39.00</h3>
-              <p>per night <br/>
-                $78.00 total <br/>
-                inclusive taxes and fees</p>
-              </a>
-          </div>
-          <div className="col">
-            <a>
-              <img src="./assets/images/book_online/img-4.png" className="img-style" alt=""/>
-              <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
-              <h3>Novotel Thakher</h3>
-              <p>Makkah</p>
-              <h3 className="mt-4">$39.00</h3>
-              <p>per night <br/>
-                $78.00 total <br/>
-                inclusive taxes and fees</p>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div className="container-xxl py-5 section-block">
-        <div className="row">
-          <div className="col-auto me-auto">
-            <h2>Innovation zone</h2>
-          </div>
-          <div className="col-auto">
-              <a>See all <i className="bi bi-arrow-right"></i></a>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div className="owl-carousel">
-                <img src="./assets/images/innovation_zone/img-1.png" alt=""/>
-                <img src="./assets/images/innovation_zone/img-2.png" alt=""/>
-                <img src="./assets/images/innovation_zone/img-3.png" alt=""/>
-                <img src="./assets/images/innovation_zone/img-4.png" alt=""/>
-                <img src="./assets/images/innovation_zone/img-5.png" alt=""/>
-                <img src="./assets/images/innovation_zone/img-2.png" alt=""/>
-                <img src="./assets/images/innovation_zone/img-3.png" alt=""/>
-                <img src="./assets/images/innovation_zone/img-4.png" alt=""/>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="container-xxl py-5 section-block">
-        <div className="row">
-          <div className="col">
-            <h2 className="app-section-title">Make your Umrah unforgettable: Enhance your spiritual experience with Nusuk app</h2>
-            <p className="app-text">Manage your reservations, stay informed and navigate effortlessly - all in one app</p>
-            <p className="get-app-text">Get app</p>
-            <span className="app-icons">
-              <a><img src="./assets/images/app-store.svg" alt=""/></a>
-              <a><img src="./assets/images/play-store.svg" alt=""/></a>
-            </span>
-          </div>
-          <div className="col">
-            <div className="app-image">
-              <img src="./assets/images/app-image.png" alt=""/>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="section-bg">
-        <div className="container-xxl py-5 section-block">
-          <div className="row">
-            <div className="col">
-              <h2>Customise your own Hajji & Umrah packages</h2>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-3 col-md-4 mb-3">
-              <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Select departure date"/>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Enter required duration"/>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <select className="form-select form-select-lg mb-3" aria-label="Large select example">
-                <option selected>Choose Makkah hotel</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <select className="form-select form-select-lg mb-3" aria-label="Large select example">
-                <option selected>Pick Makkah hotel</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-              </select>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Your name"/>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="No. of passengers"/>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Email ID"/>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Contact number"/>
-            </div>
-            <div className="col-lg-3 col-md-4 mb-3">
-              <p className="mb-1">Include Ziyarat</p>
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" value="" id="flexCheckDefault"/>
-                <label className="form-check-label mt-1" htmlFor="flexCheckDefault">
-                  Yes
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-                <button type="button" className="btn btn-primary float-end">Get price</button>
-            </div>
-          </div>
-        </div>
-      </div> 
-      <div className="container-xxl py-5 section-block">
-        <div className="row">
-          <div className="col">
-            <ul className="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-              <li className="nav-item" role="presentation">
-                <button className="nav-link active" id="tab-1" data-bs-toggle="tab" data-bs-target="#tab-1-pane" type="button" role="tab" aria-controls="tab-1-pane" aria-selected="true"><i className="bi bi-info-circle"></i> <br/> Entrance to Umrah</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="tab-2" data-bs-toggle="tab" data-bs-target="#tab-2-pane" type="button" role="tab" aria-controls="tab-2-pane" aria-selected="false"><i className="bi bi-info-circle"></i> <br/> Travel and Access</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="tab-3" data-bs-toggle="tab" data-bs-target="#tab-3-pane" type="button" role="tab" aria-controls="tab-3-pane" aria-selected="false"><i className="bi bi-info-circle"></i> <br/> Miqat</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="tab-4" data-bs-toggle="tab" data-bs-target="#tab-4-pane" type="button" role="tab" aria-controls="tab-4-pane" aria-selected="false"><i className="bi bi-info-circle"></i> <br/> Ihram</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="tab-5" data-bs-toggle="tab" data-bs-target="#tab-5-pane" type="button" role="tab" aria-controls="tab-5-pane" aria-selected="false"><i className="bi bi-info-circle"></i> <br/> Access to santuary</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="tab-6" data-bs-toggle="tab" data-bs-target="#tab-6-pane" type="button" role="tab" aria-controls="tab-6-pane" aria-selected="false"><i className="bi bi-info-circle"></i> <br/> Sa’i</button>
-              </li>
-              <li className="nav-item" role="presentation">
-                <button className="nav-link" id="tab-7" data-bs-toggle="tab" data-bs-target="#tab-7-pane" type="button" role="tab" aria-controls="tab-7-pane" aria-selected="false"><i className="bi bi-info-circle"></i> <br/> Entrance to Ziyarah</button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="row tab-margin">
-          <div className="col">
-            <div className="tab-content" id="myTabContent">
-              <div className="tab-pane fade show active" id="tab-1-pane" role="tabpanel" aria-labelledby="tab-1" tabIndex="0">
-                <div className="row">
-                  <div className="col">
-                    <div className="tab-title">Umrah & Ziyarah</div>
-                    <p className="text-dark">Learn the essential rituals and steps to fulfill your Umrah pilgrimage, ensuring a spiritually fulfilling journey. Understand the significance of visiting Al Masjid An Nabawi, the Prophet's Mosque, and the etiquettes to observe while there. 
-                      Gain insights into the historical and spiritual importance of these acts of worship.</p>
-                  </div>
-                  <div className="col">
-                    <img src="./assets/images/tab-img.png" className="img-fluid" alt=""/>
+                        </li>
+                        <li className="mb-2"><h5>Select Class</h5></li>
+                        <li className="mb-1">
+                          <div className="form-check">
+                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                            <label className="form-check-label" for="flexRadioDefault1">
+                              Economy
+                            </label>
+                          </div>
+                        </li>
+                        <li className="mb-1">
+                          <div className="form-check">
+                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                            <label className="form-check-label" for="flexRadioDefault1">
+                              Business
+                            </label>
+                          </div>
+                        </li>
+                        <li className="mb-1">
+                          <div className="form-check">
+                            <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" />
+                            <label className="form-check-label" for="flexRadioDefault1">
+                              First Class
+                            </label>
+                          </div>
+                        </li>
+                      </ul>
+                    </div> */}
                   </div>
                 </div>
               </div>
-              <div className="tab-pane fade" id="tab-2-pane" role="tabpanel" aria-labelledby="tab-2" tabIndex="0">
-                <div className="row">
-                  <div className="col">
-                    <div className="tab-title">Umrah & Ziyarah</div>
-                    <p className="text-dark">Learn the essential rituals and steps to fulfill your Umrah pilgrimage, ensuring a spiritually fulfilling journey. Understand the significance of visiting Al Masjid An Nabawi, the Prophet's Mosque, and the etiquettes to observe while there. 
-                      Gain insights into the historical and spiritual importance of these acts of worship.</p>
-                  </div>
-                  <div className="col">
-                    <img src="./assets/images/tab-img.png" className="img-fluid" alt=""/>
-                  </div>
-                </div>
-              </div>
-              <div className="tab-pane fade" id="tab-3-pane" role="tabpanel" aria-labelledby="tab-3" tabIndex="0">
-                <div className="row">
-                  <div className="col">
-                    <div className="tab-title">Umrah & Ziyarah</div>
-                    <p className="text-dark">Learn the essential rituals and steps to fulfill your Umrah pilgrimage, ensuring a spiritually fulfilling journey. Understand the significance of visiting Al Masjid An Nabawi, the Prophet's Mosque, and the etiquettes to observe while there. 
-                      Gain insights into the historical and spiritual importance of these acts of worship.</p>
-                  </div>
-                  <div className="col">
-                    <img src="./assets/images/tab-img.png" className="img-fluid" alt=""/>
-                  </div>
-                </div>
-              </div>
-              <div className="tab-pane fade" id="tab-4-pane" role="tabpanel" aria-labelledby="tab-4" tabIndex="0">
-                <div className="row">
-                  <div className="col">
-                    <div className="tab-title">Umrah & Ziyarah</div>
-                    <p className="text-dark">Learn the essential rituals and steps to fulfill your Umrah pilgrimage, ensuring a spiritually fulfilling journey. Understand the significance of visiting Al Masjid An Nabawi, the Prophet's Mosque, and the etiquettes to observe while there. 
-                      Gain insights into the historical and spiritual importance of these acts of worship.</p>
-                  </div>
-                  <div className="col">
-                    <img src="./assets/images/tab-img.png" className="img-fluid" alt=""/>
-                  </div>
-                </div>
-              </div>
-              <div className="tab-pane fade" id="tab-5-pane" role="tabpanel" aria-labelledby="tab-5" tabIndex="0">
-                <div className="row">
-                  <div className="col">
-                    <div className="tab-title">Umrah & Ziyarah</div>
-                    <p className="text-dark">Learn the essential rituals and steps to fulfill your Umrah pilgrimage, ensuring a spiritually fulfilling journey. Understand the significance of visiting Al Masjid An Nabawi, the Prophet's Mosque, and the etiquettes to observe while there. 
-                      Gain insights into the historical and spiritual importance of these acts of worship.</p>
-                  </div>
-                  <div className="col">
-                    <img src="./assets/images/tab-img.png" className="img-fluid" alt=""/>
-                  </div>
-                </div>
-              </div>
-              <div className="tab-pane fade" id="tab-6-pane" role="tabpanel" aria-labelledby="tab-6" tabIndex="0">
-                <div className="row">
-                  <div className="col">
-                    <div className="tab-title">Umrah & Ziyarah</div>
-                    <p className="text-dark">Learn the essential rituals and steps to fulfill your Umrah pilgrimage, ensuring a spiritually fulfilling journey. Understand the significance of visiting Al Masjid An Nabawi, the Prophet's Mosque, and the etiquettes to observe while there. 
-                      Gain insights into the historical and spiritual importance of these acts of worship.</p>
-                  </div>
-                  <div className="col">
-                    <img src="./assets/images/tab-img.png" className="img-fluid" alt=""/>
-                  </div>
-                </div>
-              </div>
-              <div className="tab-pane fade" id="tab-7-pane" role="tabpanel" aria-labelledby="tab-7" tabIndex="0">
-                <div className="row">
-                  <div className="col">
-                    <div className="tab-title">Umrah & Ziyarah</div>
-                    <p className="text-dark">Learn the essential rituals and steps to fulfill your Umrah pilgrimage, ensuring a spiritually fulfilling journey. Understand the significance of visiting Al Masjid An Nabawi, the Prophet's Mosque, and the etiquettes to observe while there. 
-                      Gain insights into the historical and spiritual importance of these acts of worship.</p>
-                  </div>
-                  <div className="col">
-                    <img src="./assets/images/tab-img.png" className="img-fluid" alt=""/>
-                  </div>
+              <div className="row">
+                <div className="col">
+                  <Button id={"search-flights-home-page-btn"} loading={loading} handleBtnClick={handleSearchHolidays} btnType={"primary"} classes={"float-end"} label={"Search Flights"} />
+                  {/* <button type="button" className="btn btn-primary float-end">Search Flights</button> */}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <DefaultBody id={"home-page-default-body"} />
     </>
   )
 };

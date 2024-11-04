@@ -18,7 +18,7 @@ const CabContainer = ({ id, cabData, cabCardCallback }) => {
             </div>
             <div className="ps-3">
               <h3>{cabData.cabName}</h3>
-              <p>{ cabData.cabTripType === 'oneway' ? 'One-way Trip' : 'Round Trip' }&nbsp;&nbsp; · &nbsp;&nbsp; 152 kms &nbsp;&nbsp; · &nbsp;&nbsp; 2 Adults</p>
+              <p>One-way Trip &nbsp;&nbsp; · &nbsp;&nbsp; 152 kms &nbsp;&nbsp; · &nbsp;&nbsp; 2 Adults</p>
             </div>
           </div>
         </div>

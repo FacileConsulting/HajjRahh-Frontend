@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import $ from 'jquery';
-import { changeInputFunc } from '../reducers/myAccountSlice';
+import { updateFunc } from '../reducers/homeSlice';
 import { useDispatch } from 'react-redux';
 
 const Radio = forwardRef((props, ref) => {
@@ -11,7 +11,7 @@ const Radio = forwardRef((props, ref) => {
 
   const resetRefCalled = (enableId, keyName, vals) => {
     $(`#${enableId}`).prop('checked', true);
-    dispatch(changeInputFunc({ keyName, value: vals }));
+    dispatch(updateFunc({ keyName, value: vals }));
     setValue(vals);
   };
 
@@ -21,8 +21,12 @@ const Radio = forwardRef((props, ref) => {
   }));
 
   const handleChange = (event) => {
-    console.log('sdfsdfsdfsdf', id, keyName, valueRadioName, event.target.value);
-    dispatch(changeInputFunc({ keyName, value: event.target.value }));
+    console.log('sdfsdfsdfsdf', id, keyName, valueRadioName, event.target.value, event.target.checked);
+    dispatch(updateFunc({ keyName, value: event.target.value }));
+    $('#flight-traveller-ECONOMY').prop('checked', false);
+    $('#flight-traveller-BUSINESS').prop('checked', false);
+    $('#flight-traveller-FIRST').prop('checked', false);
+    $(`#${id}`).prop('checked', event.target.value === valueRadioName);
     setValue(event.target.value);
   };
 

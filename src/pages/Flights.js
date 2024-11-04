@@ -5,10 +5,11 @@ import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 import FlightsFilter from '../components/FlightsFilter';
-import FlightsSearch from '../components/FlightsSearch'; 
+import FlightsSearch from '../components/FlightsSearch';
 import FlightContainer from '../components/FlightContainer';
 import NoDataAvailable from '../components/NoDataAvailable';
 import Select from '../components/Select';
+import DefaultBody from '../components/DefaultBody';
 
 const Flights = ({ id }) => {
   localStorage.setItem('current_route', '/flights');
@@ -53,7 +54,7 @@ const Flights = ({ id }) => {
     if (flightsData.data && flightsData.data.length > 0) {
       const { data, dictionaries, meta } = flightsData;
       flightSortBy(flightSort, data, dictionaries, meta);
-    }    
+    }
   }, [flightSort]);
 
   const flightCardCallback = (data) => {
@@ -62,7 +63,7 @@ const Flights = ({ id }) => {
       state: { from: 'Flight Card click', data: data }
     });
   }
-  
+
   const handlePanelCallbackParent = () => {
     setPanelClass(panelClass === 'filter-list' ? 'filter-show' : 'filter-list');
   }
@@ -88,6 +89,7 @@ const Flights = ({ id }) => {
       adults,
       children,
       infants,
+      flightType: false,
       travelClass: travelClass.split('^')[0]
     }
   }
@@ -114,8 +116,8 @@ const Flights = ({ id }) => {
         emirates, lufthansa, qatarAiraways, etihadAiraways, egyptair, twoFourHour, fourSixHour, zeroStop, oneStop, aboveOneStop, egg, nonVeg, morning, afternoon, evening, night
       }
       setFilterLoading(true);
-    }   
-    
+    }
+
 
     if (type === 'search') {
       setToCallback(!toCallback);
@@ -131,18 +133,18 @@ const Flights = ({ id }) => {
       } else if (!flightDepartureDate) {
         toast.info('Please select Departure Date', toastOptions);
         return;
-      }      
+      }
       payload = {
         ...preparePayload()
       }
       setSearchLoading(true);
     }
-    
+
     let response = await handleAPIData('POST', '/api/searchFlights', payload);
     console.log('tripsreresponseresponseresponsesponse', response);
     if (response?.status === 'success' && response?.data?.data?.data.length > 0) {
       const { data, dictionaries, meta } = response?.data?.data;
-      if (flightSort) { 
+      if (flightSort) {
         flightSortBy(flightSort, data, dictionaries, meta);
       } else {
         setFlightsData({ data, dictionaries, meta });
@@ -155,7 +157,7 @@ const Flights = ({ id }) => {
         });
       }
 
-      
+
     } else {
       setFlightsData({ data: [], dictionaries: {}, meta: {} });
       setHeading({
@@ -166,8 +168,8 @@ const Flights = ({ id }) => {
         travelClass: ''
       });
       toast.error('Something went wrong. Please try again.', toastOptions);
-    }   
-    
+    }
+
     if (type === 'search') {
       setSearchLoading(false);
     } else if (type === 'filter') {
@@ -185,7 +187,7 @@ const Flights = ({ id }) => {
         let durationArray = [];
         for (let x = 0; x < flightsData[y].itineraries.length; x++) {
           durationArray.push(convertISODurationToReadable(flightsData[y].itineraries[x].duration));
-        }        
+        }
         flightsData[y].totalDurationInMin = durationArray.reduce((accumulator, current) => accumulator + current, 0);
       }
       let sortedFlightsData = flightsData.sort((a, b) => a.totalDurationInMin - b.totalDurationInMin);
@@ -200,9 +202,9 @@ const Flights = ({ id }) => {
     const matches = duration.match(regex);
 
     if (matches) {
-      const days = parseInt(matches[1]) || 0; 
-      const hours = parseInt(matches[2]) || 0; 
-      const minutes = parseInt(matches[3]) || 0; 
+      const days = parseInt(matches[1]) || 0;
+      const hours = parseInt(matches[2]) || 0;
+      const minutes = parseInt(matches[3]) || 0;
 
       totalMinutes = (days * 24 * 60) + (hours * 60) + minutes;
     }
@@ -223,7 +225,7 @@ const Flights = ({ id }) => {
     let minutesInDay = 24 * minutesInHour;
 
     const days = Math.floor(totalMinutes / minutesInDay);
-    totalMinutes %= minutesInDay; 
+    totalMinutes %= minutesInDay;
 
     const hours = Math.floor(totalMinutes / minutesInHour);
     const minutes = totalMinutes % minutesInHour;
@@ -244,12 +246,12 @@ const Flights = ({ id }) => {
 
   const sumAndCovertToDHM = (arr) => {
     let totalMinutes = arr.reduce((accumulator, current) => accumulator + current, 0);
-    return internalCovertToDHM(totalMinutes);    
+    return internalCovertToDHM(totalMinutes);
   }
 
   const formatTimeArray = (arr) => {
     const start = arr[0];
-    const end = arr[arr.length-1];
+    const end = arr[arr.length - 1];
     const part1 = start.split('T')[1];
     const part2 = end.split('T')[1];
     const startTime = `${part1.split(':')[0]}:${part1.split(':')[1]}`;
@@ -257,7 +259,7 @@ const Flights = ({ id }) => {
     return `${startTime} - ${endTime}`.trim();
   }
 
-  const formatHalts = (arr) => {  
+  const formatHalts = (arr) => {
     const returned = [];
     for (let z = 0; z < arr.length; z++) {
       const part0 = arr[z].split('^')[0];
@@ -267,7 +269,7 @@ const Flights = ({ id }) => {
       const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
       const formatted = sumAndCovertToDHM([differenceInMinutes]);
       returned.push(`${formatted} | ${part0}`);
-    } 
+    }
     return returned;
   }
 
@@ -283,24 +285,24 @@ const Flights = ({ id }) => {
   const getTripTime = (dateString1, dateString2) => {
     const date1 = new Date(dateString1);
     const date2 = new Date(dateString2);
-    
+
     // Calculate the difference in milliseconds
     const differenceInMilliseconds = date2 - date1;
 
     // Convert milliseconds to minutes
     const differenceInMinutes = differenceInMilliseconds / (1000 * 60);
-    
+
     return differenceInMinutes;
   }
 
   const getAircraft = (code) => {
-    if(flightsData?.dictionaries?.aircraft) {
+    if (flightsData?.dictionaries?.aircraft) {
       return flightsData?.dictionaries?.aircraft[code];
     }
   }
 
   const getPlaceName = (code) => {
-    if(flightsData?.dictionaries?.locations) {
+    if (flightsData?.dictionaries?.locations) {
       return `${code}-${flightsData?.dictionaries?.locations[code].countryCode}`;
     }
   }
@@ -342,14 +344,14 @@ const Flights = ({ id }) => {
 
         if (y > 0) {
           const departureCode = datum.itineraries[x].segments[y].departure.iataCode;
-          const arrivalAt = datum.itineraries[x].segments[y-1].arrival.at;
+          const arrivalAt = datum.itineraries[x].segments[y - 1].arrival.at;
           const departureAt = datum.itineraries[x].segments[y].departure.at;
-          halts.push(`${departureCode}^${departureAt}^${arrivalAt}`); 
+          halts.push(`${departureCode}^${departureAt}^${arrivalAt}`);
 
           // Quick View
-          const arrivalIataCode = datum.itineraries[x].segments[y-1].arrival.iataCode;
+          const arrivalIataCode = datum.itineraries[x].segments[y - 1].arrival.iataCode;
 
-          datum.itineraries[x].segments[y].transitTime = internalCovertToDHM(getTripTime(arrivalAt, departureAt));          
+          datum.itineraries[x].segments[y].transitTime = internalCovertToDHM(getTripTime(arrivalAt, departureAt));
           datum.itineraries[x].segments[y].haltPlace = getPlaceName(arrivalIataCode);
         }
       }
@@ -380,41 +382,45 @@ const Flights = ({ id }) => {
   return (
     <>
       <FlightsSearch id={"flights-search"} loading={searchLoading} flightsCallback={handleFlightSearchFilter} />
-      <FlightsFilter id={"flights-filter"} loading={filterLoading} toCallback={toCallback} panelClass={panelClass} flightsCallback={handleFlightSearchFilter} handlePanelCallback={handlePanelCallbackParent} airlines={flightsData?.dictionaries?.carriers} />      
-      <div className="container-xxl py-5 section-block">
-        {flightsData.data.length > 0 && renderHeading()}
-        
-        <div className="row mb-4 mt-4 d-flex justify-content-end">
-          <div className="col-auto">
-            <div className="row g-1 align-items-center mb-2">
+      {
+        flightsData.data.length > 0 ?
+        <>
+          <FlightsFilter id={"flights-filter"} loading={filterLoading} toCallback={toCallback} panelClass={panelClass} flightsCallback={handleFlightSearchFilter} handlePanelCallback={handlePanelCallbackParent} airlines={flightsData?.dictionaries?.carriers} />
+          <div className="container-xxl py-5 section-block">
+            {renderHeading()}
+            <div className="row mb-4 mt-4 d-flex justify-content-end">
               <div className="col-auto">
-                <span>Sort by:</span>
-              </div>
-              <div className="col-auto">
-                <Select id={"flights-sort"} keyName={"flightSort"} eventType={1} options={sortOptions} classes={"form-sort"} /> 
+                <div className="row g-1 align-items-center mb-2">
+                  <div className="col-auto">
+                    <span>Sort by:</span>
+                  </div>
+                  <div className="col-auto">
+                    <Select id={"flights-sort"} keyName={"flightSort"} eventType={1} options={sortOptions} classes={"form-sort"} />
+                  </div>
+                </div>
               </div>
             </div>
+            <div className="accordion" id="flight-contain">
+              {
+                Array.isArray(flightsData.data) && flightsData.data.length > 0 &&
+                (
+                  <>
+                    {
+                      Array.isArray(flightsData.data) && flightsData.data.length > 0 && flightsData.data.map((flight, index) => {
+                        return (<FlightContainer id={`flight-${index}`} flightData={modifyFlightData(flight)} flightCardCallback={flightCardCallback} />)
+                      })
+                    }
+                  </>
+                )
+              }
+              {
+                Array.isArray(flightsData.data) && flightsData.data.length === 0 &&
+                <NoDataAvailable text={"No Data Available. Please modify or perform your search"} />
+              }
+            </div>
           </div>
-        </div>
-        <div className="accordion" id="flight-contain">
-          {
-            Array.isArray(flightsData.data) && flightsData.data.length > 0 &&
-            (
-              <>
-                {
-                  Array.isArray(flightsData.data) && flightsData.data.length > 0 && flightsData.data.map((flight, index) => {
-                    return (<FlightContainer id={`flight-${index}`} flightData={modifyFlightData(flight)} flightCardCallback={flightCardCallback} />)
-                  })
-                }
-              </>
-            )
-          }
-          {
-            Array.isArray(flightsData.data) && flightsData.data.length === 0 &&
-            <NoDataAvailable text={"No Data Available. Please modify or perform your search"} />
-          }
-        </div>
-      </div>
+        </> : <DefaultBody />
+      }
     </>
   )
 };

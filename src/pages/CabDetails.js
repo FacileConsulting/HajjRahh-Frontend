@@ -31,7 +31,7 @@ const CabDetails = ({ id }) => {
         <div className="row align-items-center">
           <div className="col-lg-12 col-md-12">
             <h3 className="mb-2">{capitalizeWords(cabDatum.cabPickUpPlace)} - {capitalizeWords(cabDatum.cabDropPlace)}</h3>
-            <p className="hero-text">{cabDatum.cabTripType === 'oneway' ? 'One-way Trip' : 'Round Trip'} - {getCurrentDateTime()}</p>
+            <p className="hero-text">One-way Trip - {getCurrentDateTime()}</p>
           </div>
         </div>
       </div>
@@ -47,7 +47,7 @@ const CabDetails = ({ id }) => {
                     </div>
                     <div className="ps-3">
                       <h3>{cabDatum.cabName}</h3>
-                      <p>{cabDatum.cabTripType === 'oneway' ? 'One-way Trip' : 'Round Trip'}&nbsp;&nbsp; · &nbsp;&nbsp; 152 kms &nbsp;&nbsp; · &nbsp;&nbsp; 2 Adults</p>
+                      <p>One-way Trip &nbsp;&nbsp; · &nbsp;&nbsp; 152 kms &nbsp;&nbsp; · &nbsp;&nbsp; 2 Adults</p>
 
                     </div>
                   </div>
@@ -86,11 +86,11 @@ const CabDetails = ({ id }) => {
               </div>
               <div className="row mb-3">
                 <div className="col-6">
-                  <label for="pickup" className="mb-1">Pickup Address</label>
+                  <label htmlFor="pickup" className="mb-1">Pickup Address</label>
                   <input type="text" className="form-control" id="pickup" placeholder={capitalizeWords(cabDatum.cabPickUpPlace)} />
                 </div>
                 <div className="col-6">
-                  <label for="drop" className="mb-1">Drop Address</label>
+                  <label htmlFor="drop" className="mb-1">Drop Address</label>
                   <input type="text" className="form-control" id="drop" placeholder={capitalizeWords(cabDatum.cabDropPlace)} />
                 </div>
               </div>

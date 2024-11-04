@@ -332,7 +332,7 @@ const HolidayBooking = ({ id }) => {
                   <h3 className="my-3">Billing details</h3>
                   <div className="form-check">
                     <input className="form-check-input" name="profileAddress" type="checkbox" id="profileAddress" onChange={handleIsProfile} />
-                    <label className="form-check-label mt-1" for="flexCheckDefault">
+                    <label className="form-check-label mt-1" htmlFor="sameAsProfileAddress">
                       Same as profile address
                     </label>
                   </div>

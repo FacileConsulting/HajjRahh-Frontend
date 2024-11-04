@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 import { DatePicker } from 'rsuite';
 import Select from './Select';
 import Counter from './Counter';
+import SearchInput from './SearchInput';
+import Traveller from './Traveller';
 import Button from './Button';
 import { updateFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
@@ -12,7 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const FlightsSearch = ({ id, loading, flightsCallback }) => {
   const dispatch = useDispatch();
-  const { departure, destination } = useSelector(state => state.home);
+  const { travelClass } = useSelector(state => state.home);  
 
   const dateStyles = {
     border: '1px solid #79747E',
@@ -22,208 +24,194 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
     borderRadius: '6px'
   };
 
-  const travelClassOptions = [
-    {
-      value: 'ECONOMY',
-      label: 'Economy'
-    },
-    {
-      value: 'PREMIUM_ECONOMY',
-      label: 'Economy Premium'
-    },
-    {
-      value: 'BUSINESS',
-      label: 'Business'
-    },
-    {
-      value: 'FIRST',
-      label: 'First Class'
-    },
-  ];  
-
-  const flyingFromOptions = [
-    {
-      value: '',
-      label: 'Flying From'
-    },
-    {
-      value: 'BLR',
-      label: 'Bengaluru'
-    },
-    {
-      value: 'BOM',
-      label: 'Mumbai'
-    },
-    {
-      value: 'CCU',
-      label: 'Kolkata'
-    },
-    {
-      value: 'MAA',
-      label: 'Chennai'
-    },
-    {
-      value: 'DEL',
-      label: 'Delhi'
-    },
-  ];
-  
-  const flyingToOptions = [
-    {
-      value: '',
-      label: 'Flying To'
-    },
-    {
-      value: 'AUH',
-      label: 'Abu Dhabi'
-    },
-    {
-      value: 'DXB',
-      label: 'Dubai'
-    },
-    {
-      value: 'SYD',
-      label: 'Sydney'
-    },
-    {
-      value: 'LGA',
-      label: 'New York'
-    },
-    {
-      value: 'LON',
-      label: 'London'
-    }
-  ];
-
-  const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
-  const [roundTrip, setRoundTrip] = useState('active');
-  const [oneWay, setOneWay] = useState('');
-  const [flightDepartureDate, setFlightDepartureDate] = useState('');
-  const [flightReturnDate, setFlightReturnDate] = useState('');
-
-  const capitalizeWords = (str) => {
-    return str.replace(/\b\w/g, char => char.toUpperCase());
-  }
-
-  const handleFlightDepartureDate = (value) => {
-    if (value == null) {
-      dispatch(updateFunc({ keyName: 'flightDepartureDate', value: '' }));
-      setFlightDepartureDate(null);
-    } else {
-      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
-      dispatch(updateFunc({ keyName: 'flightDepartureDate', value: date }));
-      setFlightDepartureDate(value);
-    }    
-  }
-
-  const handleFlightReturnDate = (value) => {
-    if (value == null) {
-      dispatch(updateFunc({ keyName: 'flightReturnDate', value: '' }));
-      setFlightReturnDate(null);
-    } else {
-      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
-      dispatch(updateFunc({ keyName: 'flightReturnDate', value: date }));
-      setFlightReturnDate(value);
-    } 
-  }
-
-  const handleSearchClick = () => {
+  const handleSearchFlightsClick = () => {
     flightsCallback('search');
   }
 
+  const destinationOptions = [    
+    {
+      value: 'AUH',
+      label: 'Abu Dhabi',
+      lowerOne: 'Zayed International Airport',
+      lowerTwo: '| UAE'
+    },   
+    {
+      value: 'DXB',
+      label: 'Dubai',
+      lowerOne: 'Dubai International Airport',
+      lowerTwo: '| UAE'
+    },   
+    {
+      value: 'SYD',
+      label: 'Sydney',
+      lowerOne: 'Sydney Airport',
+      lowerTwo: '| Australia'
+    }, 
+    {
+      value: 'LGA',
+      label: 'New York',
+      lowerOne: 'LaGuardia Airport',
+      lowerTwo: '| USA'
+    },
+    {
+      value: 'LON',
+      label: 'London',
+      lowerOne: 'London City Airport',
+      lowerTwo: '| England'
+    }
+  ]
 
+  const departureOptions = [
+    {
+      value: 'BLR',
+      label: 'Bengaluru',
+      lowerOne: 'Kempegowda International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'BOM',
+      label: 'Mumbai',
+      lowerOne: 'Chhatrapati Shivaji Maharaj International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'CCU',
+      label: 'Kolkata',
+      lowerOne: 'Netaji Subhas Chandra Bose International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'MAA',
+      label: 'Chennai',
+      lowerOne: 'Chennai International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'DEL',
+      label: 'Delhi',
+      lowerOne: 'Indira Gandhi International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'DEL',
+      label: 'New Delhi',
+      lowerOne: 'Indira Gandhi International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'DEL',
+      label: 'Delhi Dil',
+      lowerOne: 'Indira Gandhi International Airport',
+      lowerTwo: '| India'
+    }
+  ]
 
-  const handleRoundTripClick = () => {
-    setRoundTrip('active');
-    setOneWay('');
-    dispatch(updateFunc({ keyName: 'roundOneWay', value: 'roundTrip' }));
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  const [departureDay, setDepartureDay] = useState('Day of Week');
+  const [returnDay, setReturnDay] = useState('Day of Week');  
+
+  const handleDepartureDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'flightDepartureDate', value: '' }));
+      setDepartureDay('');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'flightDepartureDate', value: date }));
+      setDepartureDay(daysOfWeek[value.getDay()]);
+    }    
   }
 
-  const handleOneWayClick = () => {
-    setRoundTrip('');
-    setOneWay('active');
-    setFlightReturnDate(null);
-    dispatch(updateFunc({ keyName: 'roundOneWay', value: 'oneWay' }));
-    dispatch(updateFunc({ keyName: 'flightReturnDate', value: '' }));
+  const handleReturnDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'flightReturnDate', value: '' }));
+      setReturnDay('');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'flightReturnDate', value: date }));
+      setReturnDay(daysOfWeek[value.getDay()]);
+    }    
   }
-
-  const renderGender = () => {
-    const genderData = [
-      { id: 'adults', type: 'Adults :', ages: '>= 13', defaultValue: 1 },
-      { id: 'children', type: 'Children :', ages: '3-12', defaultValue: 0 },
-      { id: 'infants', type: 'Infants :', ages: '<= 2', defaultValue: 0 },
-    ];
-
-    return (
-      <>
-        {
-          genderData && genderData.length > 0 && genderData.map((obj) => {
-            return (
-              <li>
-                <div className="row">
-                  <div className="col">
-                    <h4 className="mb-0">{obj.type}</h4> <p className="small-text">{obj.ages}</p>
-                  </div>
-                  <div className="col">
-                    <a className="dropdown-item" href="#">
-                      <Counter id={`flights-search-${obj.id}`} counterByOther={true} defaultValue={obj.defaultValue} keyName={obj.id} />
-                    </a>
-                  </div>
-                </div>
-              </li>
-            )
-          })
-        }
-      </>
-    )
-  }
-
 
   return (
-    <div id={id} className="section-listing">
-      <div className="container-xxl">
-        <div className="row">
-          <ul className="list-inline flight-selection">
-            <li className="list-inline-item">
-              <a href="#!" className={`trip-type ${roundTrip}`} onClick={handleRoundTripClick}>Round Trip</a>
-            </li>
-            <li className="list-inline-item">
-              <a href="#!" className={`trip-type ${oneWay}`} onClick={handleOneWayClick}>One Way</a>
-            </li>
-            <li className="list-inline-item">
-              <Select id={"flights-search-travel-class-ul"} options={travelClassOptions} selectIsList={true} />
-            </li>
-            <li className="list-inline-item">
-              <div className="dropdown">
-                <a className="class-guests dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="dropdownMenuClickableInside" data-bs-auto-close="outside" aria-expanded="false">
-                  Guests
-                </a>
-                <ul className="dropdown-menu dropmenu-guest" aria-labelledby="dropdownMenuClickableInside">
-                  {renderGender()}
-                </ul>
-              </div>
-            </li>
-          </ul>
+    <div id={id} className="container section-block-hero">
+      <div className="row">
+        <div className="col-lg-12 col-md-12 text-center">
+          <h1 className="mb-2 hero-title">Embark on a Sacred Journey with Us</h1>
+          <p className="hero-text mb-4">Your Trusted Companion for a Hassle-Free Hajj and Umrah Experience</p>
         </div>
-        <div className="row">
-          <div className="col">
-            <Select id={"flights-search-flying-from"} keyName={"flyingFrom"} eventType={2} options={flyingFromOptions} />
-          </div>
-          <div className="col">
-            <Select id={"flights-search-flying-to"} keyName={"flyingTo"} eventType={2} options={flyingToOptions} />
-          </div>
-          <div className="col">
-            <div className="input-group">
-              <DatePicker oneTap id="flights-search-departure-datepicker" size="lg" style={dateStyles} placeholder="Departure Date" onChange={handleFlightDepartureDate} format="dd-MM-yyyy" />
+        <div className="col-lg-12 col-md-12">
+          <div className="booking-form">
+            <div className="hero-form-title">Book Flight</div>
+            <div className="row">
+              <div className="col">
+                <div className="mb-3">
+                  <SearchInput
+                    id={"departure-search-input"}
+                    keyName={"flyingFrom"}
+                    placeholder={"Travelling from"}
+                    lowerOne={"XXX"}
+                    middle={"Departure"}
+                    lowerTwo={"Airport Name"}
+                    options={departureOptions}
+                    isFlight={true}
+                  />
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3">
+                  <SearchInput
+                    id={"destination-search-input"}
+                    keyName={"flyingTo"}
+                    placeholder={"Travelling to"}
+                    lowerOne={"XXX"}
+                    middle={"Destination"}
+                    lowerTwo={"Airport Name"}
+                    options={destinationOptions}
+                    isFlight={true}
+                  />
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3 departure-date-home-page">
+                  <a href="#!" className="form-selection">
+                    <label htmlFor="depature" className="form-label">Depature Date</label>
+                    <div className="input-group">
+                      <DatePicker oneTap id="flights-search-home-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                    </div>
+                    <div className="helper-text">{departureDay}</div>
+                  </a>
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3 departure-date-home-page">
+                  <a href="#!" className="form-selection">
+                    <label htmlFor="return" className="form-label">Return Date</label>
+                    <div className="input-group">
+                      <DatePicker oneTap id="flights-search-home-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                    </div>
+                    <div className="helper-text">{returnDay}</div>
+                  </a>
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3">
+                  <Traveller
+                    id={"flight-traveller"}
+                    keyName={"travelClass"}
+                    placeholder={"Travelers & Class"}
+                    defaultTravellers={"1"}
+                    defaultFlightClass={"Economy"}
+                    defaultValue={travelClass}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="col">
-            <div className="input-group">
-              <DatePicker oneTap id="flights-search-return-datepicker" size="lg" style={dateStyles} placeholder="Return Date" onChange={handleFlightReturnDate} disabled={ oneWay ? true : false } format="dd-MM-yyyy" value={flightReturnDate} />
+            <div className="row">
+              <div className="col">
+                <Button id={"search-flights-home-page-btn"} loading={loading} handleBtnClick={handleSearchFlightsClick} btnType={"primary"} classes={"float-end"} label={"Search Flights"} />
+              </div>
             </div>
-          </div>
-          <div className="col">
-            <Button id={"flights-search-btn"} loading={loading} handleBtnClick={handleSearchClick} btnType={"primary"} label={"Search"} />
           </div>
         </div>
       </div>

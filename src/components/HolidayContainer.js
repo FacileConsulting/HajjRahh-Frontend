@@ -6,8 +6,8 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destinatio
 
   const handleHolidayViewDetailsClick = async (event) => {
     event.stopPropagation();
-    holidayData.departurePlace = departure;
-    holidayData.destinationPlace = destination;
+    holidayData.departurePlace = departure.split('^')[0];
+    holidayData.destinationPlace = destination.split('^')[0];
     holidayCardCallback({ flightsDatum, holidayData });
   }
 

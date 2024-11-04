@@ -1,22 +1,20 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { DatePicker, TimePicker } from 'rsuite';
+import { DatePicker } from 'rsuite';
+import TimePicker from 'rc-time-picker';
 import Select from './Select';
 import Button from './Button';
+import SearchInput from './SearchInput';
 import { updateFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
 import { toastOptions } from '../toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'rc-time-picker/assets/index.css';
 
 const CabsSearch = ({ id, loading, cabsCallback }) => {
   const dispatch = useDispatch();
   const { cabPickUpPlace, cabDropPlace, cabDate, cabTime } = useSelector(state => state.home);
-
-  console.log('ERERERER', cabPickUpPlace, cabDropPlace, cabDate, cabTime );
-
-  const [roundTrip, setRoundTrip] = useState('active');
-  const [oneWay, setOneWay] = useState('');
 
   const dateStyles = {
     border: '1px solid #79747E',
@@ -26,109 +24,134 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
     borderRadius: '6px'
   };
 
-  const handleCabPickUpDate = (value) => {    
-    const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
-    console.log('dsfsdf date', date, value.getHours(), value.getMinutes());
-    if (value == null) {
-      dispatch(updateFunc({ keyName: 'cabDate', value: '' }));
-    } else {
-      const formattedHours = value.getHours() < 10 ? `0${value.getHours()}` : `${value.getHours()}`;
-      const formattedMinutes = value.getMinutes() < 10 ? `0${value.getMinutes()}` : `${value.getMinutes()}`;
-      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}^${formattedHours}:${formattedMinutes}`;
-      dispatch(updateFunc({ keyName: 'cabDate', value: date }));
-    }
-  }
-
   const cabPlaceOptions = [
     {
       value: 'bellandur',
-      label: 'Bellandur'
+      label: 'Bellandur',
+      lowerOne: '123 Appartment',
+      lowerTwo: ''
     },
     {
       value: 'sarjapur',
-      label: 'Sarjapur'
+      label: 'Sarjapur',
+      lowerOne: 'ABC Appartment',
+      lowerTwo: ''
     },
     {
       value: 'hsrlayout',
-      label: 'HSR Layout'
+      label: 'HSR Layout',
+      lowerOne: 'XYZ Appartment',
+      lowerTwo: ''
     }
   ];
 
-  const cabPickUpPlaceOptions = [
-    {
-      value: '',
-      label: 'Pick Up'
-    },
-    ...cabPlaceOptions
-  ];
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  const cabDropPlaceOptions = [
-    {
-      value: '',
-      label: 'Drop'
-    },
-    ...cabPlaceOptions
-  ];
+  const [cabDay, setCabDay] = useState('Day of Week');
 
   const handleCabSearchClick = () => {
     cabsCallback('search');
   }
 
-  const handleRoundTripClick = () => {
-    setRoundTrip('active');
-    setOneWay('');
-    dispatch(updateFunc({ keyName: 'cabTripType', value: 'roundTrip' }));
+  const handleCabTimeSelect = (value) => {
+    if (value) {
+      const hr = value.hour() < 10 ? `0${value.hour()}` : value.hour();
+      const min = value.minute() < 10 ? `0${value.minute()}` : value.minute();
+      dispatch(updateFunc({ keyName: 'cabTime', value: `${hr}:${min}` }));
+    } else {
+      dispatch(updateFunc({ keyName: 'cabTime', value: '' }));
+    }
   }
 
-  const handleOneWayClick = () => {
-    setRoundTrip('');
-    setOneWay('active');
-    dispatch(updateFunc({ keyName: 'cabTripType', value: 'oneWay' }));
+  const handleCabPickUpDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'cabDate', value: '' }));
+      setCabDay('');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'cabDate', value: date }));
+      setCabDay(daysOfWeek[value.getDay()]);
+    }
   }
 
   return (
 
-    <div id={id} className="section-listing">
-        <div className="container-xxl">
-          <div className="row">
-            <ul className="list-inline flight-selection">
-              <li className="list-inline-item">
-                <a href="#!" className={`trip-type ${roundTrip}`} onClick={handleRoundTripClick}>Round Trip</a>
-               </li>
-              <li className="list-inline-item">
-                <a href="#!" className={`trip-type ${oneWay}`} onClick={handleOneWayClick}>One Way</a>
-              </li>
-            </ul>
-          </div>
-          <div className="row">
-            <div className="col">
-              <Select id={"cabs-search-pickup-select"} keyName={"cabPickUpPlace"} eventType={1} options={cabPickUpPlaceOptions} value={cabPickUpPlace} />
-            </div>
-            <div className="col">
-              <Select id={"cabs-search-drop-select"} keyName={"cabDropPlace"} eventType={1} options={cabDropPlaceOptions} value={cabDropPlace} />
-            </div>
-            <div className="col">
-              <div className="input-group date">
-                <DatePicker id="cabs-search-pickup-datepicker" size="lg" style={dateStyles} placeholder="PickUp Date" onChange={handleCabPickUpDate} format="dd-MM-yyyy HH:mm" />
+    <div id={id} className="container section-block-hero">
+      <div className="row">
+        <div className="col-lg-12 col-md-12 text-center">
+          <h1 className="mb-2 hero-title">Embark on a Sacred Journey with Us</h1>
+          <p className="hero-text mb-4">Your Trusted Companion for a Hassle-Free Hajj and Umrah Experience</p>
+        </div>
+        <div className="col-lg-12 col-md-12">
+          <div className="booking-form">
+            <div className="hero-form-title">Book Cabs</div>
+            <div className="row">
+              <div className="col">
+                <div className="mb-3">
+                  <SearchInput
+                    id={"pickup-cab-search-input"}
+                    keyName={"cabPickUpPlace"}
+                    placeholder={"Pick up"}
+                    middle={"Address"}
+                    lowerTwo={"Pick Up City"}
+                    options={cabPlaceOptions}
+                  />
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3">
+                  <SearchInput
+                    id={"drop-cab-search-input"}
+                    keyName={"cabDropPlace"}
+                    placeholder={"Drop off"}
+                    middle={"Address"}
+                    lowerTwo={"Drop off City"}
+                    options={cabPlaceOptions}
+                  />
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3 departure-date-home-page">
+                  <a href="#!" className="form-selection">
+                    <label htmlFor="journeyDate" className="form-label">Journey Date</label>
+                    <div className="input-group">
+                      <DatePicker oneTap id="cabs-search-pick-up-date-datepicker" size="lg" style={dateStyles} onChange={handleCabPickUpDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                    </div>
+                    <div className="helper-text">{cabDay}</div>
+                  </a>
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3">
+                  <a href="#!" className="form-selection">
+                    <label htmlFor="return" className="form-label">Journey Time</label>
+                    <div className="input-group">
+                      <TimePicker
+                        id="cabs-timepicker"
+                        showSecond={false}
+                        className="xxx"
+                        inputIcon={<i className="bi bi-clock"></i>}
+                        onChange={handleCabTimeSelect}
+                        format={"h:mm A"}
+                        use12Hours
+                        inputReadOnly
+                      />
+                      {/* <DatePicker oneTap id="cabs-search-pick-up-date-datepicker" size="lg" style={dateStyles} onChange={handleCabPickUpDate} placeholder="Select Date" format="dd-MM-yyyy" /> */}
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
-            <div className="col">
-              <div className="input-group">
-                {/* <TimePicker id="cabs-search-pickup-timepicker" size="lg" style={dateStyles} placeholder="PickUp Time" onChange={handleCabPickUpTime} format="HH:mm" /> */}
+            <div className="row">
+              <div className="col">
+                <Button id={"search-cabs-page-btn"} loading={loading} handleBtnClick={handleCabSearchClick} btnType={"primary"} classes={"float-end"} label={"Search Cabs"} />
               </div>
-            </div>
-            <div className="col">
-              <Button id={"cab-search-btn"} loading={loading} handleBtnClick={handleCabSearchClick} btnType={"primary"} label={"Search"} />
             </div>
           </div>
         </div>
       </div>
+    </div>
   )
 };
 
 export default CabsSearch;
-
-
-
-
-

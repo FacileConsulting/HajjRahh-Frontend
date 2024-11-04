@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { updateFunc } from '../reducers/homeSlice';
 import { useDispatch } from 'react-redux';
-import './components.css';
 
 const Counter = ({ id, options, counterByOther, defaultValue, keyName }) => {
   const dispatch = useDispatch();

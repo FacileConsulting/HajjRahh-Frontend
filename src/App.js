@@ -40,6 +40,7 @@ const App = ({ message }) => {
     return state.myAccount
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [activeHeaderIcon, setActiveHeaderIcon] = useState({ flights: 'flight-active', holidays: 'holidays', cabs: 'cabs' });
 
   const fetchHealthData = async () => {
     let response = await handleAPIData('GET', '/api/health');
@@ -105,6 +106,12 @@ const App = ({ message }) => {
     }
   }
 
+  const handleHeaderIconClick = (type) => {
+    const obj = { flights: 'flights', holidays: 'holidays', cabs: 'cabs' };
+    obj[type] =  `${type}-active`;
+    setActiveHeaderIcon({ ...obj });
+  }
+
   useEffect(() => {
     fetchHealthData();
     checkPageReload();
@@ -114,7 +121,8 @@ const App = ({ message }) => {
     if (location.pathname !== '/holidays') {
       dispatch(resetHomeFunc());
     }    
-    console.log("Route changed to:", location.pathname);
+    console.log("Route changed to:", location, location.pathname);
+    handleHeaderIconClick(location.pathname.split('/')[1]);
   }, [location.pathname]);
 
   useEffect(() => { 
@@ -125,12 +133,14 @@ const App = ({ message }) => {
     }
   }, [displayEmail]);
 
+  console.log('$###############$', activeHeaderIcon);
+
   return (
     <>
       <section className="section-wrapper">
         <nav className="navbar navbar-expand-lg bg-body-tertiary header-section">
           <div className="container-fluid">
-            <Link to="/" className="navbar-brand">
+            <Link to="/flights" className="navbar-brand">
               <img src="./assets/images/hajjrahh_logo.jpg" className="hajjrahh-logo" alt="..." />
             </Link>
             {/* <Link to="/" className="navbar-brand">Hajjrahh</Link> */}
@@ -139,21 +149,21 @@ const App = ({ message }) => {
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-                <li className="nav-item text-center">
-                  <span className="nav-menu-icon img-flight"></span><br />
-                  <Link to="/flights">Flights</Link>
+                <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
+                  <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
+                  <Link to="/flights" className={activeHeaderIcon.flights}>Flights</Link>
                 </li>
                 <li className="nav-item text-center">
                   <span className="nav-menu-icon img-hotel"></span> <br />
                   <a className="nav-link" aria-current="page">Hotels</a>
                 </li>
-                <li className="nav-item text-center">
-                  <span className="nav-menu-icon img-holidays"></span> <br />
-                  <Link to="/holidays">Holidays</Link>
+                <li className="nav-item text-center" onClick={() => handleHeaderIconClick('holidays')}>
+                  <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
+                  <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
                 </li>
-                <li className="nav-item text-center">
-                  <span className="nav-menu-icon img-cabs"></span> <br />
-                  <Link to="/cabs">Cabs</Link>
+                <li className="nav-item text-center" onClick={() => handleHeaderIconClick('cabs')}>
+                  <span className={`nav-menu-icon img-${activeHeaderIcon.cabs}`}></span> <br />
+                  <Link to="/cabs" className={activeHeaderIcon.cabs}>Cabs</Link>
                 </li>
                 <li className="nav-item text-center">
                   <span className="nav-menu-icon img-invest"></span> <br />
@@ -191,7 +201,7 @@ const App = ({ message }) => {
         </nav>
 
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route path="/" exact component={Flights} />
           {/* <Route path="/myAccount" component={isAuthenticated ? <MyAccount /> : <LoginRegister />} /> */}
           {/* <Route
             path="/myAccount" component={MyAccount} render={() => isAuthenticated ? (

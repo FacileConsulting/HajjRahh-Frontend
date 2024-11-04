@@ -10,6 +10,7 @@ import CabsSearch from '../components/CabsSearch';
 import CabContainer from '../components/CabContainer';
 import NoDataAvailable from '../components/NoDataAvailable';
 import Select from '../components/Select';
+import DefaultBody from '../components/DefaultBody';
 
 const Cabs = ({ id }) => {
   localStorage.setItem('current_route', '/cabs');
@@ -45,10 +46,10 @@ const Cabs = ({ id }) => {
 
   const {
     cabSort,
-    cabTripType,
     cabPickUpPlace,
     cabDropPlace,
-    cabDate
+    cabDate,
+    cabTime
   } = useSelector(state => state.home);
 
   const cabCardCallback = (data) => {
@@ -99,17 +100,10 @@ const Cabs = ({ id }) => {
 
   const preparePayload = () => {
     return {
-      cabTripType,
-      cabPickUpPlace,
-      cabDropPlace,
-      cabDate: cabDate.split('^')[0],
-      cabTime: cabDate.split('^')[1]
-      // flightDepartureDate: convertDate(holidayDepartureDate), 
-      // flightReturnDate: convertDate(holidayReturnDate), 
-      // sacredType,
-      // flightType: flightType === 'direct' ? true : false,
-      // travelClass: flightClass,
-      // foodType
+      cabPickUpPlace: cabPickUpPlace.split('^')[0],
+      cabDropPlace: cabDropPlace.split('^')[0],
+      cabDate: cabDate,
+      cabTime: cabTime
     }
   }
 
@@ -120,7 +114,7 @@ const Cabs = ({ id }) => {
       return;
     }
 
-    if (!cabPickUpPlace && !cabDropPlace && !cabDate) {
+    if (!cabPickUpPlace && !cabDropPlace && !cabDate && !cabTime) {
       toast.info('Please select atleast one field', toastOptions);
       return;
     } else if (!cabPickUpPlace) {
@@ -130,7 +124,10 @@ const Cabs = ({ id }) => {
       toast.info('Please select Drop place', toastOptions);
       return;
     } else if (!cabDate) {
-      toast.info('Please select date and time', toastOptions);
+      toast.info('Please select date', toastOptions);
+      return;
+    } else if (!cabTime) {
+      toast.info('Please select time', toastOptions);
       return;
     }
 
@@ -181,9 +178,9 @@ const Cabs = ({ id }) => {
 
   const renderHeading = () => {
     return (
-      <div className="col-auto me-auto">
+      <div className="col-auto py-5 me-auto">
         <h2 className="mb-2">{cabsData.length} Cabs Available </h2>
-        <p>{cabTripType === 'roundTrip' ? 'Round Trip' : 'One Way'} &nbsp;&nbsp; · &nbsp;&nbsp; 152 kms &nbsp;&nbsp;</p>
+        <p>One Way &nbsp;&nbsp; · &nbsp;&nbsp; 152 kms &nbsp;&nbsp;</p>
       </div>
     )
   }
@@ -207,41 +204,35 @@ const Cabs = ({ id }) => {
   return (
     <>
       <CabsSearch id={"cabs-search"} loading={loading} cabsCallback={handleCabSearchFilter} />
-      <CabsFilter id={"cabs-filter"} loading={loading} toCallback={toCallback} panelClass={panelClass} cabsCallback={handleCabSearchFilter} handlePanelCallback={handlePanelCallbackParent} />
-      <div className="container-xxl py-5 section-block">
-        {cabsData.length > 0 && renderHeading()}
+      {
+        cabsData.length > 0 ?
+          <>
+            <CabsFilter id={"cabs-filter"} loading={loading} toCallback={toCallback} panelClass={panelClass} cabsCallback={handleCabSearchFilter} handlePanelCallback={handlePanelCallbackParent} />
+            <div className="container-xxl py-5 section-block">
+              {renderHeading()}
 
-        <div className="row mb-4 mt-4 d-flex justify-content-end">
-          <div className="col-auto">
-            <div className="row g-1 align-items-center mb-2">
-              <div className="col-auto">
-                <span>Sort by:</span>
+              <div className="row mb-4 mt-4 d-flex justify-content-end">
+                <div className="col-auto">
+                  <div className="row g-1 align-items-center mb-2">
+                    <div className="col-auto">
+                      <span>Sort by:</span>
+                    </div>
+                    <div className="col-auto">
+                      <Select id={"cabs-sort"} keyName={"cabSort"} eventType={1} options={sortOptions} classes={"form-sort"} />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="col-auto">
-                <Select id={"cabs-sort"} keyName={"cabSort"} eventType={1} options={sortOptions} classes={"form-sort"} />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="accordion" id="cab-contain">
-          {
-            Array.isArray(cabsData) && cabsData.length > 0 &&
-            (
-              <>
+              <div className="accordion" id="cab-contain">
                 {
-                  Array.isArray(cabsData) && cabsData.length > 0 && cabsData.map((cab, index) => {
+                  cabsData.map((cab, index) => {
                     return (<CabContainer id={`cab-${index}`} cabData={cab} cabCardCallback={cabCardCallback} />)
                   })
                 }
-              </>
-            )
-          }
-          {
-            Array.isArray(cabsData) && cabsData.length === 0 &&
-            <NoDataAvailable text={"No Data Available. Please modify or perform your search"} />
-          }
-        </div>
-      </div>
+              </div>
+            </div>
+          </> : <DefaultBody />
+      }
     </>
   )
 };

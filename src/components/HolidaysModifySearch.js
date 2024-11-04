@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DatePicker } from 'rsuite';
-import Select from '../components/Select';
+import SearchInput from './SearchInput';
+import NewSelect from './NewSelect';
+import Traveller from './Traveller';
 import Button from './Button';
 import { updateFunc, dateFunc, dateResetFunc } from '../reducers/homeSlice';
 import { handleAPIData } from '../hooks/useCustomApi';
@@ -11,75 +13,57 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
   const dispatch = useDispatch();
-  const { departure, destination, holidayDepartureDate: dpDate, flightType } = useSelector(state => state.home);
-  
+  const { departure, destination, holidayDepartureDate: dpDate, flightType, travelClass } = useSelector(state => state.home);
+
   console.log('ERERERER', departure, destination, dpDate, flightType);
 
-  const [holidayDepartureDate, setHolidayDepartureDate] = useState(dpDate || null);
-  const [holidayReturnDate, setHolidayReturnDate] = useState(null);
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  const [departureDay, setDepartureDay] = useState('Day of Week');
+  const [returnDay, setReturnDay] = useState('Day of Week');  
 
   const dateStyles = {
-    border: '1px solid #79747E', 
-    height: '47px', 
-    fontSize:'16px', 
+    border: '1px solid #79747E',
+    height: '47px',
+    fontSize: '16px',
     lineHeight: '50px',
     borderRadius: '6px'
   };
-  
-  const handleHolidayDepartureDate = (value) => {
-    if (value == null) {
-      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: '' }));
-      setHolidayDepartureDate(null);
-    } else {
-      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
-      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: date }));
-      setHolidayDepartureDate(value);
-    }    
-  }
 
-  const handleHolidayReturnDate = (value) => {
-    if (value == null) {
-      dispatch(updateFunc({ keyName: 'holidayReturnDate', value: '' }));
-      setHolidayReturnDate(null);
-    } else {
-      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
-      dispatch(updateFunc({ keyName: 'holidayReturnDate', value: date }));
-      setHolidayReturnDate(value);
-    } 
-  }
-
-  const destinationOptions = [
-    {
-      value: '',
-      label: 'Where to'
-    },
+  const destinationOptions = [    
     {
       value: 'AUH',
-      label: 'Abu Dhabi'
-    },
+      label: 'Abu Dhabi',
+      lowerOne: 'Zayed International Airport',
+      lowerTwo: '| UAE'
+    },   
     {
       value: 'DXB',
-      label: 'Dubai'
-    },
+      label: 'Dubai',
+      lowerOne: 'Dubai International Airport',
+      lowerTwo: '| UAE'
+    },   
     {
       value: 'SYD',
-      label: 'Sydney'
-    },
+      label: 'Sydney',
+      lowerOne: 'Sydney Airport',
+      lowerTwo: '| Australia'
+    }, 
     {
       value: 'LGA',
-      label: 'New York'
+      label: 'New York',
+      lowerOne: 'LaGuardia Airport',
+      lowerTwo: '| USA'
     },
     {
       value: 'LON',
-      label: 'London'
+      label: 'London',
+      lowerOne: 'London City Airport',
+      lowerTwo: '| England'
     }
-  ]; 
+  ]
 
   const sacredTypeOptions = [
-    {
-      value: '',
-      label: 'Sacred Type'
-    },
     {
       value: 'hajj',
       label: 'Hajj'
@@ -88,7 +72,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
       value: 'umrah',
       label: 'Umrah'
     }
-  ];   
+  ];
 
   const flightOptions = [
     {
@@ -107,10 +91,6 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
       label: 'Economy'
     },
     {
-      value: 'PREMIUM_ECONOMY',
-      label: 'Economy Premium'
-    },
-    {
       value: 'BUSINESS',
       label: 'Business'
     },
@@ -121,10 +101,6 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
   ];
 
   const foodOptions = [
-    {
-      value: '',
-      label: 'Food'
-    },
     {
       value: 'veg',
       label: 'Veg'
@@ -137,72 +113,192 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
 
   const departureOptions = [
     {
-      value: '',
-      label: 'Travelling From'
-    },
-    {
       value: 'BLR',
-      label: 'Bengaluru'
+      label: 'Bengaluru',
+      lowerOne: 'Kempegowda International Airport',
+      lowerTwo: '| India'
     },
     {
       value: 'BOM',
-      label: 'Mumbai'
+      label: 'Mumbai',
+      lowerOne: 'Chhatrapati Shivaji Maharaj International Airport',
+      lowerTwo: '| India'
     },
     {
       value: 'CCU',
-      label: 'Kolkata'
+      label: 'Kolkata',
+      lowerOne: 'Netaji Subhas Chandra Bose International Airport',
+      lowerTwo: '| India'
     },
     {
       value: 'MAA',
-      label: 'Chennai'
+      label: 'Chennai',
+      lowerOne: 'Chennai International Airport',
+      lowerTwo: '| India'
     },
     {
       value: 'DEL',
-      label: 'Delhi'
+      label: 'Delhi',
+      lowerOne: 'Indira Gandhi International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'DEL',
+      label: 'New Delhi',
+      lowerOne: 'Indira Gandhi International Airport',
+      lowerTwo: '| India'
+    },
+    {
+      value: 'DEL',
+      label: 'Delhi Dil',
+      lowerOne: 'Indira Gandhi International Airport',
+      lowerTwo: '| India'
     }
-  ];
+  ]
 
-  const handleModifySearchClick = () => {
+  const handleSearchFlightsClick = () => {
     holidaysCallback('search');
+  }  
+
+  const handleDepartureDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: '' }));
+      setDepartureDay('');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: date }));
+      setDepartureDay(daysOfWeek[value.getDay()]);
+    }    
+  }
+
+  const handleReturnDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'holidayReturnDate', value: '' }));
+      setReturnDay('');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'holidayReturnDate', value: date }));
+      setReturnDay(daysOfWeek[value.getDay()]);
+    }    
   }
 
   return (
-    <div id={id} className="section-listing">
-      <div className="container-xxl">
-        <div className="row offset-1 mb-16">
-          <div className="col-md-2">
-            <Select id={"holidays-modify-search-departure-select"} keyName={"departure"} eventType={1} options={departureOptions} value={departure} />
-          </div>
-          <div className="col-md-2">
-            <Select id={"holidays-modify-search-destination-select"} keyName={"destination"} eventType={1} options={destinationOptions} value={destination} />
-          </div>
-          <div className="col-md-2">
-            <div className="input-group">
-              <DatePicker oneTap id="holidays-modify-search-departure-datepicker" size="lg" style={dateStyles} placeholder="Departure Date" onChange={handleHolidayDepartureDate} format="dd-MM-yyyy" value={holidayDepartureDate} />
-            </div>
-          </div>
-          <div className="col-md-2">
-            <div className="input-group">
-              <DatePicker oneTap id="holidays-modify-search-return-datepicker" size="lg" style={dateStyles} placeholder="Return Date" onChange={handleHolidayReturnDate} format="dd-MM-yyyy" value={holidayReturnDate} />
-            </div>
-          </div>
+    <div id={id} className="container section-block-hero">
+      <div className="row">
+        <div className="col-lg-12 col-md-12 text-center">
+          <h1 className="mb-2 hero-title">Embark on a Sacred Journey with Us</h1>
+          <p className="hero-text mb-4">Your Trusted Companion for a Hassle-Free Hajj and Umrah Experience</p>
         </div>
-        <div className="row offset-1">
-          <div className="col-md-2">
-            <Select id={"holidays-modify-search-sacred-type-select"} keyName={"sacredType"} eventType={1} options={sacredTypeOptions} />
+        <div className="col-lg-12 col-md-12">
+          <div className="booking-form">
+            <div className="hero-form-title">Book Holiday</div>
+            <div className="row">
+              <div className="col">
+                <div className="mb-3">
+                  <SearchInput
+                    id={"departure-search-input"}
+                    keyName={"departure"}
+                    placeholder={"Travelling from"}
+                    lowerOne={"XXX"}
+                    middle={"Departure"}
+                    lowerTwo={"Airport Name"}
+                    options={departureOptions}
+                    isFlight={true}
+                  />
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3">
+                  <SearchInput
+                    id={"destination-search-input"}
+                    keyName={"destination"}
+                    placeholder={"Travelling to"}
+                    lowerOne={"XXX"}
+                    middle={"Destination"}
+                    lowerTwo={"Airport Name"}
+                    options={destinationOptions}
+                    isFlight={true}
+                  />
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3 departure-date-home-page">
+                  <a href="#!" className="form-selection">
+                    <label htmlFor="depature" className="form-label">Depature Date</label>
+                    <div className="input-group">
+                      <DatePicker oneTap id="holiday-search-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                    </div>
+                    <div className="helper-text">{departureDay}</div>
+                  </a>
+                </div>
+              </div>
+              <div className="col">
+                <div className="mb-3 departure-date-home-page">
+                  <a href="#!" className="form-selection">
+                    <label htmlFor="return" className="form-label">Return Date</label>
+                    <div className="input-group">
+                      <DatePicker oneTap id="holiday-search-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                    </div>
+                    <div className="helper-text">{returnDay}</div>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-3">
+                <div className="mb-3">
+                <NewSelect
+                  id={"new-select-sacred-type"}
+                  keyName={"sacredType"}
+                  placeholder={"Sacred Type"}
+                  value={"Select"}
+                  options={sacredTypeOptions}
+                />  
+                </div>
+              </div>
+              <div className="col-3">
+                <div className="mb-3">
+                <NewSelect
+                  id={"new-select-flight-type"}
+                  keyName={"flightType"}
+                  placeholder={"Flight Type"}  
+                  value={"Direct"}
+                  options={flightOptions}
+                /> 
+                </div>
+              </div>
+              <div className="col-3">
+                <div className="mb-3">
+                  
+                <NewSelect
+                  id={"new-select-flight-class"}
+                  keyName={"flightClass"}
+                  placeholder={"Flight Class"}  
+                  value={"Economy"}
+                  options={flightClassOptions}
+                />
+
+
+                </div>
+              </div>
+              <div className="col-3">
+                <div className="mb-3">
+                <NewSelect
+                  id={"new-select-food-type"}
+                  keyName={"foodType"}
+                  placeholder={"Food Type"}
+                  value={"Select"}
+                  options={foodOptions}
+                />  
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <Button id={"search-flights-home-page-btn"} loading={loading} handleBtnClick={handleSearchFlightsClick} btnType={"primary"} classes={"float-end"} label={"Search Holidays"} />
+              </div>
+            </div>
           </div>
-          <div className="col-md-2">
-            <Select id={"holidays-modify-search-holiday-select"} keyName={"flightType"} eventType={1} options={flightOptions} />
-          </div>
-          <div className="col-md-2">
-            <Select id={"holidays-modify-search-holiday-class-select"} keyName={"flightClass"} eventType={1} options={flightClassOptions} />
-          </div>
-          <div className="col-md-2">
-            <Select id={"holidays-modify-search-food-select"} keyName={"foodType"} eventType={1} options={foodOptions} />
-          </div>
-          <div className="col">
-            <Button id={"holiday-modify-search-btn"} loading={loading} handleBtnClick={handleModifySearchClick} btnType={"primary"} label={"Modify search"} />
-           </div>
         </div>
       </div>
     </div>

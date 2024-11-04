@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const homeState = {
-  cabTripType: 'roundTrip',
   roundOneWay: 'roundTrip',
   travelClass: 'ECONOMY^Economy',
   flightClass: 'ECONOMY',
