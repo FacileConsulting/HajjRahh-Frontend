@@ -40,7 +40,7 @@ const App = ({ message }) => {
     return state.myAccount
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeHeaderIcon, setActiveHeaderIcon] = useState({ flights: 'flight-active', holidays: 'holidays', cabs: 'cabs' });
+  const [activeHeaderIcon, setActiveHeaderIcon] = useState({ flights: 'flight-active', holidays: 'holidays', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' });
 
   const fetchHealthData = async () => {
     let response = await handleAPIData('GET', '/api/health');
@@ -107,7 +107,7 @@ const App = ({ message }) => {
   }
 
   const handleHeaderIconClick = (type) => {
-    const obj = { flights: 'flights', holidays: 'holidays', cabs: 'cabs' };
+    const obj = { flights: 'flights', holidays: 'holidays', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' };
     obj[type] =  `${type}-active`;
     setActiveHeaderIcon({ ...obj });
   }
@@ -175,10 +175,10 @@ const App = ({ message }) => {
                   isLoggedIn &&
                   <>
                     <li className="nav-item dropdown">
-                      <Link to="/myAccount"> My Account</Link>
+                      <Link to="/myAccount" className={activeHeaderIcon.myAccount}> My Account</Link>
                     </li>
                     <li className="nav-item">
-                      <Link to="/trips">Trips</Link>
+                      <Link to="/trips" className={activeHeaderIcon.trips}>Trips</Link>
                     </li>
                   </>
                 }
@@ -192,7 +192,7 @@ const App = ({ message }) => {
                       <a className="nav-link" href="#">LogOut</a>
                     </li> :
                     <li className="nav-item">
-                      <Link className="nav-link nav-btn btn-secondary" to="/loginRegister">Sign In</Link>
+                      <Link className={`nav-link nav-btn btn-secondary ${activeHeaderIcon.loginRegister}`} to="/loginRegister">Sign In</Link>
                     </li>
                 }
               </ul>

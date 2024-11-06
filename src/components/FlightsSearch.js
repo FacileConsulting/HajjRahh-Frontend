@@ -114,7 +114,7 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
   const handleDepartureDate = (value) => {
     if (value == null) {
       dispatch(updateFunc({ keyName: 'flightDepartureDate', value: '' }));
-      setDepartureDay('');
+      setDepartureDay('Day of Week');
     } else {
       const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
       dispatch(updateFunc({ keyName: 'flightDepartureDate', value: date }));
@@ -125,7 +125,7 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
   const handleReturnDate = (value) => {
     if (value == null) {
       dispatch(updateFunc({ keyName: 'flightReturnDate', value: '' }));
-      setReturnDay('');
+      setReturnDay('Day of Week');
     } else {
       const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
       dispatch(updateFunc({ keyName: 'flightReturnDate', value: date }));

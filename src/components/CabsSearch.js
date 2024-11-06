@@ -66,7 +66,7 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
   const handleCabPickUpDate = (value) => {
     if (value == null) {
       dispatch(updateFunc({ keyName: 'cabDate', value: '' }));
-      setCabDay('');
+      setCabDay('Day of Week');
     } else {
       const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
       dispatch(updateFunc({ keyName: 'cabDate', value: date }));

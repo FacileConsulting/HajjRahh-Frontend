@@ -163,7 +163,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
   const handleDepartureDate = (value) => {
     if (value == null) {
       dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: '' }));
-      setDepartureDay('');
+      setDepartureDay('Day of Week');
     } else {
       const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
       dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: date }));
@@ -174,7 +174,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
   const handleReturnDate = (value) => {
     if (value == null) {
       dispatch(updateFunc({ keyName: 'holidayReturnDate', value: '' }));
-      setReturnDay('');
+      setReturnDay('Day of Week');
     } else {
       const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
       dispatch(updateFunc({ keyName: 'holidayReturnDate', value: date }));
