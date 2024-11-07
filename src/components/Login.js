@@ -112,7 +112,7 @@ const Login = forwardRef((props, ref) => {
       dispatch(changeInputFunc({ keyName: 'emailSettings', value: isEnabledEmailNotification }));
       localStorage.setItem('access_token', response.data.token);
       localStorage.setItem('user_data', JSON.stringify(userDetails));
-      history.push('/');
+      history.push('/flights');
       console.log('response', response.data);
     } else if (response.status === 'error' && response.data.message) {
       toast.error(response.data.message, toastOptions);

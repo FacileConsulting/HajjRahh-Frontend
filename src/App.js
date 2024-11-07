@@ -23,13 +23,13 @@ import { resetHomeFunc, updateFunc } from './reducers/homeSlice';
 import { changeInputFunc, resetInputFunc, resetMyAccountFunc } from './reducers/myAccountSlice';
 import { toastOptions } from './toastify';
 import './App.css';
-import 'rsuite/DateRangePicker/styles/index.css';
+import 'rsuite/DatePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 
   
 const App = ({ message }) => {
-  localStorage.setItem('current_route', '/');
+  localStorage.setItem('current_route', '/flights');
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -54,7 +54,7 @@ const App = ({ message }) => {
     dispatch(resetHomeFunc());
     dispatch(resetMyAccountFunc());
     setIsLoggedIn(false); 
-    history.push('/');
+    history.push('/flights');
     toast.success('You are successfully logged out');
   }
 
@@ -65,7 +65,7 @@ const App = ({ message }) => {
     if (token && currRoute && userDetailsFromLocalStorage) {
       return { checked: true, currRoute, userDetailsFromLocalStorage };
     } else {
-      history.push('/');
+      history.push('/flights');
       return { checked: false };
     }
   }
@@ -96,13 +96,13 @@ const App = ({ message }) => {
           console.log('Page was refreshed by the browser refresh buttoneeeee'); 
           history.push(currRoute);
         } else {
-          history.push('/');
+          history.push('/flights');
         }
       } else {
-        history.push('/');
+        history.push('/flights');
       }
     } else {
-      history.push('/');
+      history.push('/flights');
     }
   }
 

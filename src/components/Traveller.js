@@ -8,6 +8,7 @@ const Traveller = ({ id, placeholder, defaultTravellers, defaultValue, keyName }
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef()];
   const { adults, children, infants, travelClass } = useSelector(state => state.home);
+  const [ showTravellerMenu, setShowTravellerMenu ] = useState(false);
 
   const renderGender = () => {
     const genderData = [
@@ -67,17 +68,22 @@ const Traveller = ({ id, placeholder, defaultTravellers, defaultValue, keyName }
     )
   }
 
+  const handleTravallerClick = () => {
+    setShowTravellerMenu(!showTravellerMenu);
+  }
+
   return (
-    <div className="dropdown">
+    <div className="traveler-major">
 
 
-      <a className="form-selection" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <a className="form-selection" href="#" role="button" onClick={handleTravallerClick}>
         <label htmlFor="travelers" className="form-label">{placeholder}</label>
         <div className="header-form">{(adults + children + infants) || defaultTravellers} Traveler(s)</div>
         <div className="helper-text">{travelClass.split('^')[1]}</div>
       </a>
 
-      <ul className="dropdown-menu dropmenu-guest" aria-labelledby="dropdownMenuClickableInside">
+      <ul className={showTravellerMenu ? 'dropmenu-guest traveller-menu-show' : 'dropmenu-guest traveller-menu-hide'}>
+      {/* <ul className='dropdown-menu dropmenu-guest'> */}
         {renderGender()}
         <li className="mb-2"><h5>Select Class</h5></li>
         {renderFlightClass()}
