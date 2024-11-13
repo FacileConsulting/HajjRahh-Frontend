@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch, Link, Redirect, useHistory, useLocation  } from 'react-router-dom';
+import { Route, Switch, Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { DateRangePicker } from 'rsuite';
@@ -16,8 +16,6 @@ import FlightDetails from './pages/FlightDetails';
 import Flights from './pages/Flights';
 import Trips from './pages/Trips';
 import LoginRegister from './pages/LoginRegister';
-import Select from './components/Select';
-import Counter from './components/Counter';
 import { handleAPIData } from './hooks/useCustomApi';
 import { resetHomeFunc, updateFunc } from './reducers/homeSlice';
 import { changeInputFunc, resetInputFunc, resetMyAccountFunc } from './reducers/myAccountSlice';
@@ -27,7 +25,7 @@ import 'rsuite/DatePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-  
+
 const App = ({ message }) => {
   localStorage.setItem('current_route', '/flights');
   const dispatch = useDispatch();
@@ -53,7 +51,7 @@ const App = ({ message }) => {
     localStorage.removeItem('user_data');
     dispatch(resetHomeFunc());
     dispatch(resetMyAccountFunc());
-    setIsLoggedIn(false); 
+    setIsLoggedIn(false);
     history.push('/flights');
     toast.success('You are successfully logged out');
   }
@@ -81,7 +79,7 @@ const App = ({ message }) => {
         console.log('###@#QW', checked, currRoute, userDetailsFromLocalStorage)
         if (checked && userDetailsFromLocalStorage) {
           console.log('###@#eee eeeeeeeQW', checked, currRoute, userDetailsFromLocalStorage)
-          const { userId, username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage); 
+          const { userId, username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage);
           dispatch(resetHomeFunc());
           dispatch(resetMyAccountFunc());
           dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
@@ -93,7 +91,7 @@ const App = ({ message }) => {
           dispatch(changeInputFunc({ keyName: 'debitCard', value: debitCard }));
           dispatch(changeInputFunc({ keyName: 'upi', value: upi }));
           dispatch(changeInputFunc({ keyName: 'emailSettings', value: isEnabledEmailNotification }));
-          console.log('Page was refreshed by the browser refresh buttoneeeee'); 
+          console.log('Page was refreshed by the browser refresh buttoneeeee');
           history.push(currRoute);
         } else {
           history.push('/flights');
@@ -115,17 +113,20 @@ const App = ({ message }) => {
   useEffect(() => {
     fetchHealthData();
     checkPageReload();
-  }, []); 
+  }, []);
 
   useEffect(() => {
     if (location.pathname !== '/holidays') {
       dispatch(resetHomeFunc());
-    }    
+    }
+    if (location.pathname === '/vendors') {
+      history.push('/vendors');
+    }
     console.log("Route changed to:", location, location.pathname);
     handleHeaderIconClick(location.pathname.split('/')[1]);
   }, [location.pathname]);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (displayEmail) {
       setIsLoggedIn(true);
     } else {
@@ -135,95 +136,74 @@ const App = ({ message }) => {
 
   console.log('$###############$', activeHeaderIcon);
 
-  return (
-    <>
-      <section className="section-wrapper">
-        <nav className="navbar navbar-expand-lg bg-body-tertiary header-section">
-          <div className="container-fluid">
-            <Link to="/flights" className="navbar-brand">
-              <img src="./assets/images/hajjrahh_logo.jpg" className="hajjrahh-logo" alt="..." />
-            </Link>
-            {/* <Link to="/" className="navbar-brand">Hajjrahh</Link> */}
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-                <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
-                  <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
-                  <Link to="/flights" className={activeHeaderIcon.flights}>Flights</Link>
-                </li>
-                <li className="nav-item text-center">
-                  <span className="nav-menu-icon img-hotel"></span> <br />
-                  <a className="nav-link" aria-current="page">Hotels</a>
-                </li>
-                <li className="nav-item text-center" onClick={() => handleHeaderIconClick('holidays')}>
-                  <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
-                  <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
-                </li>
-                <li className="nav-item text-center" onClick={() => handleHeaderIconClick('cabs')}>
-                  <span className={`nav-menu-icon img-${activeHeaderIcon.cabs}`}></span> <br />
-                  <Link to="/cabs" className={activeHeaderIcon.cabs}>Cabs</Link>
-                </li>
-                <li className="nav-item text-center">
-                  <span className="nav-menu-icon img-invest"></span> <br />
-                  <a className="nav-link" aria-current="page">Invest</a>
-                </li>
-              </ul>
-              <ul className="navbar-nav mb-2 mb-lg-0 d-flex nav-secondary">
-                {
-                  isLoggedIn &&
-                  <>
-                    <li className="nav-item dropdown">
-                      <Link to="/myAccount" className={activeHeaderIcon.myAccount}> My Account</Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/trips" className={activeHeaderIcon.trips}>Trips</Link>
-                    </li>
-                  </>
-                }
-                <li className="nav-item">
-                  <Link to="/holidayBooking">Support</Link>  
-                  {/* <a className="nav-link" href="#">Support</a> */}
-                </li>
-                {
-                  isLoggedIn ?
-                    <li className="nav-item" onClick={handleLogOutClick}>
-                      <a className="nav-link" href="#">LogOut</a>
-                    </li> :
-                    <li className="nav-item">
-                      <Link className={`nav-link nav-btn btn-secondary ${activeHeaderIcon.loginRegister}`} to="/loginRegister">Sign In</Link>
-                    </li>
-                }
-              </ul>
-            </div>
+  const Headers = () => {
+    return (
+      <nav className="navbar navbar-expand-lg bg-body-tertiary header-section">
+        <div className="container-fluid">
+          <Link to="/flights" className="navbar-brand">
+            <img src="./assets/images/hajjrahh_logo.jpg" className="hajjrahh-logo" alt="..." />
+          </Link>
+          {/* <Link to="/" className="navbar-brand">Hajjrahh</Link> */}
+          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
+                <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
+                <Link to="/flights" className={activeHeaderIcon.flights}>Flights</Link>
+              </li>
+              <li className="nav-item text-center">
+                <span className="nav-menu-icon img-hotel"></span> <br />
+                <a className="nav-link" aria-current="page">Hotels</a>
+              </li>
+              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('holidays')}>
+                <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
+                <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
+              </li>
+              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('cabs')}>
+                <span className={`nav-menu-icon img-${activeHeaderIcon.cabs}`}></span> <br />
+                <Link to="/cabs" className={activeHeaderIcon.cabs}>Cabs</Link>
+              </li>
+              <li className="nav-item text-center">
+                <span className="nav-menu-icon img-invest"></span> <br />
+                <a className="nav-link" aria-current="page">Invest</a>
+              </li>
+            </ul>
+            <ul className="navbar-nav mb-2 mb-lg-0 d-flex nav-secondary">
+              {
+                isLoggedIn &&
+                <>
+                  <li className="nav-item dropdown">
+                    <Link to="/myAccount" className={activeHeaderIcon.myAccount}> My Account</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/trips" className={activeHeaderIcon.trips}>Trips</Link>
+                  </li>
+                </>
+              }
+              <li className="nav-item">
+                <Link to="/holidayBooking">Support</Link>
+                {/* <a className="nav-link" href="#">Support</a> */}
+              </li>
+              {
+                isLoggedIn ?
+                  <li className="nav-item" onClick={handleLogOutClick}>
+                    <a className="nav-link" href="#">LogOut</a>
+                  </li> :
+                  <li className="nav-item">
+                    <Link className={`nav-link nav-btn btn-secondary ${activeHeaderIcon.loginRegister}`} to="/loginRegister">Sign In</Link>
+                  </li>
+              }
+            </ul>
           </div>
-        </nav>
+        </div>
+      </nav>
+    )
+  }
 
-        <Switch>
-          <Route path="/" exact component={Flights} />
-          {/* <Route path="/myAccount" component={isAuthenticated ? <MyAccount /> : <LoginRegister />} /> */}
-          {/* <Route
-            path="/myAccount" component={MyAccount} render={() => isAuthenticated ? (
-                <Redirect to="/myAccount" />
-              ) : (
-                <LoginRegister />
-              )
-            }
-          /> */}
-          <Route path="/myAccount" component={MyAccount} />
-          <Route path="/trips" component={Trips} /> 
-          <Route path="/holidays" component={Holidays} /> 
-          <Route path="/holidayDetails" component={HolidayDetails} />
-          <Route path="/holidayBooking" component={HolidayBooking} /> 
-          <Route path="/holidayConfirmed" component={HolidayConfirmed} />
-          <Route path="/cabs" component={Cabs} />
-          <Route path="/cabDetails" component={CabDetails} />
-          <Route path="/flights" component={Flights} />
-          <Route path="/flightDetails" component={FlightDetails} />
-          <Route path="/loginRegister" component={LoginRegister} />
-        </Switch>
-      </section>
+  const Footers = () => {
+    return (
       <div className="section-bg">
         <div className="container-xxl py-5 section-block">
           <div className="row align-items-center">
@@ -245,6 +225,40 @@ const App = ({ message }) => {
           </div>
         </div>
       </div>
+    )
+  }
+
+
+
+  return (
+    <>
+      <section className="section-wrapper">
+        <Headers />
+        <Switch>
+          <Route path="/" exact component={Flights} />
+          {/* <Route path="/myAccount" component={isAuthenticated ? <MyAccount /> : <LoginRegister />} /> */}
+          {/* <Route
+              path="/myAccount" component={MyAccount} render={() => isAuthenticated ? (
+                  <Redirect to="/myAccount" />
+                ) : (
+                  <LoginRegister />
+                )
+              }
+            /> */}
+          <Route path="/myAccount" component={MyAccount} />
+          <Route path="/trips" component={Trips} />
+          <Route path="/holidays" component={Holidays} />
+          <Route path="/holidayDetails" component={HolidayDetails} />
+          <Route path="/holidayBooking" component={HolidayBooking} />
+          <Route path="/holidayConfirmed" component={HolidayConfirmed} />
+          <Route path="/cabs" component={Cabs} />
+          <Route path="/cabDetails" component={CabDetails} />
+          <Route path="/flights" component={Flights} />
+          <Route path="/flightDetails" component={FlightDetails} />
+          <Route path="/loginRegister" component={LoginRegister} />
+        </Switch>
+      </section>
+      <Footers />
       <ToastContainer />
     </>
   )

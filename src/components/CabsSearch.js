@@ -138,6 +138,7 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
                       />
                       {/* <DatePicker oneTap id="cabs-search-pick-up-date-datepicker" size="lg" style={dateStyles} onChange={handleCabPickUpDate} placeholder="Select Date" format="dd-MM-yyyy" /> */}
                     </div>
+                    <div class="helper-text">&nbsp;</div>
                   </a>
                 </div>
               </div>
