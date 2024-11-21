@@ -286,7 +286,6 @@ const HolidayBooking = ({ id }) => {
         <div className="col-3">
           <div className="input-group date">
             <DatePicker oneTap id={`holidayBookingDOB${index}`} size="lg" style={dateStyles} placeholder="Date of Birth" onChange={(e) => handlePassengerDOB(e, index)} format="dd-MM-yyyy" />
-            {/* <input type="text" className="form-control form-addon" placeholder="Date of birth" /><span className="input-group-text"><i className="bi bi-calendar-event"></i></span> */}
           </div>
         </div>
         <div className="col-3">

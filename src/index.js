@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -8,15 +8,22 @@ import './index.css';
 import App from './App';
 import store from './store';
 import reportWebVitals from './reportWebVitals';
+import Vendors from './Vendors';
 
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+// const locationIndex = useLocation();
+window.location.pathname === '/vendors' ? import("./Vendors.css") : import("./App.css");
+console.log('#@@@locationIndex', window.location.pathname);
+
 root.render(
   <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID || ''}>
     <Provider store={store}>
       <Router>
-        <App />
+        {
+          window.location.pathname === '/vendors' ? <Vendors /> : <App />
+        }
       </Router>
     </Provider>
   </GoogleOAuthProvider>,

@@ -14,7 +14,7 @@ const NewSelect = ({ id, options, keyName, placeholder, value }) => {
   return (
     <div id={id}>
       <a href="#!" className="form-selection" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <label for="type" className="form-label">{placeholder}</label>
+        <label htmlFor="type" className="form-label">{placeholder}</label>
         <input type="test" className="form-control header-form" id={`input-${id}`} placeholder={selectedOption} />
       </a>
       <ul className="dropdown-menu custom-dropdown">

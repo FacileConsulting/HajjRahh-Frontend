@@ -12,21 +12,6 @@ const Select = ({ id, options, classes, keyName, eventType, selectIsList, value 
     } else if (eventType === 2) {
       dispatch(updateFunc({ keyName, value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
     }
-    // if (id === 'departure-select' || id === 'holidays-modify-search-departure-select') {
-    //   dispatch(updateFunc({ keyName: 'departure', value: event.target.value }));
-    // } else if (id === 'destination-select' || id === 'holidays-modify-search-destination-select') {
-    //   dispatch(updateFunc({ keyName: 'destination', value: event.target.value }));
-    // } else if (id === 'holidays-sort') {
-    //   dispatch(updateFunc({ keyName: 'holidaySort', value: event.target.value }));
-    // } else if (id === 'flights-sort') {
-    //   dispatch(updateFunc({ keyName: 'flightSort', value: event.target.value }));
-    // } else if (id === 'flights-search-flying-from') {
-    //   dispatch(updateFunc({ keyName: 'flyingFrom', value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
-    // } else if (id === 'flights-search-flying-to') {
-    //   dispatch(updateFunc({ keyName: 'flyingTo', value: `${event.target.value}^${event.target.selectedOptions[0].label}` }));
-    // } else {
-
-    // }
     setSelectedOption(event.target.value);
   };
 
