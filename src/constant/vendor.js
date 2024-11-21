@@ -51,7 +51,7 @@ export const vData = [
                     id: "pilgrimage-booking-new-reset-btn",
                     label: "Reset",
                     keyName: "pilgrimageBookingNewResetBtn",
-                    class: [["secondary", ""]]
+                    class: [["secondary", "hider"]]
                   },
                   {
                     id: "pilgrimage-booking-new-book-btn",

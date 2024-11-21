@@ -110,6 +110,12 @@ const App = ({ message }) => {
     setActiveHeaderIcon({ ...obj });
   }
 
+  const handleVendorsClick = (e) => {
+    e.preventDefault();
+    // window.location.href = "http://localhost:3000/vendors";    
+    window.location.href = "https://hajjrahh-frontend-gab4gqfbfwgwcnhh.eastus-01.azurewebsites.net/vendors";
+  }
+
   useEffect(() => {
     fetchHealthData();
     checkPageReload();
@@ -181,7 +187,11 @@ const App = ({ message }) => {
                     <Link to="/trips" className={activeHeaderIcon.trips}>Trips</Link>
                   </li>
                 </>
-              }
+              } 
+              <li className="nav-item">
+                <Link onClick={handleVendorsClick}>Vendors</Link>
+                {/* <a className="nav-link" href="#">Support</a> */}
+              </li>
               <li className="nav-item">
                 <Link to="/holidayBooking">Support</Link>
                 {/* <a className="nav-link" href="#">Support</a> */}

@@ -295,7 +295,10 @@ a.coloured-link:hover {
   max-height: 80px;
 }
 .vendor-dash .rs-input-group-lg.rs-input-group > .rs-input {
-  height: 44px !important;
+  height: 43px !important;
+}
+.vendor-dash .rs-picker-toggle-wrapper {
+  display: block !important;
 }
 /* Parent container styles */
 .overlay-major {
@@ -318,10 +321,10 @@ a.coloured-link:hover {
   z-index: 9999; /* Make sure it appears above other elements */
 }
 
-/* Spinner styles (optional, for customization) */
-.spinner-border {
+
+/* .spinner-border {
   width: 3rem;
   height: 3rem;
-  border-width: 0.3rem; /* Adjust thickness */
-  color: white; /* Optional: Change spinner color */
-}
+  border-width: 0.3rem; 
+  color: white;
+} */

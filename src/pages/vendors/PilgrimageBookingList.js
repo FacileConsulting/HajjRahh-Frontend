@@ -110,7 +110,7 @@ const PilgrimageBookingList = ({ obj }) => {
     }
   }
 
-  useEffect(() => {    
+  useEffect(() => {  
     dispatch(resetVendorsComponentFunc({ componentName: 'PilgrimageBookingNew' }));
     fetchAllPilgrimageBooking(true);
   }, []);

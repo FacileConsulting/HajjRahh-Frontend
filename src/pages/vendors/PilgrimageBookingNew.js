@@ -130,7 +130,8 @@ const PilgrimageBookingNew = ({ obj }) => {
       pilBookTravelersList
     } = oneRecord;
     obj.content[0].fields[0].label = 'Edit Piligrimage Booking';
-    obj.content[0].fields[1].entity[2].label = 'Update Booking';
+    obj.content[0].fields[1].entity[2].label = 'Update Booking';    
+    obj.content[0].fields[1].entity[1].class[0][1] = 'hider';
     let getContent = [...obj.content];
     const lastContent = getContent.pop();
     getContent.pop();
@@ -152,58 +153,13 @@ const PilgrimageBookingNew = ({ obj }) => {
     return { ...obj, content: [...getContent, ...mainArr, lastContent] };
   }
 
-  const checkIfNotChanged = (edit, newObj) => {
-    const { pilBookPackageName, pilBookFromDate, pilBookToDate, pilBookTravelersList } = edit;
-    const { pilgrimageBookingNewPackage, pilgrimageBookingNewFromDate, pilgrimageBookingNewToDate } = newObj;
-
-    let notChanged = [];
-    if (
-      pilBookPackageName === pilgrimageBookingNewPackage &&
-      pilBookFromDate === pilgrimageBookingNewFromDate &&
-      pilBookToDate === pilgrimageBookingNewToDate
-    ) {
-      notChanged.push(true);
-    } else {
-      notChanged.push(false);
-    }
-
-    for (let i = 0; i < pilBookTravelersList.length; i++) {
-      if (
-        newObj[`pilgrimageBookingNewTravelerName_${i + 1}`] === pilBookTravelersList[i].name &&
-        newObj[`pilgrimageBookingNewGender_${i + 1}`] === pilBookTravelersList[i].gender &&
-        newObj[`pilgrimageBookingNewMobileNumber_${i + 1}`] === pilBookTravelersList[i].mobile &&
-        newObj[`pilgrimageBookingNewEmailId_${i + 1}`] === pilBookTravelersList[i].email &&
-        JSON.stringify(newObj[`pilgrimageBookingNewUploadVisa_${i + 1}`]) === JSON.stringify(pilBookTravelersList[i].visa) &&
-        JSON.stringify(newObj[`pilgrimageBookingNewUploadPassport_${i + 1}`]) === JSON.stringify(pilBookTravelersList[i].passport) &&
-        JSON.stringify(newObj[`pilgrimageBookingNewUploadMedical_${i + 1}`]) === JSON.stringify(pilBookTravelersList[i].medical)
-      ) {
-        notChanged.push(true);
-      } else {
-        notChanged.push(false);
-      }
-    }
-
-    if (notChanged.every(z => z === true)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  console.log('PilgrimageBookingPilgrimageBooking', obj);
-
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const { state } = location;
   const { PilgrimageBookingNew } = useSelector(state => state.vendors);
 
-  // console.log('PilgrimageBookingPilgrimageBooking  state', state);
-
   const objLength = Object.keys(PilgrimageBookingNew).length;
-  // if (state?.data && objLength) {
-  //   notChanged = checkIfNotChanged(state?.data, PilgrimageBookingNew);
-  // }
 
   const forceReset = (obj) => {
     obj.content[0].fields[0].label = 'New Piligrimage Booking';
@@ -211,9 +167,9 @@ const PilgrimageBookingNew = ({ obj }) => {
     obj.content[1].fields[0].value = '';
     obj.content[1].fields[1].value = null;
     obj.content[1].fields[2].value = null;
+    obj.content[0].fields[1].entity[1].class[0][1] = '';
     return { ...obj };
   }
-  console.log('PilgrimageBookingPilgrimageBooking  objLength', objLength);
   let renderWith = {};
   if (state?.data && !objLength) {
     renderWith = createEditObj(state.data);
@@ -224,7 +180,7 @@ const PilgrimageBookingNew = ({ obj }) => {
   const [ob, setOb] = useState({ ...renderWith });
   const [loading, setLoading] = useState(false);
   const [travelerNumber, setTravelerNumber] = useState(state?.data && !objLength ? state.data.pilBookTravelersList.length : 1);
-  console.log('PilgrimageBookingPilgrimageBooking  ob',);
+  
 
 
 
@@ -260,8 +216,6 @@ const PilgrimageBookingNew = ({ obj }) => {
     // Assign the FileList to the input element
     const fileInput = document.getElementById(inputElementId);
     fileInput.files = dataTransfer.files;
-
-    console.log("File attached to input:", file);
   };
 
   const bookPackagesAPICall = async (payload, num) => {
@@ -284,13 +238,11 @@ const PilgrimageBookingNew = ({ obj }) => {
     }
     setLoading(false);
     setTravelerNumber(num);
-    console.log('/api/vendors handleAPIData', response);
   }
 
   const caughtDataOnClick = (catchData) => {
     let getContent = [...ob.content];
     const lastContent = getContent.pop();
-    console.log('%%%%%%catchData ', catchData);
     if (catchData === 'pilgrimageBookingNewAddNewTravelerBtn') {
       const mainObj = rawTraveler(getContent.length - 2);
       setTravelerNumber(getContent.length - 2);
@@ -303,7 +255,7 @@ const PilgrimageBookingNew = ({ obj }) => {
       }
     } else if (catchData === 'pilgrimageBookingNewResetBtn') {
       dispatch(resetVendorsComponentFunc({ componentName: 'PilgrimageBookingNew' }));
-      setOb({ ...obj });
+      setOb(forceReset(obj));
     } else if (catchData === 'pilgrimageBookingNewBookBtn') {
       let travelNumber = travelerNumber;
 
@@ -383,8 +335,6 @@ const PilgrimageBookingNew = ({ obj }) => {
           pilBookDocumentStatus = 'Partial Documents';
         }
 
-        console.log('countcountcount', count);
-
         const payload = {
           type: 'PILGRIMAGE_BOOKING_CREATE',
           pilBookVendorName: pilBookTravelersList[0].name,
@@ -404,7 +354,6 @@ const PilgrimageBookingNew = ({ obj }) => {
           payload.type = 'PILGRIMAGE_BOOKING_UPDATE';
 
         }
-        console.log('payloadpayloadpayloadpayload', payload);
         bookPackagesAPICall(payload, travelNumber);
       }
     } else if (catchData === 'pilgrimageBookingNewBackBtn') {
