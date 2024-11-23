@@ -79,7 +79,7 @@ const PilgrimageBookingView = ({ obj }) => {
             {
               Array.isArray(ob.content[0].fields) && ob.content[0].fields.length > 0 && ob.content[0].fields.map((field, index) => {
                 return (
-                  <React.Fragment >
+                  <React.Fragment key={`pil-booking-view-field-${index}`}>
                     <VendorForm
                       component={ob.component}
                       item={field}

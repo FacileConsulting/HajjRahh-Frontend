@@ -1,164 +1,90 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import { handleAPIData } from '../../hooks/useCustomApi';
+import VendorForm from '../../components/vendors/VendorForm';
+import { toast } from 'react-toastify';
+import { toastOptions } from '../../toastify';
+import {
+  defaultPackages
+} from '../../constant/func';
+import {
+  resetVendorsComponentFunc
+} from '../../reducers/vendorsSlice';
+import { responseHandler } from '../../constant/func';
 
-const PackageManagementList = ({ data }) => {
+const PackageManagementList = ({ obj }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [ob, setOb] = useState({ ...obj });
+
+  const updateTbodyValue = (value) => {
+    ob.content[1].fields[2].value.tbody = value;
+    setOb({ ...ob });
+  }
+  
+  const caughtDataOnClick = async (catchData, id) => {
+    if (catchData === 'packageManagementListNewPackageBtn') {      
+      history.push('/vendors/package-management-new');
+    }
+  }
+
+  const createResponse = (data) => {
+    let tbody = [];
+    for (let i = 0; i < data.length; i++) {
+      tbody.push([
+        `${defaultPackages[data[i].packMangPackageName]}^${data[i]._id}` || '',
+        data[i].packMangItinerary || '',
+        data[i].packMangPrice || '',
+        data[i].packMangGroupSize || '',
+        data[i].packMangDocumentsRequired || '',
+        data[i].packMangAccomodation || '',
+        data[i].packMangTransportation || '',
+        `Actions^${data[i]._id}`
+      ]);
+    }
+    updateTbodyValue(tbody);
+  }
+
+  const fetchAllPackageManagement = async (loadingFlag) => {
+    if (loadingFlag) updateTbodyValue('loading');
+    let response = await handleAPIData('POST', '/api/vendors', { type: 'PACKAGE_MANAGEMENT_FETCH_ALL' });
+    console.log('/api/vendors PACKAGE_MANAGEMENT_FETCH_ALL', response);
+    updateTbodyValue([]);
+    const returned = responseHandler(response);
+    if (returned) createResponse(returned);
+  }
+
+  useEffect(() => {
+    dispatch(resetVendorsComponentFunc({ componentName: 'PackageManagement' }));
+    fetchAllPackageManagement(true);
+  }, []);
+
+
   return (
-    <div class="dashboard-body">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-auto me-auto">
-            <h2>Package Management</h2>
-          </div>
-          <div class="col-auto">
-            <a href="#!" class="btn btn-primary btn-sm">Add new</a>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-9 text-end">
-            <div class="dropdown">
-              <button class="btn btn-secondary btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-funnel"></i>
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <a class="dropdown-item" href="#">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Option
-                      </label>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Option
-                      </label>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Option
-                      </label>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Option
-                      </label>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="input-group">
-              <span class="input-group-text"><i class="bi bi-search"></i></span>
-              <input type="text" class="form-control" placeholder="search" />
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="table-responsive mt-3">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Package name</th>
-                    <th>Itinerary</th>
-                    <th>Price</th>
-                    <th>Group size</th>
-                    <th>Documents required</th>
-                    <th>Accommodation</th>
-                    <th>Transportation</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><a href="#!" class="coloured-link">Package</a></td>
-                    <td>Itinerary details</td>
-                    <td>$1000.00</td>
-                    <td>3+</td>
-                    <td>Shariah-compliant</td>
-                    <td>2 days 3 nights</td>
-                    <td>Included</td>
-                    <td>
-                      <a href="#!" class="me-2"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#!"><i class="bi bi-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="#!" class="coloured-link">Package 1</a></td>
-                    <td>Itinerary details</td>
-                    <td>$1500.00</td>
-                    <td>5+</td>
-                    <td>Visa</td>
-                    <td>2 days 3 nights</td>
-                    <td>Included</td>
-                    <td>
-                      <a href="#!" class="me-2"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#!"><i class="bi bi-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="#!" class="coloured-link">Package 2</a></td>
-                    <td>Itinerary details</td>
-                    <td>$1000.00</td>
-                    <td>Solo</td>
-                    <td>Visa</td>
-                    <td>2 days 3 nights</td>
-                    <td>Included</td>
-                    <td>
-                      <a href="#!" class="me-2"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#!"><i class="bi bi-trash"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><a href="#!" class="coloured-link">Package 3</a></td>
-                    <td>Itinerary details</td>
-                    <td>$2000.00</td>
-                    <td>2+</td>
-                    <td>Visa</td>
-                    <td>2 days 3 nights</td>
-                    <td>Included</td>
-                    <td>
-                      <a href="#!" class="me-2"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#!"><i class="bi bi-trash"></i></a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="col-6">
-            <p>Showing 1-4 of 4</p>
-          </div>
-          <div class="col-6">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-end">
-                <li class="page-item disabled">
-                  <a class="page-link">Previous</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">Next</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
+    <div id={ob.id} className="vendor-dash dashboard-body">
+      <div className="container-fluid">
+        {
+          Array.isArray(ob.content) && ob.content.length > 0 && ob.content.map((o, ind) => {
+            return (
+              <div key={`package-management-list-${ind}`} className={`row ${o.class[0]}`}>
+                {
+                  Array.isArray(o.fields) && o.fields.length > 0 && o.fields.map((field, index) => {
+                    return (
+                      <React.Fragment key={`package-management-list-field-${index}`}>
+                        <VendorForm
+                          component={ob.component}
+                          item={field}
+                          caughtDataOnClick={caughtDataOnClick}
+                        />
+                      </React.Fragment>
+                    )
+                  })
+                }
+              </div>
+            )
+          })
+        }
       </div>
     </div>
   );

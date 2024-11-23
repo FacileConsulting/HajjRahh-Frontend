@@ -2,6 +2,7 @@ import React from 'react';
 
 // Dynamically import all components in the components directory
 const components = { 
+  PackageManagementNew: React.lazy(() => import('../../pages/vendors/PackageManagementNew')),
   PilgrimageBookingNew: React.lazy(() => import('../../pages/vendors/PilgrimageBookingNew')),
   PilgrimageBookingList: React.lazy(() => import('../../pages/vendors/PilgrimageBookingList')),
   PackageManagementList: React.lazy(() => import('../../pages/vendors/PackageManagementList')),

@@ -10,12 +10,372 @@ export const vData = [
   {
     title: "Hajj & Umrah Providers",
     link: "",
+    exact: true,
     subMenu: [
       {
+        id: "package-management-list-id",
         title: "Package Management",
         link: `/package-management-list`,
         component: "PackageManagementList",
-        hide: ""
+        hide: "",
+        content: [
+          {
+            class: ["mb-4"],
+            fields: [
+              {
+                id: "package-management-list-main-heading",
+                label: "Package Management",
+                type: "h2",
+                description: "h2 text",
+                htmlType: 1,
+                class: [["col-auto", "me-auto"], [""]]
+              },
+              {
+                type: "button",
+                actualType: "a",
+                description: "a button",
+                htmlType: 2,
+                class: [["col-auto"], [""]],
+                entity: [
+                  {
+                    id: "package-management-list-new-package-btn",
+                    label: "New Package",
+                    keyName: "packageManagementListNewPackageBtn",
+                    class: [["primary", ""]]
+                  }
+                ]
+              },
+            ]
+          },
+          {
+            class: ["mt-4"],
+            fields: [
+              {
+                id: "package-management-list-dropdown-option",
+                label: "",
+                type: "dropdown",
+                description: "dropdown with option",
+                htmlType: 8,
+                value: "",
+                class: [["col-9", "text-end"]]
+              },
+              {
+                id: "package-management-list-search",
+                label: "",
+                type: "search",
+                description: "search with text",
+                htmlType: 9,
+                value: "",
+                class: [["col-3"]]
+              },
+              {
+                id: "package-management-list-table",
+                label: "",
+                type: "table",
+                description: "table with thead tbody",
+                htmlType: 10,
+                keyName: {
+                  open: "packageManagementListOpenBtn",
+                  edit: "packageManagementListEditBtn",
+                  delete: "packageManagementListDeleteBtn"
+                },
+                value: {
+                  columns: 8,
+                  thead: [
+                    "Package Name",
+                    "Itinerary",
+                    "Price",
+                    "Group Size",
+                    "Documents Required",
+                    "Accommodation",
+                    "Transportation",
+                    "Actions",
+                  ],
+                  tbody: 'loading'
+                },
+                class: [["col-12"], ["table-responsive", "mt-3"]]
+              },
+              {
+                id: "package-management-list-paginator",
+                label: "",
+                type: "paginator",
+                description: "paginator text",
+                htmlType: 11,
+                value: "",
+                class: [["col-6"]]
+              },
+              {
+                id: "package-management-list-pagination",
+                label: "",
+                type: "pagination",
+                description: "pagination",
+                htmlType: 12,
+                value: "",
+                class: [["col-6"]]
+              }
+            ]
+          },
+        ]
+      },
+      {
+        id: "package-management-new-id",
+        title: "Package Management New",
+        link: "/package-management-new",
+        component: "PackageManagementNew",
+        hide: "hider",
+        content: [
+          {
+            class: ["mb-4"],
+            fields: [
+              {
+                id: "package-management-new-main-heading",
+                label: "Add Package Management",
+                type: "h2",
+                description: "h2 text",
+                htmlType: 1,
+                class: [["col-auto", "me-auto"], [""]]
+              },
+              {
+                type: "button",
+                actualType: "a",
+                description: "a button",
+                htmlType: 2,
+                entity: [
+                  {
+                    id: "package-management-new-back-btn",
+                    label: "Back",
+                    keyName: "packageManagementNewBackBtn",
+                    class: [["secondary", ""]]
+                  },
+                  {
+                    id: "package-management-new-create-btn",
+                    label: "Create",
+                    keyName: "packageManagementNewCreateBtn",
+                    class: [["primary", "ms-2"]],
+                  }
+                ]
+              },
+            ]
+          },
+          {
+            class: [""],
+            fields: [
+              {
+                id: "package-management-new-package-name",
+                keyName: "packageManagementNewPackageName",
+                label: "Package Name",
+                type: "text",
+                description: "input with label text",
+                htmlType: 4,
+                value: "",
+                htmlFor: "package-management-new-traveler-name-for",
+                placeholder: "",
+                class: [["col-4"]]
+              },
+              {
+                id: "package-management-new-price",
+                keyName: "packageManagementNewPrice",
+                label: "Price",
+                type: "text",
+                description: "input with label text",
+                htmlType: 4,
+                value: "",
+                htmlFor: "package-management-new-price-for",
+                placeholder: "",
+                class: [["col-4"]]
+              },
+              {
+                id: "package-management-new-group-size",
+                keyName: "packageManagementNewGroupSize",
+                label: "Group Size",
+                type: "text",
+                description: "input with label text",
+                htmlType: 4,
+                value: "",
+                htmlFor: "package-management-new-group-size-for",
+                placeholder: "",
+                class: [["col-4"]]
+              },
+              {
+                id: "package-management-new-accomodation",
+                keyName: "packageManagementNewAccomodation",
+                label: "Accomodation",
+                type: "text",
+                description: "input with label text",
+                htmlType: 4,
+                value: "",
+                htmlFor: "package-management-new-accomodation-for",
+                placeholder: "",
+                class: [["col-4"]]
+              },
+              {
+                id: "package-management-new-documents-required",
+                label: "Documents Required",
+                type: "checkbox",
+                name: "packageManagementDocumentsRequired",
+                description: "checkbox with label text",
+                htmlType: 6,
+                value: "",
+                keyName: "packageManagementDocumentsRequired",
+                class: [["col-4"]],
+                fields: [
+                  {
+                    id: "package-management-new-visa",
+                    label: "Visa",
+                    value: false,
+                    htmlFor: "package-management-new-visa-for",
+                  },
+                  {
+                    id: "package-management-new-passport",
+                    label: "Passport",
+                    value: false,
+                    htmlFor: "package-management-new-passport-for",
+                  },
+                  {
+                    id: "package-management-new-medical",
+                    label: "Medical",
+                    value: false,
+                    htmlFor: "package-management-new-medical-for",
+                  },
+                ]
+              },
+              {
+                id: "package-management-new-transportation-required",
+                label: "Transportation Required",
+                type: "radio",
+                name: "packageManagementTransportationRequired",
+                description: "radio with label text",
+                htmlType: 6,
+                value: "",
+                class: [["col-4"]],
+                keyName: "packageManagementTransportationRequired",
+                fields: [
+                  {
+                    id: "package-management-new-yes",
+                    label: "Yes",
+                    value: "packageManagementYes",
+                    htmlFor: "package-management-new-yes-for",
+                  },
+                  {
+                    id: "package-management-new-no",
+                    label: "No",
+                    value: "packageManagementNo",
+                    htmlFor: "package-management-new-no-for",
+                  }
+                ]
+              },
+              {
+                id: "package-management-new-hajj-date",
+                keyName: "packageManagementNewHajjDate",
+                label: "Availability for Hajj",
+                type: "text",
+                description: "input with label text",
+                htmlType: 4,
+                value: "",
+                htmlFor: "package-management-new-hajj-date-for",
+                placeholder: "Dates with Comma Seperated",
+                class: [["col-4"]]
+              },
+              {
+                id: "package-management-new-umrah-date",
+                keyName: "packageManagementNewUmrahDate",
+                label: "Availability for Umrah",
+                type: "text",
+                description: "input with label text",
+                htmlType: 4,
+                value: "",
+                htmlFor: "package-management-new-umrah-date-for",
+                placeholder: "Dates with Comma Seperated",
+                class: [["col-4"]]
+              },
+            ]
+          },
+          {
+            class: [""],
+            fields: [
+              {
+                id: "package-management-new-itinerary-1",
+                htmlType: 'group_1',
+                class: [["col-6"]],
+                fields: [
+                  {
+                    id: "package-management-new-itinerary-title-1",
+                    keyName: "packageManagementNewItineraryTitle_1",
+                    label: "Itinerary 1",
+                    type: "text",
+                    description: "input with label text",
+                    value: "",
+                    htmlFor: "package-management-new-itinerary-title-1-for",
+                    placeholder: "Title",
+                    class: [["mb-2"]]
+                  },
+                  {
+                    id: "package-management-new-itinerary-description-1",
+                    keyName: "packageManagementNewItineraryDescription_1",
+                    label: "",
+                    type: "textarea",
+                    description: "textarea without label text",
+                    value: "",
+                    htmlFor: "package-management-new-itinerary-description-1-for",
+                    placeholder: "Description",
+                    class: [["mb-2"]]
+                  },
+
+                  {
+                    type: "button",
+                    actualType: "a",
+                    description: "a button",
+                    entity: [
+                      {
+                        id: "package-management-new-add-new-package-btn",
+                        label: "Add New Package",
+                        keyName: "packageManagementNewAddNewPackageBtn",
+                        icon: "bi-plus-circle-fill",
+                        class: [["secondary"]]
+                      },
+                      {
+                        id: "package-management-new-delete-btn",
+                        label: "Delete",
+                        keyName: "packageManagementNewDeleteBtn",
+                        icon: "bi-trash",
+                        class: [["secondary"]]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: "package-management-new-transportation",
+                htmlType: 'group_1',
+                class: [["col-6"]],
+                fields: [
+                  {
+                    id: "package-management-new-inclusion",
+                    keyName: "packageManagementNewInclusion",
+                    label: "Transportation Guidelines",
+                    type: "textarea",
+                    description: "textarea with label text",
+                    value: "",
+                    htmlFor: "package-management-new-inclusion-for",
+                    placeholder: "Inclusion",
+                    class: [["mb-2"]]
+                  },
+                  {
+                    id: "package-management-new-exclusion",
+                    keyName: "packageManagementNewExclusion",
+                    label: "",
+                    type: "textarea",
+                    description: "textarea without label text",
+                    value: "",
+                    htmlFor: "package-management-new-exclusion-for",
+                    placeholder: "Exclusion",
+                    class: [["mb-2"]]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         id: "pilgrimage-booking-new-id",
@@ -76,6 +436,7 @@ export const vData = [
                 htmlType: 3,
                 selectedOption: "",
                 value: "",
+                class: [["col-3"]],
                 options: [
                   { value: "", label: "Select" },
                   { value: "package1", label: "Package 1" },
@@ -97,6 +458,7 @@ export const vData = [
                 dateStyles,
                 placeholder: "Select Date",
                 format: "dd-MM-yyyy",
+                class: [["col-3"]]
               },
               {
                 id: "pilgrimage-booking-new-toDate",
@@ -112,6 +474,7 @@ export const vData = [
                 dateStyles,
                 placeholder: "Select Date",
                 format: "dd-MM-yyyy",
+                class: [["col-3"]]
               },
             ]
           },
@@ -148,16 +511,18 @@ export const vData = [
                 htmlType: 4,
                 value: "",
                 htmlFor: "pilgrimage-booking-new-traveler-name-for-1",
-                placeholder: ""
+                placeholder: "",
+                class: [["col-3"]]
               },
               {
                 id: "pilgrimage-booking-new-gender-1",
                 label: "Gender",
                 type: "radio",
                 name: "pilBookGender_1",
-                description: "input with label text",
+                description: "radio with label text",
                 htmlType: 6,
                 value: "",
+                class: [["col-3"]],
                 keyName: "pilgrimageBookingNewGender_1",
                 fields: [
                   {
@@ -184,7 +549,8 @@ export const vData = [
                 htmlType: 4,
                 value: "",
                 htmlFor: "pilgrimage-booking-new-mobile-number-for-1",
-                placeholder: ""
+                placeholder: "",
+                class: [["col-3"]]
               },
               {
                 id: "pilgrimage-booking-new-email-id-1",
@@ -195,7 +561,8 @@ export const vData = [
                 htmlType: 4,
                 value: "",
                 htmlFor: "pilgrimage-booking-new-email-id-for-1",
-                placeholder: ""
+                placeholder: "",
+                class: [["col-3"]]
               },
               {
                 id: "pilgrimage-booking-new-upload-visa-1",
@@ -205,7 +572,8 @@ export const vData = [
                 description: "input with label text",
                 htmlType: 4,
                 value: null,
-                htmlFor: "pilgrimage-booking-new-upload-visa-for-1"
+                htmlFor: "pilgrimage-booking-new-upload-visa-for-1",
+                class: [["col-3"]]
               },
               {
                 id: "pilgrimage-booking-new-upload-passport-1",
@@ -215,7 +583,8 @@ export const vData = [
                 description: "input with label text",
                 htmlType: 4,
                 value: null,
-                htmlFor: "pilgrimage-booking-new-upload-passport-for-1"
+                htmlFor: "pilgrimage-booking-new-upload-passport-for-1",
+                class: [["col-3"]]
               },
               {
                 id: "pilgrimage-booking-new-upload-medical-1",
@@ -225,7 +594,8 @@ export const vData = [
                 description: "input with label text",
                 htmlType: 4,
                 value: null,
-                htmlFor: "pilgrimage-booking-new-upload-medical-for-1"
+                htmlFor: "pilgrimage-booking-new-upload-medical-for-1",
+                class: [["col-3"]]
               },
             ]
           },
@@ -326,6 +696,7 @@ export const vData = [
                   delete: "pilgrimageBookingListDeleteBtn"
                 },
                 value: {
+                  columns: 9,
                   thead: [
                     "Package",
                     "Traveler Name",
@@ -334,12 +705,12 @@ export const vData = [
                     "To Date",
                     "Email",
                     "Document Status",
-                    "Status",,
+                    "Status",
                     "Actions",
                   ],
                   tbody: 'loading'
                 },
-                class: [["col-12"],["table-responsive", "mt-3"]]
+                class: [["col-12"], ["table-responsive", "mt-3"]]
               },
               {
                 id: "pilgrimage-booking-list-paginator",
@@ -399,7 +770,7 @@ export const vData = [
                 value: gender || "",
                 class: [["col-3"]]
               },
-              { 
+              {
                 id: `pilgrimage-booking-view-mobile-number-${num}`,
                 label: "Mobile Number",
                 type: "h4",

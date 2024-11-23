@@ -398,7 +398,7 @@ const PilgrimageBookingNew = ({ obj }) => {
                 {
                   Array.isArray(o.fields) && o.fields.length > 0 && o.fields.map((field, index) => {
                     return (
-                      <React.Fragment >
+                      <React.Fragment key={`pil-booking-new-field-${index}`}>
                         <VendorForm
                           component={ob.component}
                           item={field}

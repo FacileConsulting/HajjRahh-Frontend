@@ -12,6 +12,7 @@ import {
 import {
   resetVendorsComponentFunc
 } from '../../reducers/vendorsSlice';
+import { responseHandler } from '../../constant/func';
 
 const PilgrimageBookingList = ({ obj }) => {
   const history = useHistory();
@@ -25,7 +26,7 @@ const PilgrimageBookingList = ({ obj }) => {
 
   const createResponse = (data) => {
     let tbody = [];
-    for ( let i = 0; i < data.length; i++ ) {
+    for (let i = 0; i < data.length; i++) {
       tbody.push([
         `${defaultPackages[data[i].pilBookPackageName]}^${data[i]._id}` || '',
         data[i].pilBookVendorName || '',
@@ -44,24 +45,17 @@ const PilgrimageBookingList = ({ obj }) => {
   const fetchAllPilgrimageBooking = async (loadingFlag) => {
     if (loadingFlag) updateTbodyValue('loading');
     let response = await handleAPIData('POST', '/api/vendors', { type: 'PILGRIMAGE_BOOKING_FETCH_ALL' });
-    console.log('/api/vendors PILGRIMAGE_BOOKING_FETCH_ALL', response); 
+    console.log('/api/vendors PILGRIMAGE_BOOKING_FETCH_ALL', response);
     updateTbodyValue([]);
-    if (response.status === 'success' && response.data.failed) {
-      toast.success(response.data.message, toastOptions);
-    } else if (response.status === 'success' && response.data.data.length > 0) {
-      createResponse(response.data.data);
-    } else if (response.status === 'error' && response.message) {
-      toast.error(response.message, toastOptions);
-    } else {
-      toast.error('Something went wrong. Please try again.', toastOptions);
-    }
+    const returned = responseHandler(response);
+    if (returned) createResponse(returned);
   }
 
   const caughtDataOnClick = async (catchData, id) => {
     if (catchData === 'pilgrimageBookingListEditBtn') {
       updateTbodyValue('loading');
       let response = await handleAPIData('POST', '/api/vendors', { type: 'PILGRIMAGE_BOOKING_FETCH', pilgrimageBookingId: id });
-      console.log('/api/vendors PILGRIMAGE_BOOKING_FETCH', response); 
+      console.log('/api/vendors PILGRIMAGE_BOOKING_FETCH', response);
       if (response.status === 'success' && response.data.noPackage) {
         toast.success(response.data.message, toastOptions);
       } else if (response.status === 'success' && response.data.data) {
@@ -79,7 +73,7 @@ const PilgrimageBookingList = ({ obj }) => {
     } else if (catchData === 'pilgrimageBookingListDeleteBtn' && id) {
       updateTbodyValue('loading');
       let response = await handleAPIData('POST', '/api/vendors', { type: 'PILGRIMAGE_BOOKING_DELETE', pilgrimageBookingId: id });
-      console.log('/api/vendors PILGRIMAGE_BOOKING_DELETE', response); 
+      console.log('/api/vendors PILGRIMAGE_BOOKING_DELETE', response);
       if (response.status === 'success' && response.data.notFound) {
         toast.success(response.data.message, toastOptions);
       } else if (response.status === 'success' && response.data.deleted) {
@@ -93,7 +87,7 @@ const PilgrimageBookingList = ({ obj }) => {
     } else if (catchData === 'pilgrimageBookingListOpenBtn' && id) {
       updateTbodyValue('loading');
       let response = await handleAPIData('POST', '/api/vendors', { type: 'PILGRIMAGE_BOOKING_FETCH', pilgrimageBookingId: id });
-      console.log('/api/vendors PILGRIMAGE_BOOKING_FETCH', response); 
+      console.log('/api/vendors PILGRIMAGE_BOOKING_FETCH', response);
       if (response.status === 'success' && response.data.noPackage) {
         toast.success(response.data.message, toastOptions);
       } else if (response.status === 'success' && response.data.data) {
@@ -110,7 +104,7 @@ const PilgrimageBookingList = ({ obj }) => {
     }
   }
 
-  useEffect(() => {  
+  useEffect(() => {
     dispatch(resetVendorsComponentFunc({ componentName: 'PilgrimageBookingNew' }));
     fetchAllPilgrimageBooking(true);
   }, []);
@@ -126,7 +120,7 @@ const PilgrimageBookingList = ({ obj }) => {
                   Array.isArray(o.fields) && o.fields.length > 0 && o.fields.map((field, index) => {
                     console.log('field, field', field);
                     return (
-                      <React.Fragment>
+                      <React.Fragment key={`pil-booking-list-field-${index}`}>
                         <VendorForm
                           component={ob.component}
                           item={field}

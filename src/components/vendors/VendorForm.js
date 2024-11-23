@@ -5,6 +5,8 @@ import {
   resetVendorsComponentFunc, resetVendorsFunc, updateVendorsFunc
 } from '../../reducers/vendorsSlice';
 
+// import 'rsuite/DateRangePicker/styles/index.css';
+
 const VendorForm = ({ component, item, caughtDataOnClick }) => {
   console.log('key, item', item, item.value);
   const dispatch = useDispatch();
@@ -54,6 +56,25 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
     );
   }
 
+  const RenderInput = ({ type, id, placeholder, classs, keyName, value }) => {
+    return (
+      <input type={type} className={`form-control ${classs && classs[0][0]}`} id={id} placeholder={placeholder} onChange={(e) => handleInputChange(e, keyName, type)} value={value} />
+
+    );
+  }
+
+  const ButtonIcon = ({ id, classs, index, keyName, icon, label }) => {
+    return (
+      <a id={id} href="#!" className={`btn btn-${classs[0][0]} btn-sm`} key={`${index}-${id}`} onClick={(e) => handleButtonClick(e, keyName)}><i className={`bi ${icon}`}></i>{label}</a>
+    );
+  }
+
+  const RenderTextArea = ({ id, placeholder, keyName, value, classs }) => {
+    return (
+      <textarea className={`form-control form-area ${classs[0][0]}`} id={id} placeholder={placeholder} onChange={(e) => handleInputChange(e, keyName)} value={value}></textarea>
+    );
+  }
+
   const renderField = () => {
     switch (item.htmlType) {
       case 1:
@@ -74,9 +95,12 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
         );
       case 3:
         return (
-          <div className="col-3">
+          <div className={item.class[0].join(' ')}>
             <div className="mb-3">
-              <RenderLabel htmlFor={item.htmlFor} label={item.label} />
+              {
+                item.label &&
+                <RenderLabel htmlFor={item.htmlFor} label={item.label} />
+              }
               <select id={item.id} value={value} onChange={(e) => handleInputChange(e, item.keyName, item.type)} className="form-select">
                 {
                   Array.isArray(item.options) && item.options.length > 0 && item.options.map((option, index) => {
@@ -89,9 +113,12 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
         );
       case 4:
         return (
-          <div className="col-3">
+          <div className={item.class[0].join(' ')}>
             <div className="mb-3">
-              <RenderLabel htmlFor={item.htmlFor} label={item.label} />
+              {
+                item.label &&
+                <RenderLabel htmlFor={item.htmlFor} label={item.label} />
+              }
               {
                 item.type === 'datepicker' &&
                 <DatePicker oneTap={item.oneTap} id={item.id} size={item.size} style={item.dateStyles} onChange={(e) => handleDatepickerChange(e, item.keyName)} placeholder={item.placeholder} format={item.format} defaultValue={value} />
@@ -102,7 +129,7 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
               }
               {
                 ['text', 'email'].includes(item.type) &&
-                <input type={item.type} className="form-control" id={item.id} placeholder={item.placeholder} onChange={(e) => handleInputChange(e, item.keyName, item.type)} value={value} />
+                <RenderInput type={item.type} id={item.id} keyName={item.keyName} placeholder={item.placeholder} value={value} />
               }
             </div>
           </div>
@@ -113,7 +140,9 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
             <div className="float-end mb-4">
               {
                 Array.isArray(item.entity) && item.entity.length > 0 && item.entity.map((ent, index) => {
-                  return (<a id={ent.id} href="#!" className={`btn btn-${ent.class[0][0]} btn-sm`} key={`${index}-${ent.id}`} onClick={(e) => handleButtonClick(e, ent.keyName)}><i className={`bi ${ent.icon}`}></i>{ent.label}</a>)
+                  return (
+                    <ButtonIcon id={ent.id} classs={ent.class} index={index} keyName={ent.keyName} label={ent.label} icon={ent.icon} />
+                  )
                 })
               }
             </div>
@@ -121,15 +150,26 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
         );
       case 6:
         return (
-          <div className="col-3">
+          <div className={item.class[0].join(' ')}>
             <div className="mb-3">
               <div id={item.id} className="mb-2">{item.label}</div>
               {
                 Array.isArray(item.fields) && item.fields.length > 0 && item.fields.map((field, index) => {
+                  console.log('fieldfield.typefield.type', field);
                   return (
                     <div key={`${index}-${field.id}`} className="form-check form-check-inline">
-                      <input type={item.type} name={item.name} className="form-check-input" id={field.id} onChange={(e) => handleInputChange(e, item.keyName, item.type)} value={field.value} checked={field.value === value} />
-                      <RenderLabel htmlFor={field.htmlFor} label={field.label} />
+                      {
+                        item.type === 'checkbox' &&
+                        <input type={item.type} name={item.name} className="form-check-input" id={field.id} onChange={(e) => handleInputChange(e, item.keyName, item.type)} defaultChecked={value} />
+                      }
+                      {
+                        item.type === 'radio' &&
+                        <input type={item.type} name={item.name} className="form-check-input" id={field.id} onChange={(e) => handleInputChange(e, item.keyName, item.type)} value={field.value} checked={field.value === value} />
+                      }
+                      {
+                        field.label &&
+                        <RenderLabel htmlFor={field.htmlFor} label={field.label} />
+                      }
                     </div>
                   )
                 })
@@ -238,7 +278,6 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                               if (typeof cell === "string") {
                                 mater = cell.split("^");
                               }
-                              console.log('sdfsfdfddfdf', cellIndex, mater);
                               return (
                                 cellIndex === 0 ?
                                   <td key={`cell-${rowIndex}-${cellIndex}`}><a href="#!" className="coloured-link" onClick={(e) => handleButtonClick(e, item.keyName.open, mater[1])}>{mater[0]}</a></td> :
@@ -258,7 +297,7 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                   {
                     item.value.tbody === 'loading' &&
                     <tr>
-                      <td colspan="9" className="align-center">
+                      <td colspan={item.value.columns} className="align-center">
                         <div className="spinner-border" role="status">
                           <span className="visually-hidden">Loading...</span>
                         </div>
@@ -268,7 +307,7 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                   {
                     item.value.tbody.length === 0 &&
                     <tr>
-                      <td colspan="9" className="align-center">No Data Available</td>
+                      <td colspan={item.value.columns} className="align-center">No Data Available</td>
                     </tr>
                   }
                 </tbody>
@@ -298,6 +337,47 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                 </li>
               </ul>
             </nav>
+          </div>
+        );
+
+      case 'group_1':
+        return (
+          <div className={item.class[0].join(' ')}>
+            <div className="mb-3">
+              {
+                Array.isArray(item.fields) && item.fields.length > 0 && item.fields.map((field, index) => {
+                  return (
+                    <>
+                      {
+                        field.label &&
+                        <RenderLabel htmlFor={field.htmlFor} label={field.label} />
+                      }
+                      {
+                        field.type === 'text' &&
+                        <RenderInput type={field.type} id={field.id} classs={field.class} keyName={field.keyName} placeholder={field.placeholder} value={value} />
+                      }
+                      {
+                        field.type === 'textarea' &&
+                        <RenderTextArea type={field.type} id={field.id} placeholder={field.placeholder} value={value} classs={field.class} />
+                      }
+
+                      {
+                        field.type === 'button' &&
+                        <>
+                          {
+                            Array.isArray(field.entity) && field.entity.length > 0 && field.entity.map((ent, index) => {
+                              return (
+                                <ButtonIcon id={ent.id} classs={ent.class} index={index} keyName={ent.keyName} label={ent.label} icon={ent.icon} />
+                              )
+                            })
+                          }
+                        </>
+                      }
+                    </>
+                  )
+                })
+              }
+            </div>
           </div>
         );
       default:

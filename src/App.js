@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Route, Switch, Link, Redirect, useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { DateRangePicker } from 'rsuite';
 import store from './store';
 import Home from './pages/Home';
 import MyAccount from './pages/MyAccount';

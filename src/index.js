@@ -11,19 +11,19 @@ import reportWebVitals from './reportWebVitals';
 import Vendors from './Vendors';
 
 
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // const locationIndex = useLocation();
-window.location.pathname === '/vendors' ? import("./Vendors.css") : import("./App.css");
-console.log('#@@@locationIndex', window.location.pathname);
+// window.location.pathname === '/vendors' ? import("./Vendors.css") : import("./App.css");
+// console.log('#@@@locationIndex', window.location.pathname);
 
 root.render(
   <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID || ''}>
     <Provider store={store}>
       <Router>
-        {
+        {/* {
           window.location.pathname === '/vendors' ? <Vendors /> : <App />
-        }
+        } */}
+        <Vendors />
       </Router>
     </Provider>
   </GoogleOAuthProvider>,
