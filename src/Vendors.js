@@ -10,7 +10,7 @@ import {
 } from './reducers/vendorsSlice';
 
 import 'react-toastify/dist/ReactToastify.css';
-// import './Vendors.css';
+import './Vendors.css';
 
 const renderRoutes = (routes) => {
   return routes.map((item) => (
@@ -18,6 +18,7 @@ const renderRoutes = (routes) => {
       {/* Main Route */}
       <Route
         path={`/vendors${item.link}`}
+        exact={item.exact}
         render={() =>
           item.component ? (
             <PageRenderer componentName={item.component} data={item} />
