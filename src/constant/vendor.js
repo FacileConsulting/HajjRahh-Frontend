@@ -215,26 +215,27 @@ export const vData = [
                 name: "packageManagementDocumentsRequired",
                 description: "checkbox with label text",
                 htmlType: 6,
-                value: "",
-                keyName: "packageManagementDocumentsRequired",
                 class: [["col-4"]],
                 fields: [
                   {
                     id: "package-management-new-visa",
                     label: "Visa",
                     value: false,
+                    keyName: "packageManagementVisa",
                     htmlFor: "package-management-new-visa-for",
                   },
                   {
                     id: "package-management-new-passport",
                     label: "Passport",
                     value: false,
+                    keyName: "packageManagementPassport",
                     htmlFor: "package-management-new-passport-for",
                   },
                   {
                     id: "package-management-new-medical",
                     label: "Medical",
                     value: false,
+                    keyName: "packageManagementMedical",
                     htmlFor: "package-management-new-medical-for",
                   },
                 ]
@@ -266,7 +267,7 @@ export const vData = [
               },
               {
                 id: "package-management-new-hajj-date",
-                keyName: "packageManagementNewHajjDate",
+                keyName: "packageManagementNewHajjDates",
                 label: "Availability for Hajj",
                 type: "text",
                 description: "input with label text",
@@ -278,7 +279,7 @@ export const vData = [
               },
               {
                 id: "package-management-new-umrah-date",
-                keyName: "packageManagementNewUmrahDate",
+                keyName: "packageManagementNewUmrahDates",
                 label: "Availability for Umrah",
                 type: "text",
                 description: "input with label text",
@@ -294,7 +295,7 @@ export const vData = [
             class: [""],
             fields: [
               {
-                id: "package-management-new-itinerary-1",
+                id: "package-management-new-itinerary",
                 htmlType: 'group_1',
                 class: [["col-6"]],
                 fields: [
@@ -320,7 +321,6 @@ export const vData = [
                     placeholder: "Description",
                     class: [["mb-2"]]
                   },
-
                   {
                     type: "button",
                     actualType: "a",
@@ -378,6 +378,154 @@ export const vData = [
         ]
       },
       {
+        id: "package-management-view-id",
+        title: "Package Management View",
+        link: `/package-management-view`,
+        component: "PackageManagementView",
+        hide: "hider",
+        looper: (num, name, gender, mobile, email, yesFiles, noFiles) => {
+          return {
+            class: [""],
+            fields: [
+              {
+                id: `pilgrimage-booking-view-heading-traveler-${num}`,
+                label: `Traveler ${num}`,
+                type: "h4",
+                description: "h4 text",
+                htmlType: 1,
+                class: [["col-12"], ["mt-3 mb-3"]]
+              },
+              {
+                id: `pilgrimage-booking-view-traveler-name-${num}`,
+                label: "Traveler Name",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: name || "",
+                class: [["col-3"]]
+              },
+              {
+                id: `pilgrimage-booking-view-gender-${num}`,
+                label: "Gender",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: gender || "",
+                class: [["col-3"]]
+              },
+              {
+                id: `pilgrimage-booking-view-mobile-number-${num}`,
+                label: "Mobile Number",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: mobile || "",
+                class: [["col-3"]]
+              },
+              {
+                id: `pilgrimage-booking-view-email-id-${num}`,
+                label: "Email Id",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: email || "",
+                class: [["col-3"]]
+              },
+              {
+                id: `pilgrimage-booking-view-documents-uploaded-${num}`,
+                label: "Documents Uploaded",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: yesFiles || "",
+                value2: noFiles || "",
+                class: [["col-6"], ["text-danger"]]
+              },
+            ]
+          }
+        },
+        content: [
+          {
+            class: ["mb-4"],
+            fields: [
+              {
+                id: "pilgrimage-booking-view-main-heading",
+                label: "View Pilgrimage Booking",
+                type: "h2",
+                description: "h2 text",
+                htmlType: 1,
+                class: [["col-auto", "me-auto"], [""]]
+              },
+              {
+                type: "button",
+                actualType: "a",
+                description: "a button",
+                htmlType: 2,
+                entity: [
+                  {
+                    id: "pilgrimage-booking-view-back-btn",
+                    label: "Back",
+                    keyName: "pilgrimageBookingViewBackBtn",
+                    class: [["secondary", ""]]
+                  },
+                  {
+                    id: "pilgrimage-booking-view-cancel-booking-btn",
+                    label: "Cancel Booking",
+                    keyName: "pilgrimageBookingViewCancelBookingBtn",
+                    class: [["secondary", "ms-2"]],
+                  }
+                ]
+              },
+            ]
+          },
+          {
+            class: [""],
+            fields: [
+              {
+                id: "pilgrimage-booking-view-package-name",
+                label: "Package Name",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: "wer",
+                class: [["col-3"]]
+              },
+              {
+                id: "pilgrimage-booking-view-from-date",
+                label: "From Date",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: "eew",
+                class: [["col-3"]]
+              },
+              {
+                id: "pilgrimage-booking-view-to-date",
+                label: "To Date",
+                type: "h4",
+                description: "h4 text",
+                htmlType: 7,
+                value: "ers",
+                class: [["col-3"]]
+              },
+            ]
+          },
+          {
+            class: [""],
+            fields: [
+              {
+                id: "pilgrimage-booking-view-heading-user-details",
+                label: "User details",
+                type: "h3",
+                description: "h3 text",
+                htmlType: 1,
+                class: [["col-12"], ["mt-3 mb-3"]]
+              },
+            ]
+          },
+        ]
+      },
+      {
         id: "pilgrimage-booking-new-id",
         title: "Pilgrimage Booking New",
         link: "/pilgrimage-booking-new",
@@ -406,12 +554,6 @@ export const vData = [
                     label: "Back",
                     keyName: "pilgrimageBookingNewBackBtn",
                     class: [["secondary", ""]]
-                  },
-                  {
-                    id: "pilgrimage-booking-new-reset-btn",
-                    label: "Reset",
-                    keyName: "pilgrimageBookingNewResetBtn",
-                    class: [["secondary", "hider"]]
                   },
                   {
                     id: "pilgrimage-booking-new-book-btn",
@@ -607,6 +749,7 @@ export const vData = [
                 actualType: "a",
                 description: "a button",
                 htmlType: 5,
+                class: [[""]],
                 entity: [
                   {
                     id: "pilgrimage-booking-new-add-new-traveler-btn",

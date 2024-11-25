@@ -39,7 +39,8 @@ const PilgrimageBookingNew = ({ obj }) => {
           htmlType: 4,
           value: obs ? dispatched(`pilgrimageBookingNewTravelerName_${num}`, obs.name) : "",
           htmlFor: `pilgrimage-booking-new-traveler-name-for-${num}`,
-          placeholder: ""
+          placeholder: "",
+          class: [["col-3"]]
         },
         {
           id: `pilgrimage-booking-new-gender-${num}`,
@@ -50,6 +51,7 @@ const PilgrimageBookingNew = ({ obj }) => {
           htmlType: 6,
           value: obs ? dispatched(`pilgrimageBookingNewGender_${num}`, obs.gender) : "",
           keyName: `pilgrimageBookingNewGender_${num}`,
+          class: [["col-3"]],
           fields: [
             {
               id: `pilgrimage-booking-new-gender-male-${num}`,
@@ -75,7 +77,8 @@ const PilgrimageBookingNew = ({ obj }) => {
           htmlType: 4,
           value: obs ? dispatched(`pilgrimageBookingNewMobileNumber_${num}`, obs.mobile) : "",
           htmlFor: `pilgrimage-booking-new-mobile-number-for-${num}`,
-          placeholder: ""
+          placeholder: "",
+          class: [["col-3"]]
         },
         {
           id: `pilgrimage-booking-new-email-id-${num}`,
@@ -86,7 +89,8 @@ const PilgrimageBookingNew = ({ obj }) => {
           htmlType: 4,
           value: obs ? dispatched(`pilgrimageBookingNewEmailId_${num}`, obs.email) : "",
           htmlFor: `pilgrimage-booking-new-email-id-for-${num}`,
-          placeholder: ""
+          placeholder: "",
+          class: [["col-3"]]
         },
         {
           id: `pilgrimage-booking-new-upload-visa-${num}`,
@@ -96,7 +100,8 @@ const PilgrimageBookingNew = ({ obj }) => {
           description: "input with label text",
           htmlType: 4,
           value: null,
-          htmlFor: `pilgrimage-booking-new-upload-visa-for-${num}`
+          htmlFor: `pilgrimage-booking-new-upload-visa-for-${num}`,
+          class: [["col-3"]]
         },
         {
           id: `pilgrimage-booking-new-upload-passport-${num}`,
@@ -106,7 +111,8 @@ const PilgrimageBookingNew = ({ obj }) => {
           description: "input with label text",
           htmlType: 4,
           value: null,
-          htmlFor: `pilgrimage-booking-new-upload-passport-for-${num}`
+          htmlFor: `pilgrimage-booking-new-upload-passport-for-${num}`,
+          class: [["col-3"]]
         },
         {
           id: `pilgrimage-booking-new-upload-medical-${num}`,
@@ -116,7 +122,8 @@ const PilgrimageBookingNew = ({ obj }) => {
           description: "input with label text",
           htmlType: 4,
           value: null,
-          htmlFor: `pilgrimage-booking-new-upload-medical-for-${num}`
+          htmlFor: `pilgrimage-booking-new-upload-medical-for-${num}`,
+          class: [["col-3"]]
         },
       ]
     }
@@ -130,8 +137,7 @@ const PilgrimageBookingNew = ({ obj }) => {
       pilBookTravelersList
     } = oneRecord;
     obj.content[0].fields[0].label = 'Edit Piligrimage Booking';
-    obj.content[0].fields[1].entity[2].label = 'Update Booking';    
-    obj.content[0].fields[1].entity[1].class[0][1] = 'hider';
+    obj.content[0].fields[1].entity[1].label = 'Update Booking';   
     let getContent = [...obj.content];
     const lastContent = getContent.pop();
     getContent.pop();
@@ -163,19 +169,25 @@ const PilgrimageBookingNew = ({ obj }) => {
 
   const forceReset = (obj) => {
     obj.content[0].fields[0].label = 'New Piligrimage Booking';
-    obj.content[0].fields[1].entity[2].label = 'Book';
+    obj.content[0].fields[1].entity[1].label = 'Book';
     obj.content[1].fields[0].value = '';
     obj.content[1].fields[1].value = null;
     obj.content[1].fields[2].value = null;
     obj.content[0].fields[1].entity[1].class[0][1] = '';
     return { ...obj };
   }
+
   let renderWith = {};
   if (state?.data && !objLength) {
     renderWith = createEditObj(state.data);
-  } else if (!state) {
-    renderWith = forceReset(obj);
+  } else if (state === 'createNewPilgrimageBooking') {
+    let getForceReset = forceReset(obj);
+    renderWith = { ...obj, content: [getForceReset] };
+  } else {
+    renderWith = obj;
   }
+
+
   // const renderWith = state?.data && !objLength ? createEditObj(state.data) : forceReset(obj);  
   const [ob, setOb] = useState({ ...renderWith });
   const [loading, setLoading] = useState(false);
@@ -221,21 +233,17 @@ const PilgrimageBookingNew = ({ obj }) => {
   const bookPackagesAPICall = async (payload, num) => {
     setLoading(true);
     let response = await handleAPIData('POST', '/api/vendors', payload);
-    if (response.status === 'success' && response.data.created) {
+    if (response.status === 'success' && (response.data.created || response.data.updated)) {
       toast.success(response.data.message, toastOptions);
-      dispatch(resetVendorsComponentFunc({ componentName: 'PilgrimageBookingNew' }));
       history.push('/vendors/pilgrimage-booking-list');
     } else if (response.status === 'success' && response.data.notUpdated) {
       toast.info(response.data.message, toastOptions);
-    } else if (response.status === 'success' && response.data.updated) {
-      toast.success(response.data.message, toastOptions);
-      dispatch(resetVendorsComponentFunc({ componentName: 'PilgrimageBookingNew' }));
-      history.push('/vendors/pilgrimage-booking-list');
     } else if (response.status === 'error' && response.message) {
       toast.error(response.message, toastOptions);
     } else {
       toast.error('Something went wrong. Please try again.', toastOptions);
     }
+    dispatch(resetVendorsComponentFunc({ componentName: 'PilgrimageBookingNew' }));
     setLoading(false);
     setTravelerNumber(num);
   }
@@ -334,6 +342,48 @@ const PilgrimageBookingNew = ({ obj }) => {
         } else {
           pilBookDocumentStatus = 'Partial Documents';
         }
+        
+        if (!pilgrimageBookingNewPackage) {
+          toast.info('Please select Package', toastOptions);
+          return;
+        } else if (!pilgrimageBookingNewFromDate) {
+          toast.info('Please select From Date', toastOptions);
+          return;
+        } else if (!pilgrimageBookingNewToDate) {
+          toast.info('Please select To Date', toastOptions);
+          return;
+        } else if (pilBookTravelersList.length === 0) {          
+          toast.info('Please fill user details fields. Files are optional.', toastOptions);
+          return;
+        } else if (pilBookTravelersList.length > 0) {
+          for (let k = 0; k < pilBookTravelersList.length; k++) {
+            if (!pilBookTravelersList[k].name) {
+              toast.info('Please fill Traveler Name', toastOptions);
+              return;
+            } else if (!pilBookTravelersList[k].gender) {
+              toast.info('Please select Gender', toastOptions);
+              return;
+            } else if (!pilBookTravelersList[k].mobile) {
+              toast.info('Please fill Mobile Number', toastOptions);
+              return;
+            } else if (pilBookTravelersList[k].mobile) {
+              const intlMobilePattern = /^\+?[1-9]\d{1,14}$/; 
+              if (!intlMobilePattern.test(pilBookTravelersList[k].mobile)) {
+                toast.info('Please fill valid Mobile Number', toastOptions);
+                return;
+              }
+            } else if (!pilBookTravelersList[k].email) {
+              toast.info('Please fill Email', toastOptions);
+              return;
+            } else if (pilBookTravelersList[k].email) {
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailRegex.test(pilBookTravelersList[k].email)) {
+                toast.info('Please fill valid Email ID', toastOptions);
+                return;
+              }
+            }
+          }
+        }
 
         const payload = {
           type: 'PILGRIMAGE_BOOKING_CREATE',
@@ -355,6 +405,8 @@ const PilgrimageBookingNew = ({ obj }) => {
 
         }
         bookPackagesAPICall(payload, travelNumber);
+      } else {
+        toast.info('Please fill the fields.', toastOptions);
       }
     } else if (catchData === 'pilgrimageBookingNewBackBtn') {
       dispatch(resetVendorsComponentFunc({ componentName: 'PilgrimageBookingNew' }));

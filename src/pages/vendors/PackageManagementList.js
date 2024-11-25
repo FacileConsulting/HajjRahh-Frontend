@@ -22,10 +22,70 @@ const PackageManagementList = ({ obj }) => {
     ob.content[1].fields[2].value.tbody = value;
     setOb({ ...ob });
   }
+
+  const fetchAllPackageManagement = async (loadingFlag) => {
+    if (loadingFlag) updateTbodyValue('loading');
+    let response = await handleAPIData('POST', '/api/vendors', { type: 'PACKAGE_MANAGEMENT_FETCH_ALL' });
+    console.log('/api/vendors PACKAGE_MANAGEMENT_FETCH_ALL', response);
+    updateTbodyValue([]);
+    const returned = responseHandler(response);
+    if (returned) createResponse(returned);
+  }
   
   const caughtDataOnClick = async (catchData, id) => {
-    if (catchData === 'packageManagementListNewPackageBtn') {      
-      history.push('/vendors/package-management-new');
+    if (catchData === 'packageManagementListEditBtn') {
+      updateTbodyValue('loading');
+      let response = await handleAPIData('POST', '/api/vendors', { type: 'PACKAGE_MANAGEMENT_FETCH', packageManagementId: id });
+      console.log('/api/vendors PACKAGE_MANAGEMENT_FETCH', response);
+      if (response.status === 'success' && response.data.noPackage) {
+        toast.success(response.data.message, toastOptions);
+      } else if (response.status === 'success' && response.data.data) {
+        history.push({
+          pathname: '/vendors/package-management-new',
+          state: { from: 'Edit Icon Package Click', data: response.data.data }
+        });
+      } else if (response.status === 'error' && response.message) {
+        toast.error(response.message, toastOptions);
+      } else {
+        toast.error('Something went wrong. Please try again.', toastOptions);
+      }
+    } else if (catchData === 'packageManagementListNewPackageBtn') {      
+      // history.push('/vendors/package-management-new');      
+      history.push({
+        pathname: '/vendors/package-management-new',
+        state: 'createNewPackage'
+      });
+    } else if (catchData === 'packageManagementListDeleteBtn' && id) {
+      updateTbodyValue('loading');
+      let response = await handleAPIData('POST', '/api/vendors', { type: 'PACKAGE_MANAGEMENT_DELETE', packageManagementId: id });
+      console.log('/api/vendors PACKAGE_MANAGEMENT_DELETE', response);
+      if (response.status === 'success' && response.data.notFound) {
+        toast.success(response.data.message, toastOptions);
+      } else if (response.status === 'success' && response.data.deleted) {
+        toast.success(response.data.message, toastOptions);
+      } else if (response.status === 'error' && response.message) {
+        toast.error(response.message, toastOptions);
+      } else {
+        toast.error('Something went wrong. Please try again.', toastOptions);
+      }
+      fetchAllPackageManagement();
+    } else if (catchData === 'packageManagementListOpenBtn' && id) {
+      updateTbodyValue('loading');
+      let response = await handleAPIData('POST', '/api/vendors', { type: 'PACKAGE_MANAGEMENT_FETCH', packageManagementId: id });
+      console.log('/api/vendors PACKAGE_MANAGEMENT_FETCH', response);
+      if (response.status === 'success' && response.data.noPackage) {
+        toast.success(response.data.message, toastOptions);
+      } else if (response.status === 'success' && response.data.data) {
+        history.push({
+          pathname: '/vendors/package-management-view',
+          state: { from: 'View Details click', data: response.data.data }
+        });
+      } else if (response.status === 'error' && response.message) {
+        toast.error(response.message, toastOptions);
+      } else {
+        toast.error('Something went wrong. Please try again.', toastOptions);
+      }
+      fetchAllPackageManagement();
     }
   }
 
@@ -33,8 +93,8 @@ const PackageManagementList = ({ obj }) => {
     let tbody = [];
     for (let i = 0; i < data.length; i++) {
       tbody.push([
-        `${defaultPackages[data[i].packMangPackageName]}^${data[i]._id}` || '',
-        data[i].packMangItinerary || '',
+        `${data[i].packMangPackageName}^${data[i]._id}` || '',
+        data[i].packMangItineraryList && data[i].packMangItineraryList.length ? 'Itinerary Details' : 'No Itinerary',
         data[i].packMangPrice || '',
         data[i].packMangGroupSize || '',
         data[i].packMangDocumentsRequired || '',
@@ -46,17 +106,10 @@ const PackageManagementList = ({ obj }) => {
     updateTbodyValue(tbody);
   }
 
-  const fetchAllPackageManagement = async (loadingFlag) => {
-    if (loadingFlag) updateTbodyValue('loading');
-    let response = await handleAPIData('POST', '/api/vendors', { type: 'PACKAGE_MANAGEMENT_FETCH_ALL' });
-    console.log('/api/vendors PACKAGE_MANAGEMENT_FETCH_ALL', response);
-    updateTbodyValue([]);
-    const returned = responseHandler(response);
-    if (returned) createResponse(returned);
-  }
+  
 
   useEffect(() => {
-    dispatch(resetVendorsComponentFunc({ componentName: 'PackageManagement' }));
+    dispatch(resetVendorsComponentFunc({ componentName: 'PackageManagementNew' }));
     fetchAllPackageManagement(true);
   }, []);
 

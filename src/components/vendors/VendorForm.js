@@ -8,9 +8,18 @@ import {
 // import 'rsuite/DateRangePicker/styles/index.css';
 
 const VendorForm = ({ component, item, caughtDataOnClick }) => {
-  console.log('key, item', item, item.value);
+  // console.log('key, itemkiran', item, item.type);
   const dispatch = useDispatch();
-  const [value, setValue] = useState(item.value || '');
+  let setter = {};
+  if (item.keyName) {
+    setter = { [item.keyName]: item.value };
+  } else if (item.fields && item.fields.length > 0) {
+    for (let i = 0; i < item.fields.length; i++) {
+      setter = { ...setter, [item.fields[i].keyName]: item.fields[i].value };
+    }
+  }
+  const [value, setValue] = useState({ ...setter });
+  // const [textAreaValue, setTextAreaValue] = useState({});
 
   const handleDatepickerChange = (value, keyName) => {
     if (value == null) {
@@ -24,12 +33,21 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
   }
 
   const handleButtonClick = (event, keyName, id) => {
-    caughtDataOnClick(keyName, id);
+    caughtDataOnClick(keyName, id, value);
   }
 
   const handleInputChange = (event, keyName, type) => {
     console.log('event, keyName', event, keyName, type);
-    let value = type === 'file' ? event.target.files[0] : event.target.value;
+
+    let value = '';
+    if (type === 'file') {
+      value = event.target.files[0];
+    } else if (type === 'checkbox') {
+      value = event.target.checked;
+    } else {      
+      value = event.target.value;
+    }
+
     if (type === 'file') {
       let fileEncoded = {};
       const reader = new FileReader();
@@ -45,9 +63,12 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
       reader.readAsDataURL(value);
     } else {
       dispatch(updateVendorsFunc({ componentName: component, keyName, value }));
-      setValue(value);
+      // setValue(value);
+      setValue((prevValues) => ({
+        ...prevValues,
+        [keyName]: value
+      }));
     }
-
   };
 
   const RenderLabel = ({ htmlFor, label }) => {
@@ -56,22 +77,9 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
     );
   }
 
-  const RenderInput = ({ type, id, placeholder, classs, keyName, value }) => {
-    return (
-      <input type={type} className={`form-control ${classs && classs[0][0]}`} id={id} placeholder={placeholder} onChange={(e) => handleInputChange(e, keyName, type)} value={value} />
-
-    );
-  }
-
   const ButtonIcon = ({ id, classs, index, keyName, icon, label }) => {
     return (
       <a id={id} href="#!" className={`btn btn-${classs[0][0]} btn-sm`} key={`${index}-${id}`} onClick={(e) => handleButtonClick(e, keyName)}><i className={`bi ${icon}`}></i>{label}</a>
-    );
-  }
-
-  const RenderTextArea = ({ id, placeholder, keyName, value, classs }) => {
-    return (
-      <textarea className={`form-control form-area ${classs[0][0]}`} id={id} placeholder={placeholder} onChange={(e) => handleInputChange(e, keyName)} value={value}></textarea>
     );
   }
 
@@ -101,10 +109,10 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                 item.label &&
                 <RenderLabel htmlFor={item.htmlFor} label={item.label} />
               }
-              <select id={item.id} value={value} onChange={(e) => handleInputChange(e, item.keyName, item.type)} className="form-select">
+              <select id={item.id} value={value[item.keyName] || ''} onChange={(e) => handleInputChange(e, item.keyName, item.type)} className="form-select">
                 {
                   Array.isArray(item.options) && item.options.length > 0 && item.options.map((option, index) => {
-                    return (<option key={`${index}-${option.value}`} value={option.value}>{option.label}</option>)
+                    return (<option key={`${index}-${item.id}-${option.value}`} value={option.value}>{option.label}</option>)
                   })
                 }
               </select>
@@ -121,7 +129,7 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
               }
               {
                 item.type === 'datepicker' &&
-                <DatePicker oneTap={item.oneTap} id={item.id} size={item.size} style={item.dateStyles} onChange={(e) => handleDatepickerChange(e, item.keyName)} placeholder={item.placeholder} format={item.format} defaultValue={value} />
+                <DatePicker oneTap={item.oneTap} id={item.id} size={item.size} style={item.dateStyles} onChange={(e) => handleDatepickerChange(e, item.keyName)} placeholder={item.placeholder} format={item.format} defaultValue={value[item.keyName] || null} />
               }
               {
                 item.type === 'file' &&
@@ -129,7 +137,7 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
               }
               {
                 ['text', 'email'].includes(item.type) &&
-                <RenderInput type={item.type} id={item.id} keyName={item.keyName} placeholder={item.placeholder} value={value} />
+                <input type={item.type} className={`form-control ${item.class && item.class[0][0]}`} id={item.id} placeholder={item.placeholder} onChange={(e) => handleInputChange(e, item.keyName, item.type)} value={value[item.keyName] || ''} />
               }
             </div>
           </div>
@@ -150,7 +158,7 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
         );
       case 6:
         return (
-          <div className={item.class[0].join(' ')}>
+          <div className={item.class ? item.class[0].join(' ') : ''}>
             <div className="mb-3">
               <div id={item.id} className="mb-2">{item.label}</div>
               {
@@ -160,11 +168,11 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                     <div key={`${index}-${field.id}`} className="form-check form-check-inline">
                       {
                         item.type === 'checkbox' &&
-                        <input type={item.type} name={item.name} className="form-check-input" id={field.id} onChange={(e) => handleInputChange(e, item.keyName, item.type)} defaultChecked={value} />
+                        <input type={item.type} name={item.name} className="form-check-input" id={field.id} onChange={(e) => handleInputChange(e, field.keyName, item.type)} defaultChecked={value[field.keyName] || false} />
                       }
                       {
                         item.type === 'radio' &&
-                        <input type={item.type} name={item.name} className="form-check-input" id={field.id} onChange={(e) => handleInputChange(e, item.keyName, item.type)} value={field.value} checked={field.value === value} />
+                        <input type={item.type} name={item.name} className="form-check-input" id={field.id} onChange={(e) => handleInputChange(e, item.keyName, item.type)} value={field.value} checked={field.value === value[item.keyName] || ''} />
                       }
                       {
                         field.label &&
@@ -280,13 +288,13 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                               }
                               return (
                                 cellIndex === 0 ?
-                                  <td key={`cell-${rowIndex}-${cellIndex}`}><a href="#!" className="coloured-link" onClick={(e) => handleButtonClick(e, item.keyName.open, mater[1])}>{mater[0]}</a></td> :
+                                  <td key={`cell-${item.id}-${rowIndex}-${cellIndex}`}><a href="#!" className="coloured-link" onClick={(e) => handleButtonClick(e, item.keyName.open, mater[1])}>{mater[0]}</a></td> :
                                   mater[0] === "Actions" ?
-                                    <td key={`cell-${rowIndex}-${cellIndex}`}>
+                                    <td key={`cell-${item.id}-${rowIndex}-${cellIndex}`}>
                                       <a href="#!" className="me-2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit" onClick={(e) => handleButtonClick(e, item.keyName.edit, mater[1])}><i className="bi bi-pencil-square"></i></a>
                                       <a href="#!" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete" onClick={(e) => handleButtonClick(e, item.keyName.delete, mater[1])}><i className="bi bi-x-square"></i></a>
                                     </td> :
-                                    <td key={`cell-${rowIndex}-${cellIndex}`}>{cell}</td>
+                                    <td key={`cell-${item.id}-${rowIndex}-${cellIndex}`}>{cell}</td>
                               )
                             })
                           }
@@ -346,6 +354,7 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
             <div className="mb-3">
               {
                 Array.isArray(item.fields) && item.fields.length > 0 && item.fields.map((field, index) => {
+                  
                   return (
                     <>
                       {
@@ -354,13 +363,12 @@ const VendorForm = ({ component, item, caughtDataOnClick }) => {
                       }
                       {
                         field.type === 'text' &&
-                        <RenderInput type={field.type} id={field.id} classs={field.class} keyName={field.keyName} placeholder={field.placeholder} value={value} />
+                        <input type={field.type} className={`form-control ${field.class && field.class[0][0]}`} id={field.id} placeholder={field.placeholder} onChange={(e) => handleInputChange(e, field.keyName, field.type)} value={value[field.keyName] || ''} />
                       }
                       {
                         field.type === 'textarea' &&
-                        <RenderTextArea type={field.type} id={field.id} placeholder={field.placeholder} value={value} classs={field.class} />
+                        <textarea className={`form-control form-area ${field.class && field.class[0][0]}`} id={field.id} placeholder={field.placeholder} onChange={(e) => handleInputChange(e, field.keyName, field.type)} value={value[field.keyName] || ''}></textarea>
                       }
-
                       {
                         field.type === 'button' &&
                         <>

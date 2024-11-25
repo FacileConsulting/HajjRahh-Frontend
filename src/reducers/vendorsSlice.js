@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const vendorsState = {
   PilgrimageBookingNew: {},
-  PackageManagement: {},
+  PackageManagementNew: {},
 };
 
 export const vendorsSlice = createSlice({

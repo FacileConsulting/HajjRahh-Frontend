@@ -109,11 +109,11 @@ const App = ({ message }) => {
     setActiveHeaderIcon({ ...obj });
   }
 
-  const handleVendorsClick = (e) => {
-    e.preventDefault();
-    // window.location.href = "http://localhost:3000/vendors";    
-    window.location.href = "https://hajjrahh-frontend-gab4gqfbfwgwcnhh.eastus-01.azurewebsites.net/vendors";
-  }
+  // const handleVendorsClick = (e) => {
+  //   e.preventDefault();
+  //   window.location.href = "http://localhost:3000/vendors";    
+  //   // window.location.href = "https://hajjrahh-frontend-gab4gqfbfwgwcnhh.eastus-01.azurewebsites.net/vendors";
+  // }
 
   useEffect(() => {
     fetchHealthData();
@@ -124,9 +124,9 @@ const App = ({ message }) => {
     if (location.pathname !== '/holidays') {
       dispatch(resetHomeFunc());
     }
-    if (location.pathname === '/vendors') {
-      history.push('/vendors');
-    }
+    // if (location.pathname === '/vendors') {
+    //   history.push('/vendors');
+    // }
     console.log("Route changed to:", location, location.pathname);
     handleHeaderIconClick(location.pathname.split('/')[1]);
   }, [location.pathname]);
@@ -187,10 +187,6 @@ const App = ({ message }) => {
                   </li>
                 </>
               } 
-              <li className="nav-item">
-                <Link onClick={handleVendorsClick}>Vendors</Link>
-                {/* <a className="nav-link" href="#">Support</a> */}
-              </li>
               <li className="nav-item">
                 <Link to="/holidayBooking">Support</Link>
                 {/* <a className="nav-link" href="#">Support</a> */}

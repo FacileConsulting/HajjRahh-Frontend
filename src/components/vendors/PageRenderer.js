@@ -6,7 +6,8 @@ const components = {
   PilgrimageBookingNew: React.lazy(() => import('../../pages/vendors/PilgrimageBookingNew')),
   PilgrimageBookingList: React.lazy(() => import('../../pages/vendors/PilgrimageBookingList')),
   PackageManagementList: React.lazy(() => import('../../pages/vendors/PackageManagementList')),
-  PilgrimageBookingView: React.lazy(() => import('../../pages/vendors/PilgrimageBookingView'))
+  PilgrimageBookingView: React.lazy(() => import('../../pages/vendors/PilgrimageBookingView')),
+  PackageManagementView: React.lazy(() => import('../../pages/vendors/PackageManagementView')),
 };
 
 const PageRenderer = ({ componentName, data }) => {

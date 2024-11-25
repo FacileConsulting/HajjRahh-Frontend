@@ -97,10 +97,12 @@ const PilgrimageBookingView = ({ obj }) => {
               <div key={`pil-booking-new-${sectionIndex}`} className={`row ${section.class[0]}`}>
                 {
                   section.fields.map((field, fieldIndex) => (
-                    <VendorForm
-                      component={ob.component}
-                      item={field}
-                    />
+                    <React.Fragment key={`pil-booking-view-sub-field-${fieldIndex}`}>
+                      <VendorForm
+                        component={ob.component}
+                        item={field}
+                      />
+                    </React.Fragment>
                   ))
                 }
               </div>

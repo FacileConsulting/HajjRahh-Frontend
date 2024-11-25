@@ -69,7 +69,11 @@ const PilgrimageBookingList = ({ obj }) => {
         toast.error('Something went wrong. Please try again.', toastOptions);
       }
     } else if (catchData === 'pilgrimageBookingListNewBookingBtn') {
-      history.push('/vendors/pilgrimage-booking-new');
+      // history.push('/vendors/pilgrimage-booking-new');
+      history.push({
+        pathname: '/vendors/pilgrimage-booking-new',
+        state: 'createNewPilgrimageBooking' 
+      });
     } else if (catchData === 'pilgrimageBookingListDeleteBtn' && id) {
       updateTbodyValue('loading');
       let response = await handleAPIData('POST', '/api/vendors', { type: 'PILGRIMAGE_BOOKING_DELETE', pilgrimageBookingId: id });
