@@ -10,7 +10,7 @@ import {
 } from './reducers/vendorsSlice';
 
 import 'react-toastify/dist/ReactToastify.css';
-import './Vendors.css';
+// import './Vendors.css';
 
 const renderRoutes = (routes) => {
   return routes.map((item) => (

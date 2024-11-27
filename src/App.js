@@ -19,7 +19,7 @@ import { handleAPIData } from './hooks/useCustomApi';
 import { resetHomeFunc, updateFunc } from './reducers/homeSlice';
 import { changeInputFunc, resetInputFunc, resetMyAccountFunc } from './reducers/myAccountSlice';
 import { toastOptions } from './toastify';
-// import './App.css';
+import './App.css';
 import 'rsuite/DatePicker/styles/index.css';
 import 'react-toastify/dist/ReactToastify.css';
 
