@@ -17,10 +17,13 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
 
   console.log('ERERERER', departure, destination, dpDate, flightType);
 
-  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const monthsOfYear = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
-  const [departureDay, setDepartureDay] = useState('Day of Week');
-  const [returnDay, setReturnDay] = useState('Day of Week');  
+  const [departureMonth, setDepartureMonth] = useState('Month of Year');
+  const [returnMonth, setReturnMonth] = useState('Month of Year');  
 
   const dateStyles = {
     border: '1px solid #79747E',
@@ -62,54 +65,6 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
       lowerTwo: '| England'
     }
   ]
-
-  const sacredTypeOptions = [
-    {
-      value: 'hajj',
-      label: 'Hajj'
-    },
-    {
-      value: 'umrah',
-      label: 'Umrah'
-    }
-  ];
-
-  const flightOptions = [
-    {
-      value: 'direct',
-      label: 'Direct'
-    },
-    {
-      value: 'stopOver',
-      label: 'Stop Over'
-    }
-  ];
-
-  const flightClassOptions = [
-    {
-      value: 'ECONOMY',
-      label: 'Economy'
-    },
-    {
-      value: 'BUSINESS',
-      label: 'Business'
-    },
-    {
-      value: 'FIRST',
-      label: 'First Class'
-    }
-  ];
-
-  const foodOptions = [
-    {
-      value: 'veg',
-      label: 'Veg'
-    },
-    {
-      value: 'nonVeg',
-      label: 'Non Veg'
-    }
-  ];
 
   const departureOptions = [
     {
@@ -160,25 +115,49 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
     holidaysCallback('search');
   }  
 
+  const getLastDateOfMonth = (year, monthIndex) => {
+    const lastDate = new Date(year, monthIndex + 1, 0); 
+    return lastDate.getDate();
+  }
+
+  const isCurrentMonth = (monthName) => {
+    const currentMonthIndex = new Date().getMonth();
+    const currentMonthName = monthsOfYear[currentMonthIndex]; 
+    return monthName === currentMonthName;
+  }
+
   const handleDepartureDate = (value) => {
+    debugger
     if (value == null) {
       dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: '' }));
-      setDepartureDay('Day of Week');
+      setDepartureMonth('Month of Year');
     } else {
-      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      const month = value.getMonth();
+      let monthName = monthsOfYear[month];
+      let date = '';
+      if (isCurrentMonth(monthName)) { 
+        const today = new Date();
+        today.setDate(today.getDate() + 1); 
+        date = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+      } else {
+        date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      }
       dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: date }));
-      setDepartureDay(daysOfWeek[value.getDay()]);
+      setDepartureMonth(monthName);
     }    
   }
 
   const handleReturnDate = (value) => {
     if (value == null) {
       dispatch(updateFunc({ keyName: 'holidayReturnDate', value: '' }));
-      setReturnDay('Day of Week');
+      setReturnMonth('Month of Year');
     } else {
-      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      const year = value.getFullYear();
+      const month = value.getMonth();
+      const lastDate = getLastDateOfMonth(year, month)
+      const date = `${lastDate}-${month + 1}-${year}`;
       dispatch(updateFunc({ keyName: 'holidayReturnDate', value: date }));
-      setReturnDay(daysOfWeek[value.getDay()]);
+      setReturnMonth(monthsOfYear[month]);
     }    
   }
 
@@ -224,27 +203,27 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
               <div className="col">
                 <div className="mb-3 departure-date-home-page">
                   <a href="#!" className="form-selection">
-                    <label htmlFor="depature" className="form-label">Depature Date</label>
+                    <label htmlFor="depature" className="form-label">Depature Month</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="holiday-search-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                      <DatePicker oneTap id="holiday-search-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Month" format="MM-yyyy" />
                     </div>
-                    <div className="helper-text">{departureDay}</div>
+                    <div className="helper-text">{departureMonth}</div>
                   </a>
                 </div>
               </div>
               <div className="col">
                 <div className="mb-3 departure-date-home-page">
                   <a href="#!" className="form-selection">
-                    <label htmlFor="return" className="form-label">Return Date</label>
+                    <label htmlFor="return" className="form-label">Return Month</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="holiday-search-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                      <DatePicker oneTap id="holiday-search-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Month" format="MM-yyyy" />
                     </div>
-                    <div className="helper-text">{returnDay}</div>
+                    <div className="helper-text">{returnMonth}</div>
                   </a>
                 </div>
               </div>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <div className="col-3">
                 <div className="mb-3">
                 <NewSelect
@@ -292,7 +271,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
                 />  
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="row">
               <div className="col">
                 <Button id={"search-flights-home-page-btn"} loading={loading} handleBtnClick={handleSearchFlightsClick} btnType={"primary"} classes={"float-end"} label={"Search Holidays"} />
