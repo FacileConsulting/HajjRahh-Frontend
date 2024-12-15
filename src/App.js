@@ -37,7 +37,7 @@ const App = ({ message }) => {
     return state.myAccount
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeHeaderIcon, setActiveHeaderIcon] = useState({ flights: 'flight-active', holidays: 'holidays', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' });
+  const [activeHeaderIcon, setActiveHeaderIcon] = useState({ holidays: 'holidays-active', flights: 'flight', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' });
 
   const fetchHealthData = async () => {
     let response = await handleAPIData('GET', '/api/health');
@@ -104,7 +104,7 @@ const App = ({ message }) => {
   }
 
   const handleHeaderIconClick = (type) => {
-    const obj = { flights: 'flights', holidays: 'holidays', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' };
+    const obj = { holidays: 'holidays', flights: 'flights', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' };
     obj[type] =  `${type}-active`;
     setActiveHeaderIcon({ ...obj });
   }
@@ -154,17 +154,17 @@ const App = ({ message }) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
-                <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
-                <Link to="/flights" className={activeHeaderIcon.flights}>Flights</Link>
-              </li>
+              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('holidays')}>
+                <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
+                <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
+              </li>              
               <li className="nav-item text-center">
                 <span className="nav-menu-icon img-hotel"></span> <br />
                 <a className="nav-link" aria-current="page">Hotels</a>
               </li>
-              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('holidays')}>
-                <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
-                <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
+              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
+                <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
+                <Link to="/flights" className={activeHeaderIcon.flights}>Flights</Link>
               </li>
               <li className="nav-item text-center" onClick={() => handleHeaderIconClick('cabs')}>
                 <span className={`nav-menu-icon img-${activeHeaderIcon.cabs}`}></span> <br />
@@ -240,7 +240,7 @@ const App = ({ message }) => {
       <section className="section-wrapper">
         <Headers />
         <Switch>
-          <Route path="/" exact component={Flights} />
+          <Route path="/" exact component={Holidays} />
           {/* <Route path="/myAccount" component={isAuthenticated ? <MyAccount /> : <LoginRegister />} /> */}
           {/* <Route
               path="/myAccount" component={MyAccount} render={() => isAuthenticated ? (

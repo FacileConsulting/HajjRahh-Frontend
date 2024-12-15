@@ -17,13 +17,10 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
 
   console.log('ERERERER', departure, destination, dpDate, flightType);
 
-  const monthsOfYear = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  const [departureMonth, setDepartureMonth] = useState('Month of Year');
-  const [returnMonth, setReturnMonth] = useState('Month of Year');  
+  const [departureDay, setDepartureDay] = useState('Day of Week');
+  const [returnDay, setReturnDay] = useState('Day of Week'); 
 
   const dateStyles = {
     border: '1px solid #79747E',
@@ -115,49 +112,26 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
     holidaysCallback('search');
   }  
 
-  const getLastDateOfMonth = (year, monthIndex) => {
-    const lastDate = new Date(year, monthIndex + 1, 0); 
-    return lastDate.getDate();
-  }
-
-  const isCurrentMonth = (monthName) => {
-    const currentMonthIndex = new Date().getMonth();
-    const currentMonthName = monthsOfYear[currentMonthIndex]; 
-    return monthName === currentMonthName;
-  }
 
   const handleDepartureDate = (value) => {
-    debugger
     if (value == null) {
       dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: '' }));
-      setDepartureMonth('Month of Year');
+      setDepartureDay('Day of Week');
     } else {
-      const month = value.getMonth();
-      let monthName = monthsOfYear[month];
-      let date = '';
-      if (isCurrentMonth(monthName)) { 
-        const today = new Date();
-        today.setDate(today.getDate() + 1); 
-        date = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
-      } else {
-        date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
-      }
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
       dispatch(updateFunc({ keyName: 'holidayDepartureDate', value: date }));
-      setDepartureMonth(monthName);
+      setDepartureDay(daysOfWeek[value.getDay()]);
     }    
   }
 
   const handleReturnDate = (value) => {
     if (value == null) {
       dispatch(updateFunc({ keyName: 'holidayReturnDate', value: '' }));
-      setReturnMonth('Month of Year');
+      setReturnDay('Day of Week');
     } else {
-      const year = value.getFullYear();
-      const month = value.getMonth();
-      const lastDate = getLastDateOfMonth(year, month)
-      const date = `${lastDate}-${month + 1}-${year}`;
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
       dispatch(updateFunc({ keyName: 'holidayReturnDate', value: date }));
-      setReturnMonth(monthsOfYear[month]);
+      setReturnDay(daysOfWeek[value.getDay()]);
     }    
   }
 
@@ -180,7 +154,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
                     placeholder={"Travelling from"}
                     lowerOne={"XXX"}
                     middle={"Departure"}
-                    lowerTwo={"Airport Name"}
+                    lowerTwo={"City Name"}
                     options={departureOptions}
                     isFlight={true}
                   />
@@ -194,7 +168,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
                     placeholder={"Travelling to"}
                     lowerOne={"XXX"}
                     middle={"Destination"}
-                    lowerTwo={"Airport Name"}
+                    lowerTwo={"City Name"}
                     options={destinationOptions}
                     isFlight={true}
                   />
@@ -203,22 +177,22 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
               <div className="col">
                 <div className="mb-3 departure-date-home-page">
                   <a href="#!" className="form-selection">
-                    <label htmlFor="depature" className="form-label">Depature Month</label>
+                    <label htmlFor="depature" className="form-label">Depature Date</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="holiday-search-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Month" format="MM-yyyy" />
+                      <DatePicker oneTap id="holiday-search-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Date" format="dd-MM-yyyy" />
                     </div>
-                    <div className="helper-text">{departureMonth}</div>
+                    <div className="helper-text">{departureDay}</div>
                   </a>
                 </div>
               </div>
               <div className="col">
                 <div className="mb-3 departure-date-home-page">
                   <a href="#!" className="form-selection">
-                    <label htmlFor="return" className="form-label">Return Month</label>
+                    <label htmlFor="return" className="form-label">Return Date</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="holiday-search-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Month" format="MM-yyyy" />
+                      <DatePicker oneTap id="holiday-search-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Date" format="dd-MM-yyyy" />
                     </div>
-                    <div className="helper-text">{returnMonth}</div>
+                    <div className="helper-text">{returnDay}</div>
                   </a>
                 </div>
               </div>

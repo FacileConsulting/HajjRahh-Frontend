@@ -53,8 +53,6 @@ const Holidays = ({ id }) => {
     holidaySort,
     holidayDepartureDate,
     holidayReturnDate,
-    flightType,
-    flightClass
   } = useSelector(state => state.home);
 
   const holidayCardCallback = (data) => {
@@ -133,7 +131,6 @@ const Holidays = ({ id }) => {
       }
     }
     setToCallback(!toCallback);
-    // console.log('sfsdfdfdf', departure, destination, holidayDepartureDate, holidayReturnDate, flightType, flightClass, trip3, trip4, trip7, trip11, trip16, star5, star4, star3, transBus, transLandOnly, transFlight, transCruise, transOptional, themeAdventure, themeAffordable, themeArtCulture, themeBeach, themeBestSeller, priceLt1000, priceGt1000, priceGt2000, priceGt4000, priceGt8000, tourFocus1, tourFocus2, tourFocus3, tourFocus4, tourFocus5, languageHindi, languageEnglish, languageArabic, meals1, meals2, meals3, meals4, meals5, vehicleTypeHatchback, vehicleTypeSedan, vehicleTypeSUV, vehicleTypeMUV, vehicleTypeCompactSUV, sp1, sp2, sp3, sp4, sp5);
     setLoading(true);
     let resFlights = await handleAPIData('POST', '/api/searchFlights', payload);
     let resHolidays = await handleAPIData('POST', '/api/searchHolidays', payload);

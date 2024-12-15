@@ -152,7 +152,7 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
                     placeholder={"Travelling from"}
                     lowerOne={"XXX"}
                     middle={"Departure"}
-                    lowerTwo={"Airport Name"}
+                    lowerTwo={"City Name"}
                     options={departureOptions}
                     isFlight={true}
                   />
@@ -166,7 +166,7 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
                     placeholder={"Travelling to"}
                     lowerOne={"XXX"}
                     middle={"Destination"}
-                    lowerTwo={"Airport Name"}
+                    lowerTwo={"City Name"}
                     options={destinationOptions}
                     isFlight={true}
                   />
