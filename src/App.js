@@ -26,7 +26,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = ({ message }) => {
-  localStorage.setItem('current_route', '/flights');
+  localStorage.setItem('current_route', '/holidays');
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
@@ -51,7 +51,7 @@ const App = ({ message }) => {
     dispatch(resetHomeFunc());
     dispatch(resetMyAccountFunc());
     setIsLoggedIn(false);
-    history.push('/flights');
+    history.push('/holidays');
     toast.success('You are successfully logged out');
   }
 
@@ -62,7 +62,7 @@ const App = ({ message }) => {
     if (token && currRoute && userDetailsFromLocalStorage) {
       return { checked: true, currRoute, userDetailsFromLocalStorage };
     } else {
-      history.push('/flights');
+      history.push('/holidays');
       return { checked: false };
     }
   }
@@ -93,13 +93,13 @@ const App = ({ message }) => {
           console.log('Page was refreshed by the browser refresh buttoneeeee');
           history.push(currRoute);
         } else {
-          history.push('/flights');
+          history.push('/holidays');
         }
       } else {
-        history.push('/flights');
+        history.push('/holidays');
       }
     } else {
-      history.push('/flights');
+      history.push('/holidays');
     }
   }
 
@@ -124,9 +124,6 @@ const App = ({ message }) => {
     if (location.pathname !== '/holidays') {
       dispatch(resetHomeFunc());
     }
-    // if (location.pathname === '/vendors') {
-    //   history.push('/vendors');
-    // }
     console.log("Route changed to:", location, location.pathname);
     handleHeaderIconClick(location.pathname.split('/')[1]);
   }, [location.pathname]);
