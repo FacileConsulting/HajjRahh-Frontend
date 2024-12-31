@@ -1,8 +1,8 @@
 
 import axios from 'axios';
 
-// const baseURL = "http://localhost:8000";
-const baseURL = "https://hajjrahh-backend-feg9fhcuhzbxd4a0.eastus-01.azurewebsites.net";
+const baseURL = "http://localhost:8000";
+// const baseURL = "https://hajjrahh-backend-feg9fhcuhzbxd4a0.eastus-01.azurewebsites.net";
 
 const axiosInstance = axios.create({
   baseURL, // Adjust to your backend URL

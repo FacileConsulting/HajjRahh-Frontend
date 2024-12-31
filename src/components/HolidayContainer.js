@@ -219,9 +219,21 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destinatio
           </div>
           <div className="ps-3">
             <h3>{holidayData.packageName}</h3>
-            <p>{holidayData.packageDuration}</p>
+            <p>{holidayData.packageDuration[0]}</p>
             <ul className="list-inline list-unstyled tour-features">
-              <li className="list-inline-item">
+              {
+                holidayData.facilities && holidayData.facilities.length > 0 && holidayData.facilities.map((item, index) => {
+                  return (
+                    <li className="list-inline-item">
+                      <span className="material-symbols-outlined">
+                        {index % 2 === 0 ? 'restaurant' : 'hotel'}
+                      </span>
+                      <p>{item}</p>
+                    </li>
+                  )
+                })
+              }
+              {/* <li className="list-inline-item">
                 <span className="material-symbols-outlined">
                   hotel
                 </span>
@@ -238,7 +250,7 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destinatio
                   restaurant
                 </span>
                 <p>Food Included</p>
-              </li>
+              </li> */}
             </ul>
             {
               Array.isArray(flightsDatum.data) && flightsDatum.data.length > 0 &&

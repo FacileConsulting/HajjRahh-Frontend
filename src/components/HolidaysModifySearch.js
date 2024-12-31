@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DatePicker } from 'rsuite';
@@ -21,6 +21,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
 
   const [departureDay, setDepartureDay] = useState('Day of Week');
   const [returnDay, setReturnDay] = useState('Day of Week'); 
+  const [allowedDates, setAllowedDates] = useState([]); 
 
   const dateStyles = {
     border: '1px solid #79747E',
@@ -135,6 +136,61 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
     }    
   }
 
+  const convertDateFormat = (dateString) => {
+    // Split the date string into day, month, and year
+    const [day, month, year] = dateString.split('-').map(Number);
+  
+    // Create a Date object
+    const date = new Date(year, month - 1, day);
+  
+    // Subtract one day
+    date.setDate(date.getDate() - 1);
+  
+    // Format the previous date back to 'YYYY-MM-DD'
+    const prevDay = String(date.getDate()).padStart(2, '0');
+    const prevMonth = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const prevYear = date.getFullYear();
+  
+    return `${prevYear}-${prevMonth}-${prevDay}`;
+  }
+
+  const shouldDisableDate = (date) => {
+    debugger
+    const formattedDate = date.toISOString().split('T')[0]; // Format the date as 'YYYY-MM-DD'
+    return !allowedDates.includes(formattedDate); // Disable if not in the allowedDates array
+  };
+
+  useEffect(() => {
+    let isMounted = true; // Flag to prevent updates if the component unmounts
+  
+    const fetchDates = async () => {
+      try {
+        let response = await handleAPIData('POST', '/api/vendors', { type: 'PACKAGE_MANAGEMENT_FETCH_ALL' });
+        if (isMounted) {
+          let dates = [];
+          if (response.status === 'success' && response.data.data.length > 0) {
+            for (let i = 0; i < response.data.data.length; i++) {
+              for (let j = 0; j < response.data.data[i].dateRange.length; j++) {
+                let dater = convertDateFormat(response.data.data[i].dateRange[j]);
+                dates.push(dater);
+              }
+            }
+          }
+          setAllowedDates(dates); // Update state only if still mounted
+        }
+      } catch (error) {
+        console.error('Error fetching dates:', error);
+      }
+    };
+  
+    fetchDates();
+  
+    return () => {
+      isMounted = false; 
+    };
+  }, []); 
+  
+
   return (
     <div id={id} className="container section-block-hero">
       <div className="row">
@@ -179,7 +235,7 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
                   <a href="#!" className="form-selection">
                     <label htmlFor="depature" className="form-label">Depature Date</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="holiday-search-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                      <DatePicker oneTap shouldDisableDate={shouldDisableDate} id="holiday-search-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Date" format="dd-MM-yyyy" />
                     </div>
                     <div className="helper-text">{departureDay}</div>
                   </a>

@@ -433,7 +433,7 @@ const HolidayDetails = ({ id }) => {
     return (
       <dl id={id} key={id} className="row mb-4">
         <dt className="col-sm-3">
-          <h4>Day {itinerary.dayNumber}: {itinerary.title}</h4>
+          <h4>{itinerary.title}</h4>
         </dt>
         <dd className="col-sm-9">
           <div className="itinerary-detail">
@@ -486,7 +486,7 @@ const HolidayDetails = ({ id }) => {
         <div className="row align-items-center">
           <div className="col-lg-12 col-md-12">
             <h3 className="mb-2">{holidayData.packageName}</h3>
-            <p className="hero-text">{holidayData.packageDuration}</p>
+            <p className="hero-text">{holidayData.packageDuration[0]}</p>
           </div>
         </div>
       </div>
@@ -651,16 +651,24 @@ const HolidayDetails = ({ id }) => {
             </div>
             <div className="h-line"></div>
             <div className="row" id="inc-exc">
-              <div className="col-6">
-                <h3>Inclusion</h3>
+              <div className="col-4">
+                <h3>Facilites</h3>
+                {
+                  Array.isArray(holidayData.facilities) && holidayData.facilities.length > 0 && holidayData.facilities.map((facility, index) => {
+                    return (<RenderInclusionExclusion id={`facility-${index}`} inclusionExclusion={facility} />)
+                  })
+                }
+              </div>
+              <div className="col-4">
+                <h3>Inclusions</h3>
                 {
                   Array.isArray(holidayData.packageDetails.inclusions) && holidayData.packageDetails.inclusions.length > 0 && holidayData.packageDetails.inclusions.map((inclusion, index) => {
                     return (<RenderInclusionExclusion id={`inclusion-${index}`} inclusionExclusion={inclusion} />)
                   })
                 }
               </div>
-              <div className="col-6">
-                <h3>Exclution</h3>
+              <div className="col-4">
+                <h3>Exclusions</h3>
                 {
                   Array.isArray(holidayData.packageDetails.exclusions) && holidayData.packageDetails.exclusions.length > 0 && holidayData.packageDetails.exclusions.map((exclusion, index) => {
                     return (<RenderInclusionExclusion id={`exclusion-${index}`} inclusionExclusion={exclusion} />)

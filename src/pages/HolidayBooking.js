@@ -245,7 +245,7 @@ const HolidayBooking = ({ id }) => {
       userId,
       holidayId: holidayData._id,
       packageName: holidayData.packageName,
-      packageDuration: holidayData.packageDuration,
+      packageDuration: holidayData.packageDuration[0],
       holidayDetailsStartDate: holidayData.holidayDetailsStartDate,
       holidayDetailsEndDate: holidayData.holidayDetailsEndDate,
       departurePlaceLabel: holidayData.departurePlaceLabel,
@@ -306,7 +306,7 @@ const HolidayBooking = ({ id }) => {
           <div className="col-lg-12 col-md-12">
             <div className="trip-summary">
               <h3 className="mb-2">{holidayData.packageName}</h3>
-              <p className="hero-texted">{holidayData.packageDuration}</p>
+              <p className="hero-texted">{holidayData.packageDuration[0]}</p>
               <p className="hero-texted"><span>Travel dates: </span>{holidayData.holidayDetailsStartDate} <span>To: </span>{holidayData.holidayDetailsEndDate}</p>
               <p className="hero-texted"><span>Source: </span>{holidayData.departurePlaceLabel}</p>
               <p className="hero-texted"><span>Destination: </span>{holidayData.destinationPlaceLabel}</p>

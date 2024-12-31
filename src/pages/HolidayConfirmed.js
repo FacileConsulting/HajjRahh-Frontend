@@ -30,7 +30,7 @@ const HolidayConfirmed = ({ id }) => {
         <div className="row align-items-center text-center">
           <div className="col-lg-12 col-md-12">
             <h3 className="mb-2">{bookingData.packageName}</h3>
-            <p className="hero-texted">{bookingData.packageDuration}</p>
+            <p className="hero-texted">{bookingData.packageDuration[0]}</p>
             <p className="hero-texted"><span>Travel dates: </span>{bookingData.holidayDetailsStartDate}<span>To: </span>{bookingData.holidayDetailsEndDate}</p>
             <p className="hero-texted"><span>Source: </span>{bookingData.departurePlaceLabel}</p>
             <p className="hero-texted"><span>Destination: </span>{bookingData.destinationPlaceLabel}</p>
