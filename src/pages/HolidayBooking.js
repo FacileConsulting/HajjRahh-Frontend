@@ -60,9 +60,11 @@ const HolidayBooking = ({ id }) => {
     if (value == null) {
       passengers[idx] = { ...passengers[idx], dob: '' };
     } else {
-      if (value && value.getDate() && value.getMonth() && value.getFullYear()) {
+      if (value) {
         const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
         passengers[idx] = { ...passengers[idx], dob: date };
+      } else {
+        passengers[idx] = { ...passengers[idx], dob: '' }; 
       }
     }
   }
@@ -153,6 +155,15 @@ const HolidayBooking = ({ id }) => {
       return;
     }
 
+    if (!isProfileChecked && (!billingDetails.mobileNumber || !billingDetails.email || !billingDetails.billingAddress)) {
+      toast.info('Please fill all billing details', toastOptions);
+      return;
+    }
+
+    if ((!creditCardData.name || !creditCardData.card || !creditCardData.expiry || !creditCardData.cvv) && (!debitCardData.name || !debitCardData.card || !debitCardData.expiry || !debitCardData.cvv) && !internetBanking && !upiData) {
+      toast.info('Please select any payment details', toastOptions);
+      return;
+    }
     if (paymentActive === 'credit' && (!creditCardData.name || !creditCardData.card || !creditCardData.expiry || !creditCardData.cvv)) {
       toast.info('Please fill all credit card details', toastOptions);
       return;

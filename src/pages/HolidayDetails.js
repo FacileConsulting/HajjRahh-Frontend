@@ -84,11 +84,16 @@ const HolidayDetails = ({ id }) => {
   const handleBookNowClick = () => {
     const filteredFlightActive = flightsDatum.data.filter(o => o.holidayDetailActive === 'active');
     if (!holidayDetailsStartDate) {
-      toast.info('Please select state date', toastOptions);
+      toast.info('Please select start date', toastOptions);
       return;
     }
     if (!holidayDetailsEndDate) {
       toast.info('Please select end date', toastOptions);
+      return;
+    }
+    debugger;
+    if (!flightData?.itineraries) {
+      toast.info('Please select one flight', toastOptions);
       return;
     }
     if (filteredFlightActive.length ===  1) {

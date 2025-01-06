@@ -222,7 +222,7 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destinatio
             <p>{holidayData.packageDuration[0]}</p>
             <ul className="list-inline list-unstyled tour-features">
               {
-                holidayData.facilities && holidayData.facilities.length > 0 && holidayData.facilities.map((item, index) => {
+                holidayData.transportation && holidayData.transportation.length > 0 && holidayData.transportation.map((item, index) => {
                   return (
                     <li className="list-inline-item">
                       <span className="material-symbols-outlined">
