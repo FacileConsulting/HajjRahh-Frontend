@@ -155,7 +155,6 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
   }
 
   const shouldDisableDate = (date) => {
-    debugger
     const formattedDate = date.toISOString().split('T')[0]; // Format the date as 'YYYY-MM-DD'
     return !allowedDates.includes(formattedDate); // Disable if not in the allowedDates array
   };

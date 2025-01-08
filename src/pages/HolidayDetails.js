@@ -91,7 +91,6 @@ const HolidayDetails = ({ id }) => {
       toast.info('Please select end date', toastOptions);
       return;
     }
-    debugger;
     if (!flightData?.itineraries) {
       toast.info('Please select one flight', toastOptions);
       return;
