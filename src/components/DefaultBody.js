@@ -4,16 +4,16 @@ const DefaultBody = ({ id }) => {
 
   return (
     <section id={id}>
-      <div className="container-xxl py-5 section-block">
+      <div className="container-xxl py-5 section-block pdrl-46">
         <div className="row">
           <div className="col-auto me-auto">
             <h2>Trending destinations</h2>
           </div>
-          <div className="col-auto">
+          {/* <div className="col-auto">
             <a href="#!">
               <span className="see-all"><i className="bi bi-chevron-right"></i></span>
             </a>
-          </div>
+          </div> */}
 
         </div>
         <div className="row">
@@ -58,7 +58,7 @@ const DefaultBody = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className="container-xxl py-5 section-block">
+      <div className="container-xxl py-5 section-block pdrl-46">
         <div className="row">
           <div className="col">
             <div className="colour-title">Find more places around you</div>
@@ -89,7 +89,7 @@ const DefaultBody = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className="container-xxl py-5 section-block">
+      <div className="container-xxl py-5 section-block pdrl-46">
         <div className="row">
           <div className="col-auto me-auto">
             <div className="colour-title">Book online</div>
@@ -97,9 +97,9 @@ const DefaultBody = ({ id }) => {
           </div>
           <div className="col-auto">
             {/* <a href="#!">See all <i className="bi bi-arrow-right"></i></a>  */}
-            <a href="#!">
+            {/* <a href="#!">
               <span className="see-all"><i className="bi bi-chevron-right"></i></span>
-            </a>
+            </a> */}
           </div>
         </div>
         <div className="row">
@@ -109,7 +109,7 @@ const DefaultBody = ({ id }) => {
               <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
               <h3>Novotel Thakher</h3>
               <p>Makkah</p>
-              <h3 className="price">$39.00</h3>
+              <h3 className="mt-4">$39.00</h3>
               <p>per night <br />
                 $78.00 total <br />
                 inclusive taxes and fees</p>
@@ -121,7 +121,7 @@ const DefaultBody = ({ id }) => {
               <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
               <h3>Novotel Thakher</h3>
               <p>Makkah</p>
-              <h3 className="price">$39.00</h3>
+              <h3 className="mt-4">$39.00</h3>
               <p>per night <br />
                 $78.00 total <br />
                 inclusive taxes and fees</p>
@@ -133,7 +133,7 @@ const DefaultBody = ({ id }) => {
               <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
               <h3>Novotel Thakher</h3>
               <p>Makkah</p>
-              <h3 className="price">$39.00</h3>
+              <h3 className="mt-4">$39.00</h3>
               <p>per night <br />
                 $78.00 total <br />
                 inclusive taxes and fees</p>
@@ -153,7 +153,7 @@ const DefaultBody = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className="container-xxl py-5 section-block">
+      <div className="container-xxl py-5 section-block pdrl-46">
         <div className="row">
           <div className="col-auto me-auto">
             <h2>Innovation zone</h2>
@@ -177,7 +177,7 @@ const DefaultBody = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className="container-xxl py-5 section-block">
+      <div className="container-xxl py-5 section-block pdrl-46">
         <div className="row">
           <div className="col">
             <h2 className="app-section-title">Make your Umrah unforgettable: Enhance your spiritual experience with Nusuk app</h2>
@@ -196,7 +196,7 @@ const DefaultBody = ({ id }) => {
         </div>
       </div>
       <div className="section-bg">
-        <div className="container-xxl py-5 section-block">
+        <div className="container-xxl py-5 section-block pdrl-46">
           <div className="row">
             <div className="col">
               <h2>Customise your own Hajji & Umrah packages</h2>
@@ -254,7 +254,7 @@ const DefaultBody = ({ id }) => {
           </div>
         </div>
       </div>
-      <div className="container-xxl py-5 section-block">
+      <div className="container-xxl py-5 section-block pdrl-46">
         <div className="row">
           <div className="col">
             <ul className="nav nav-tabs justify-content-center" id="myTab" role="tablist">

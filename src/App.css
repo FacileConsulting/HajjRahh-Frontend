@@ -53,8 +53,11 @@ body {
 .img-flights-active, .img-flights-active:hover {
   background: url(../public/assets/images/flights_active.svg);
 }
-.img-hotel {
+.img-hotels {
   background: url(../public/assets/images/Hotel.svg);
+}
+.img-hotels-active, .img-hotels-active:hover {
+  background: url(../public/assets/images/hotel_active.svg);
 }
 .img-holidays {
   background: url(../public/assets/images/holiday.svg);
@@ -83,6 +86,7 @@ body {
 }
 .flights-active,
 .holidays-active,
+.hotels-active,
 .cabs-active,
 .myAccount-active,
 .trips-active,
@@ -98,7 +102,7 @@ body {
 .navbar-nav >li.active .img-flights {
   background: url(../public/assets/images/flights_active.svg);
 }
-.navbar-nav >li.active .img-hotel {
+.navbar-nav >li.active .img-hotels {
   background: url(../public/assets/images/hotel_active.svg);
 }
 .navbar-nav >li.active .img-holidays {
@@ -113,7 +117,7 @@ body {
 .navbar-nav >li:hover .img-flights {
   background: url(../public/assets/images/flights_active.svg);
 }
-.navbar-nav >li:hover .img-hotel {
+.navbar-nav >li:hover .img-hotels {
   background: url(../public/assets/images/hotel_active.svg);
 }
 .navbar-nav >li:hover .img-holidays {
@@ -262,16 +266,16 @@ a.coloured-link:hover {
   border-left: 1px solid transparent;
 }
 ::-moz-input-placeholder {
-  color: #49454F;
+  color: #000000;
 }
 ::-webkit-input-placeholder {
-  color: #49454F;
+  color: #000000;
 }
 ::-ms-input-placeholder {
-  color: #49454F;
+  color: #000000;
 }
 ::placeholder {
-  color: #49454F;
+  color: #000000;
 }
 .nav-btn {
   height: 40px;
@@ -329,13 +333,13 @@ a.coloured-link:hover {
   position: absolute;
   top: 20%;
   z-index: 999;
-  height: 48px;
-  width: 48px;
+  height: 35px;
+  width: 35px;
   border-radius: 24px;
   color: #fff !important;
   background-color: #000000 !important;
   box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.15), 0px 1px 3px rgba(0, 0, 0, 0.3);
-  line-height: 48px !important;
+  line-height: 30px !important;
   text-align: center;
 }
 .owl-nav .owl-next {
@@ -585,7 +589,7 @@ a.coloured-link:hover {
   display: none;
 }
 .dropmenu-guest {
-    width: 360px;
+    width: 298px;
     padding: 12px;
     background-color: #fff;
     list-style: none;
@@ -1052,7 +1056,7 @@ a.coloured-link:hover {
   padding: 0px;
   height: 32px;
   line-height: 32px;
-  font-size: 32px;
+  font-size: 25px;
   border-radius: 0;
   background-color: #f4f4f4;
   color: #000000;
@@ -1064,7 +1068,8 @@ a.coloured-link:hover {
   cursor: pointer;
 }
 .form-selection .header-form::placeholder {
-  color: #000000;
+  color: #000;
+  font-size: 25px;
 }
 .form-selection .helper-text {
   margin-top: 4px;
@@ -1086,7 +1091,7 @@ a.coloured-link:hover {
   background-color: #F66F4D;
   border-color: #F66F4D;
 }
-.see-all {
+/* .see-all {
   height: 48px;
   width: 48px;
   border-radius: 24px;
@@ -1097,7 +1102,7 @@ a.coloured-link:hover {
   font-size: 24px;
   color: #ffffff;
   display: inline-block;
-}
+} */
 .custom-dropdown {
   background-color: #ffffff;
   border: 1px solid #cccccc;
@@ -1272,19 +1277,21 @@ a.coloured-link:hover {
   
 #holidays-modify-search .rs-input-group-lg.rs-input-group>.rs-input,
 #cabs-search .rs-input-group-lg.rs-input-group>.rs-input,
+#hotels-search .rs-input-group-lg.rs-input-group>.rs-input,
 #flights-search  .rs-input-group-lg.rs-input-group>.rs-input {
   height: 32px!important;
   background-color: #f4f4f4;
-  font-size: 32px;
+  font-size: 24px;
 }
   
 .rs-input-group:focus-within, .rs-input-group:not(.rs-input-group-disabled).rs-input-group-focus {
   outline: 0 !important;
 }
   
-#holidays-modify-search .rs-input-group-lg.rs-input-group>.rs-input:placeholder,
-#cabs-search .rs-input-group-lg.rs-input-group>.rs-input:placeholder,
-#flights-search .rs-input-group-lg.rs-input-group>.rs-input:placeholder {
+#holidays-modify-search .rs-input-group-lg.rs-input-group>.rs-input::placeholder,
+#cabs-search .rs-input-group-lg.rs-input-group>.rs-input::placeholder,
+#hotels-search .rs-input-group-lg.rs-input-group>.rs-input::placeholder,
+#flights-search .rs-input-group-lg.rs-input-group>.rs-input::placeholder {
   color:#000000;
 }
   
@@ -1327,6 +1334,14 @@ a.coloured-link:hover {
   position: relative;
   width: 100%;
 }
+
+.rc-time-picker-input:focus,
+.rc-time-picker:focus,
+.rc-time-picker:focus-visible,
+.rc-time-picker-input:focus-visible {
+  border: none;
+  outline: none;
+}
   
 .rc-time-picker-input {
   background-color: #f4f4f4;
@@ -1336,7 +1351,7 @@ a.coloured-link:hover {
   color: #000000;
   cursor: text;
   display: inline-block;
-  font-size: 32px;
+  font-size: 25px;
   height: 32px;
   line-height: 1.5;
   padding: 4px 7px;
@@ -1416,4 +1431,9 @@ li.rc-time-picker-panel-select-option-selected {
 .rs-picker-date .rs-input-group-addon .rs-btn-close {
   padding: 0;
   padding-left: 16px;
+}
+
+.pdrl-46 {
+  padding-left: 46px;
+  padding-right: 46px;
 }

@@ -128,6 +128,7 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
                     <div className="input-group">
                       <TimePicker
                         id="cabs-timepicker"
+                        placeholder="Select Time"
                         showSecond={false}
                         className="xxx"
                         inputIcon={<i className="bi bi-clock"></i>}
