@@ -288,9 +288,10 @@ a.coloured-link:hover {
   border-radius: 56px;
   border: 1px solid #F66F4D;
 }
+.btn-primary:active,
 .btn-primary:hover {
-  background-color: #e75f3c;
-  border: 1px solid #e75f3c;
+  background-color: #F66F4D !important;
+  border-color: #F66F4D !important;
 }
 .btn-secondary {
   color: #000000;
@@ -1084,9 +1085,9 @@ a.coloured-link:hover {
   font-size: 16px;
   margin-right: 4px;
 }
-.form-check .form-check-label {
+/* .form-check .form-check-label {
   padding-top: 4px;
-}
+} */
 .form-check-input:checked {
   background-color: #F66F4D;
   border-color: #F66F4D;
@@ -1231,9 +1232,12 @@ a.coloured-link:hover {
 .for-loading-margin {
   margin-right: 10px;
 }
-.search-holidays-btn.disable {
+.search-holidays-btn.disable,
+.disable {
   cursor: not-allowed;
   opacity: 0.5;
+  pointer-events: none;
+  background-color: #F66F4D !important; 
 }
 #flights-search .rs-input-group-lg.rs-input-group > .rs-input {
   height: 53px !important;

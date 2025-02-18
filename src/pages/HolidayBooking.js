@@ -316,11 +316,11 @@ const HolidayBooking = ({ id }) => {
         <div className="row align-items-center">
           <div className="col-lg-12 col-md-12">
             <div className="trip-summary">
-              <h3 className="mb-2">{holidayData.packageName}</h3>
-              <p className="hero-texted">{holidayData.packageDuration[0]}</p>
-              <p className="hero-texted"><span>Travel dates: </span>{holidayData.holidayDetailsStartDate} <span>To: </span>{holidayData.holidayDetailsEndDate}</p>
-              <p className="hero-texted"><span>Source: </span>{holidayData.departurePlaceLabel}</p>
-              <p className="hero-texted"><span>Destination: </span>{holidayData.destinationPlaceLabel}</p>
+              <h3 className="mb-2">{holidayData?.packageName}</h3>
+              <p className="hero-texted">{holidayData?.packageDuration[0]}</p>
+              <p className="hero-texted"><span>Travel dates: </span>{holidayData?.holidayDetailsStartDate} <span>To: </span>{holidayData?.holidayDetailsEndDate}</p>
+              <p className="hero-texted"><span>Source: </span>{holidayData?.departurePlaceLabel}</p>
+              <p className="hero-texted"><span>Destination: </span>{holidayData?.destinationPlaceLabel}</p>
             </div>
           </div>
         </div>
@@ -333,7 +333,7 @@ const HolidayBooking = ({ id }) => {
                 <div className="col-12"><h3 className="mb-3">Passenger details</h3></div>
               </div>
               {
-                Array(flightData.adults + flightData.children + flightData.infants).fill(0).map((item, index) => {
+                flightData && Array(flightData?.adults + flightData?.children + flightData?.infants).fill(0).map((item, index) => {
                   return (<RenderPassengerField id={`passenger-${index}`} index={index} />)
                 })
               }
@@ -454,8 +454,8 @@ const HolidayBooking = ({ id }) => {
             <div className="booking-block">
               <h3 className="booking-title">Booking details</h3>
               <div className="booking-details-block">
-                <p className="booking-details">Trip type:  <span>{flightData.roundOneWay}</span></p>
-                <p className="booking-details">Trip duration: <span>{flightData.duration}</span></p>
+                <p className="booking-details">Trip type:  <span>{flightData?.roundOneWay}</span></p>
+                <p className="booking-details">Trip duration: <span>{flightData?.duration}</span></p>
                 <p className="booking-details">Booking on: <span>{getCurrentDateTime()}</span></p>
                 <p className="booking-details">Number of passangers: <span>{displayFamily()}</span></p>
               </div>
@@ -463,21 +463,21 @@ const HolidayBooking = ({ id }) => {
             <div className="booking-block">
               <h3 className="booking-title">Fare details</h3>
               <div className="booking-details-block">
-                <p className="booking-sub-title">Basic cost:<span>${flightData.price.grandTotal}</span></p>
+                <p className="booking-sub-title">Basic cost:<span>${flightData?.price?.grandTotal}</span></p>
                 {
                   family.map((passenger, passengerIndex) => (
                     <>
                       {
-                        passenger.travelerType === 'ADULT' && flightData.adults &&
-                        <p className="booking-details">{flightData.adults === 1 ? 'Adult' : 'Adults'} X {flightData.adults}: <span>${passenger.price.total * flightData.adults}</span></p>
+                        passenger.travelerType === 'ADULT' && flightData?.adults &&
+                        <p className="booking-details">{flightData?.adults === 1 ? 'Adult' : 'Adults'} X {flightData?.adults}: <span>${passenger.price.total * flightData?.adults}</span></p>
                       }
                       {
-                        passenger.travelerType === 'CHILD' && flightData.children &&
-                        <p className="booking-details">{flightData.children === 1 ? 'Child' : 'Children'} X {flightData.children}: <span>${passenger.price.total * flightData.children}</span></p>
+                        passenger.travelerType === 'CHILD' && flightData?.children &&
+                        <p className="booking-details">{flightData?.children === 1 ? 'Child' : 'Children'} X {flightData?.children}: <span>${passenger.price.total * flightData?.children}</span></p>
                       }
                       {
-                        passenger.travelerType === 'HELD_INFANT' && flightData.infants &&
-                        <p className="booking-details">{flightData.infants === 1 ? 'Infant' : 'Infants'} X {flightData.infants}: <span>${passenger.price.total * flightData.infants}</span></p>
+                        passenger.travelerType === 'HELD_INFANT' && flightData?.infants &&
+                        <p className="booking-details">{flightData?.infants === 1 ? 'Infant' : 'Infants'} X {flightData?.infants}: <span>${passenger.price.total * flightData?.infants}</span></p>
                       }
                     </>
                   ))
@@ -496,7 +496,7 @@ const HolidayBooking = ({ id }) => {
               </div>
               <div className="booking-grand-total">
                 <p>Grand total</p>
-                <h2>${flightData.price.grandTotal - coupon + taxes} <span>(Inclusive of Taxes)</span></h2>
+                <h2>${flightData?.price?.grandTotal - coupon + taxes} <span>(Inclusive of Taxes)</span></h2>
               </div>
             </div>
           </div>

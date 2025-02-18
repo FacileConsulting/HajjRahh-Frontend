@@ -1,17 +1,19 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import $ from 'jquery';
 import { updateFunc } from '../reducers/homeSlice';
+import { changeInputFunc } from '../reducers/myAccountSlice';
 import { useDispatch } from 'react-redux';
 
 const Radio = forwardRef((props, ref) => {
   let { id, keyName, name, valueRadioName, defaultValue } = props;
   const dispatch = useDispatch();
-  $(`#${id}`).prop('checked', defaultValue === valueRadioName);
+  if (defaultValue === valueRadioName) $(`#${id}`).prop('checked', defaultValue === valueRadioName);
   const [value, setValue] = useState(defaultValue);  
 
   const resetRefCalled = (enableId, keyName, vals) => {
     $(`#${enableId}`).prop('checked', true);
     dispatch(updateFunc({ keyName, value: vals }));
+    dispatch(changeInputFunc({ keyName, value: vals }));    
     setValue(vals);
   };
 
@@ -23,9 +25,10 @@ const Radio = forwardRef((props, ref) => {
   const handleChange = (event) => {
     console.log('sdfsdfsdfsdf', id, keyName, valueRadioName, event.target.value, event.target.checked);
     dispatch(updateFunc({ keyName, value: event.target.value }));
-    $('#flight-traveller-ECONOMY').prop('checked', false);
-    $('#flight-traveller-BUSINESS').prop('checked', false);
-    $('#flight-traveller-FIRST').prop('checked', false);
+    dispatch(changeInputFunc({ keyName, value: event.target.value })); 
+    if (id === 'flight-traveller-ECONOMY') $('#flight-traveller-ECONOMY').prop('checked', false);
+    if (id === 'flight-traveller-BUSINESS') $('#flight-traveller-BUSINESS').prop('checked', false);
+    if (id === 'flight-traveller-FIRST') $('#flight-traveller-FIRST').prop('checked', false);
     $(`#${id}`).prop('checked', event.target.value === valueRadioName);
     setValue(event.target.value);
   };

@@ -10,6 +10,7 @@ import HolidayDetails from './pages/HolidayDetails';
 import HolidayBooking from './pages/HolidayBooking';
 import HolidayConfirmed from './pages/HolidayConfirmed';
 import Cabs from './pages/Cabs';
+import Hotels from './pages/Hotels';
 import CabDetails from './pages/CabDetails';
 import FlightDetails from './pages/FlightDetails';
 import Flights from './pages/Flights';
@@ -37,7 +38,7 @@ const App = ({ message }) => {
     return state.myAccount
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeHeaderIcon, setActiveHeaderIcon] = useState({ holidays: 'holidays-active', flights: 'flight', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' });
+  const [activeHeaderIcon, setActiveHeaderIcon] = useState({ holidays: 'holidays-active', flights: 'flight', hotels: 'hotels', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' });
 
   const fetchHealthData = async () => {
     let response = await handleAPIData('GET', '/api/health');
@@ -104,7 +105,7 @@ const App = ({ message }) => {
   }
 
   const handleHeaderIconClick = (type) => {
-    const obj = { holidays: 'holidays', flights: 'flights', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' };
+    const obj = { holidays: 'holidays', flights: 'flights', hotels: 'hotels', cabs: 'cabs', myAccount: 'myAccount', trips: 'trips', loginRegister: 'loginRegister' };
     obj[type] =  `${type}-active`;
     setActiveHeaderIcon({ ...obj });
   }
@@ -154,10 +155,11 @@ const App = ({ message }) => {
               <li className="nav-item text-center" onClick={() => handleHeaderIconClick('holidays')}>
                 <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
                 <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
-              </li>              
-              <li className="nav-item text-center">
-                <span className="nav-menu-icon img-hotel"></span> <br />
-                <a className="nav-link" aria-current="page">Hotels</a>
+              </li>
+              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('hotels')}>
+                <span className={`nav-menu-icon img-${activeHeaderIcon.hotels}`}></span> <br />
+                <Link to="/" className={activeHeaderIcon.hotels}>Hotels</Link>
+                {/* <a className="nav-link" href="#">Hotels</a> */}
               </li>
               <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
                 <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
@@ -185,8 +187,8 @@ const App = ({ message }) => {
                 </>
               } 
               <li className="nav-item">
-                <Link to="/holidayBooking">Support</Link>
-                {/* <a className="nav-link" href="#">Support</a> */}
+                {/* <Link>Support</Link> */}
+                <a className="nav-link" href="#">Support</a>
               </li>
               {
                 isLoggedIn ?
@@ -253,6 +255,7 @@ const App = ({ message }) => {
           <Route path="/holidayDetails" component={HolidayDetails} />
           <Route path="/holidayBooking" component={HolidayBooking} />
           <Route path="/holidayConfirmed" component={HolidayConfirmed} />
+          <Route path="/hotels" component={Hotels} />
           <Route path="/cabs" component={Cabs} />
           <Route path="/cabDetails" component={CabDetails} />
           <Route path="/flights" component={Flights} />

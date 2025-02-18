@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 import TripContainer from '../components/TripContainer';
+import NoDataAvailable from '../components/NoDataAvailable';
 
 const Trips = ({ id }) => {
   localStorage.setItem('current_route', '/trips');
@@ -74,6 +75,10 @@ const Trips = ({ id }) => {
             return (<TripContainer id={`upcomingTrip-${index}`} tripData={trip} statusClass={"warning"} />)
           })
         }
+        {
+          tripsData.upcomingTrips && tripsData.upcomingTrips.length === 0 &&
+            <NoDataAvailable text={"No Upcoming Trips"} />
+        }
         <div className="row mb-2">
           <div className="col-auto me-auto offset-1">
             <h3>On-Going Trips</h3>
@@ -84,6 +89,10 @@ const Trips = ({ id }) => {
             return (<TripContainer id={`onGoingTrip-${index}`} tripData={trip} statusClass={"info"} />)
           })
         }
+        {
+          tripsData.onGoingTrips && tripsData.onGoingTrips.length === 0 &&
+            <NoDataAvailable text={"No On-Going Trips"} />
+        }
         <div className="row mb-2">
           <div className="col-auto me-auto offset-1">
             <h3>Past Trips</h3>
@@ -93,6 +102,10 @@ const Trips = ({ id }) => {
           tripsData.pastTrips && tripsData.pastTrips.length > 0 && tripsData.pastTrips.map((trip, index) => {
             return (<TripContainer id={`pastTrip-${index}`} tripData={trip} statusClass={"info"} />)
           })
+        }        
+        {
+          tripsData.onGoingTrips && tripsData.onGoingTrips.length === 0 &&
+            <NoDataAvailable text={"No Past Trips"} />
         }
       </div>
     </>
