@@ -10,7 +10,7 @@ import HolidayDetails from './pages/HolidayDetails';
 import HolidayBooking from './pages/HolidayBooking';
 import HolidayConfirmed from './pages/HolidayConfirmed';
 import Cabs from './pages/Cabs';
-import Hotels from './pages/Hotels';
+// import Hotels from './pages/Hotels';
 import CabDetails from './pages/CabDetails';
 import FlightDetails from './pages/FlightDetails';
 import Flights from './pages/Flights';
@@ -255,7 +255,7 @@ const App = ({ message }) => {
           <Route path="/holidayDetails" component={HolidayDetails} />
           <Route path="/holidayBooking" component={HolidayBooking} />
           <Route path="/holidayConfirmed" component={HolidayConfirmed} />
-          <Route path="/hotels" component={Hotels} />
+          {/* <Route path="/hotels" component={Hotels} /> */}
           <Route path="/cabs" component={Cabs} />
           <Route path="/cabDetails" component={CabDetails} />
           <Route path="/flights" component={Flights} />

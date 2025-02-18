@@ -507,6 +507,8 @@ a.coloured-link:hover {
   border: 1px solid #dddddd;
   border-radius: 16px;
   padding: 12px 0px;
+  width: 82%;
+  margin: auto;
 }
 .tour-features {
   margin-top: 12px;
