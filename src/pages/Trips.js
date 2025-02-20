@@ -69,13 +69,14 @@ const Trips = ({ id }) => {
             <h3>Upcoming Trips</h3>
           </div>
         </div>
-        {
+        { 
           tripsData.upcomingTrips && tripsData.upcomingTrips.length > 0 && tripsData.upcomingTrips.map((trip, index) => {
             console.log('trip', trip);
             return (<TripContainer id={`upcomingTrip-${index}`} tripData={trip} statusClass={"warning"} />)
           })
         }
-        {
+        { 
+          loading ? <NoDataAvailable text={"Loading..."} /> : 
           tripsData.upcomingTrips && tripsData.upcomingTrips.length === 0 &&
             <NoDataAvailable text={"No Upcoming Trips"} />
         }
@@ -89,7 +90,8 @@ const Trips = ({ id }) => {
             return (<TripContainer id={`onGoingTrip-${index}`} tripData={trip} statusClass={"info"} />)
           })
         }
-        {
+        { 
+          loading ? <NoDataAvailable text={"Loading..."} /> : 
           tripsData.onGoingTrips && tripsData.onGoingTrips.length === 0 &&
             <NoDataAvailable text={"No On-Going Trips"} />
         }
@@ -102,9 +104,10 @@ const Trips = ({ id }) => {
           tripsData.pastTrips && tripsData.pastTrips.length > 0 && tripsData.pastTrips.map((trip, index) => {
             return (<TripContainer id={`pastTrip-${index}`} tripData={trip} statusClass={"info"} />)
           })
-        }        
-        {
-          tripsData.onGoingTrips && tripsData.onGoingTrips.length === 0 &&
+        } 
+        { 
+          loading ? <NoDataAvailable text={"Loading..."} /> : 
+          tripsData.pastTrips && tripsData.pastTrips.length === 0 &&
             <NoDataAvailable text={"No Past Trips"} />
         }
       </div>

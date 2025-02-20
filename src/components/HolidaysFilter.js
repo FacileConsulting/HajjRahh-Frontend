@@ -123,7 +123,7 @@ const HolidaysFilter = forwardRef((props, ref) => {
                 </div>
               </li>
               <li className="filter-type">
-                <a href="#!" onClick={handlePanel}>Transportation <i className="bi bi-chevron-down"></i></a>
+                <a href="#!" onClick={handlePanel}>Transport <i className="bi bi-chevron-down"></i></a>
                 <div className={panelClass}>
                   <a href="#!">
                     <div className="form-check">
@@ -418,7 +418,7 @@ const HolidaysFilter = forwardRef((props, ref) => {
                 </div>
               </li>
               <li className="filter-type">
-                <a href="#!" onClick={handlePanel}>Sp. amenities <i className="bi bi-chevron-down"></i></a>
+                <a href="#!" onClick={handlePanel}>Amenities <i className="bi bi-chevron-down"></i></a>
                 <div className={panelClass}>
                   <a href="#!">
                     <div className="form-check">

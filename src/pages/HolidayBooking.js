@@ -368,15 +368,15 @@ const HolidayBooking = ({ id }) => {
                 <div className="col-3">
                   <div className="d-flex align-items-start">
                     <div className="nav flex-column me-3 tabs-cards" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                      <button className="nav-link active" id="v-internet-banking-tab" data-bs-toggle="pill" data-bs-target="#v-internet-banking" type="button" role="tab" aria-controls="v-internet-banking" aria-selected="false" onClick={() => handlePaymentLinkClick('internetBanking')}>Internet banking</button>
                       {
                         creditCard &&
-                        <button className="nav-link active" id="v-credit-card-tab" data-bs-toggle="pill" data-bs-target="#v-credit-card" type="button" role="tab" aria-controls="v-credit-card" aria-selected="true" onClick={() => handlePaymentLinkClick('credit')}>Credit card</button>
+                        <button className="nav-link" id="v-credit-card-tab" data-bs-toggle="pill" data-bs-target="#v-credit-card" type="button" role="tab" aria-controls="v-credit-card" aria-selected="true" onClick={() => handlePaymentLinkClick('credit')}>Credit card</button>
                       }
                       {
                         debitCard &&
                         <button className="nav-link" id="v-debit-card-tab" data-bs-toggle="pill" data-bs-target="#v-debit-card" type="button" role="tab" aria-controls="v-debit-card" aria-selected="false" onClick={() => handlePaymentLinkClick('debit')}>Debit card</button>
                       }
-                      <button className="nav-link" id="v-internet-banking-tab" data-bs-toggle="pill" data-bs-target="#v-internet-banking" type="button" role="tab" aria-controls="v-internet-banking" aria-selected="false" onClick={() => handlePaymentLinkClick('internetBanking')}>Internet banking</button>
                       {
                         upi &&
                         <button className="nav-link" id="v-upi-id-tab" data-bs-toggle="pill" data-bs-target="#v-upi-id" type="button" role="tab" aria-controls="v-upi-id" aria-selected="false" onClick={() => handlePaymentLinkClick('upi')}>UPI</button>
@@ -424,7 +424,7 @@ const HolidayBooking = ({ id }) => {
                         </div>
                       </div>
                     }
-                    <div className="tab-pane fade" id="v-internet-banking" role="tabpanel" aria-labelledby="v-internet-banking-tab" tabindex="0">
+                    <div className={`tab-pane fade ${paymentActive === 'internetBanking' ? 'show active' : ''}`} id="v-internet-banking" role="tabpanel" aria-labelledby="v-internet-banking-tab" tabindex="0">
                       <select className="form-select" aria-label="Large select example" onChange={handleInternetBanking}>
                         <option selected="">Select Bank</option>
                         <option value="hdfcBank">HDFC Bank</option>
@@ -489,7 +489,7 @@ const HolidayBooking = ({ id }) => {
                     <input type="text" className="form-control form-control-sm" id="exampleFormControlInput1" placeholder="Apply coupon" />
                   </div>
                   <div className="col-auto">
-                    <a href="#!" className="btn btn-primary btn-sm">Apply</a>
+                    <a href="#!" className="btn btn-primary btn-sm disable">Apply</a>
                   </div>
                 </div>
                 <p className="booking-details">Taxes (5%) <span>${taxes}</span></p>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DatePicker } from 'rsuite';
-import isBefore from 'date-fns/isBefore';
 import TimePicker from 'rc-time-picker';
 import Select from './Select';
 import Button from './Button';
@@ -13,7 +12,7 @@ import { toastOptions } from '../toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'rc-time-picker/assets/index.css';
 
-const CabsSearch = ({ id, loading, cabsCallback }) => {
+const HotelsSearch = ({ id, loading, cabsCallback }) => {
   const dispatch = useDispatch();
   const { cabPickUpPlace, cabDropPlace, cabDate, cabTime } = useSelector(state => state.home);
 
@@ -25,30 +24,37 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
     borderRadius: '6px'
   };
 
-  const cabPlaceOptions = [
+  const hotelPlaceOptions = [
     {
-      value: 'bellandur',
-      label: 'Bellandur',
-      lowerOne: '123 Appartment',
+      value: 'london',
+      label: 'London',
+      lowerOne: 'JW Marriot',
       lowerTwo: ''
     },
     {
-      value: 'sarjapur',
-      label: 'Sarjapur',
-      lowerOne: 'ABC Appartment',
+      value: 'newYork',
+      label: 'New York',
+      lowerOne: 'Hayatt',
       lowerTwo: ''
     },
     {
-      value: 'hsrlayout',
-      label: 'HSR Layout',
-      lowerOne: 'XYZ Appartment',
+      value: 'pune',
+      label: 'Pune',
+      lowerOne: 'Taj Hotels',
+      lowerTwo: ''
+    },
+    {
+      value: 'bengaluru',
+      label: 'Bengaluru',
+      lowerOne: 'Piramal Hotels',
       lowerTwo: ''
     }
   ];
 
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-  const [cabDay, setCabDay] = useState('Day of Week');
+  const [hotelCheckInDay, setHotelCheckInDay] = useState('Day of Week');
+  const [hotelCheckOutDay, setHotelCheckOutDay] = useState('Day of Week');
 
   const handleCabSearchClick = () => {
     cabsCallback('search');
@@ -64,14 +70,25 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
     }
   }
 
-  const handleCabPickUpDate = (value) => {
+  const handleHotelCheckInDate = (value) => {
     if (value == null) {
-      dispatch(updateFunc({ keyName: 'cabDate', value: '' }));
-      setCabDay('Day of Week');
+      dispatch(updateFunc({ keyName: 'hotelCheckInDate', value: '' }));
+      setHotelCheckInDay('Day of Week');
     } else {
       const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
-      dispatch(updateFunc({ keyName: 'cabDate', value: date }));
-      setCabDay(daysOfWeek[value.getDay()]);
+      dispatch(updateFunc({ keyName: 'hotelCheckInDate', value: date }));
+      setHotelCheckInDay(daysOfWeek[value.getDay()]);
+    }
+  }
+
+  const handleHotelCheckOutDate = (value) => {
+    if (value == null) {
+      dispatch(updateFunc({ keyName: 'hotelCheckOutDate', value: '' }));
+      setHotelCheckOutDay('Day of Week');
+    } else {
+      const date = `${value.getDate()}-${value.getMonth() + 1}-${value.getFullYear()}`;
+      dispatch(updateFunc({ keyName: 'hotelCheckOutDate', value: date }));
+      setHotelCheckOutDay(daysOfWeek[value.getDay()]);
     }
   }
 
@@ -85,40 +102,39 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
         </div>
         <div className="col-lg-12 col-md-12">
           <div className="booking-form">
-            <div className="hero-form-title">Book Cabs</div>
+            <div className="hero-form-title">Book Hotels</div>
             <div className="row">
               <div className="col">
                 <div className="mb-3">
                   <SearchInput
-                    id={"pickup-cab-search-input"}
-                    keyName={"cabPickUpPlace"}
-                    placeholder={"Pick up"}
-                    middle={"Address"}
-                    lowerTwo={"Pick Up City"}
-                    options={cabPlaceOptions}
+                    id={"pickup-hotel-search-input"}
+                    keyName={"hotelPickUpPlace"}
+                    placeholder={"Location"}
+                    middle={"Search"}
+                    lowerTwo={"Hotel Name"}
+                    options={hotelPlaceOptions}
                   />
                 </div>
               </div>
               <div className="col">
-                <div className="mb-3">
-                  <SearchInput
-                    id={"drop-cab-search-input"}
-                    keyName={"cabDropPlace"}
-                    placeholder={"Drop off"}
-                    middle={"Address"}
-                    lowerTwo={"Drop off City"}
-                    options={cabPlaceOptions}
-                  />
-                </div>
-              </div>
-              <div className="col">
-                <div className="mb-3 departure-date-home-page">
+                <div className="mb-3 check-in-date-home-page">
                   <a href="#!" className="form-selection">
-                    <label htmlFor="journeyDate" className="form-label">Journey Date</label>
+                    <label htmlFor="checkIn" className="form-label">Check In</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="cabs-search-pick-up-date-datepicker" size="lg" style={dateStyles} onChange={handleCabPickUpDate} shouldDisableDate={date => isBefore(date, new Date())} placeholder="Select Date" format="dd-MM-yyyy" />
+                      <DatePicker oneTap id="hotels-search-check-in-date-datepicker" size="lg" style={dateStyles} onChange={handleHotelCheckInDate} placeholder="Select Date" format="dd-MM-yyyy" />
                     </div>
-                    <div className="helper-text">{cabDay}</div>
+                    <div className="helper-text">{hotelCheckInDay}</div>
+                  </a>
+                </div>
+              </div>              
+              <div className="col">
+                <div className="mb-3 check-out-date-home-page">
+                  <a href="#!" className="form-selection">
+                    <label htmlFor="checkOut" className="form-label">Check Out</label>
+                    <div className="input-group">
+                      <DatePicker oneTap id="hotels-search-check-out-date-datepicker" size="lg" style={dateStyles} onChange={handleHotelCheckOutDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                    </div>
+                    <div className="helper-text">{hotelCheckOutDay}</div>
                   </a>
                 </div>
               </div>
@@ -129,7 +145,6 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
                     <div className="input-group">
                       <TimePicker
                         id="cabs-timepicker"
-                        placeholder="Select Time"
                         showSecond={false}
                         className="xxx"
                         inputIcon={<i className="bi bi-clock"></i>}
@@ -157,4 +172,4 @@ const CabsSearch = ({ id, loading, cabsCallback }) => {
   )
 };
 
-export default CabsSearch;
+export default HotelsSearch;

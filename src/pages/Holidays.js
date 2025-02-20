@@ -91,7 +91,7 @@ const Holidays = ({ id }) => {
     if (loading) {
       return;
     }
-    console.log('tripsers', type, trip3, trip4, trip7);
+    // console.log('tripsers', type, trip3, trip4, trip7);
 
     // if (!departure && !destination && !holidayDepartureDate) {
     if (!departure && !destination && !holidayDepartureDate) {

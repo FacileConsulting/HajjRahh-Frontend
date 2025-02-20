@@ -82,7 +82,7 @@ const Traveller = ({ id, placeholder, defaultTravellers, defaultValue, keyName }
         <div className="helper-text">{travelClass.split('^')[1]}</div>
       </a>
 
-      <ul className={showTravellerMenu ? 'dropmenu-guest traveller-menu-show' : 'dropmenu-guest traveller-menu-hide'}>
+      <ul className={showTravellerMenu ? 'dropmenu-guest dropmenu-guest-wd traveller-menu-show' : 'dropmenu-guest dropmenu-guest-wd traveller-menu-hide'}>
       {/* <ul className='dropdown-menu dropmenu-guest'> */}
         {renderGender()}
         <li className="mb-2"><h5>Select Class</h5></li>

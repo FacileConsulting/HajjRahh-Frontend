@@ -153,7 +153,7 @@ const FlightDetails = ({ id }) => {
               </div>
             </div>
             <div className="d-grid gap-2">
-              <a href="#!" className="btn btn-primary btn-block">Book now</a>
+              <a href="#!" className="btn btn-primary btn-block disable">Book now</a>
             </div>
           </div>
         </div>

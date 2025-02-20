@@ -233,41 +233,23 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destinatio
                   )
                 })
               }
-              {/* <li className="list-inline-item">
-                <span className="material-symbols-outlined">
-                  hotel
-                </span>
-                <p>Hotel</p>
-              </li>
-              <li className="list-inline-item">
-                <span className="material-symbols-outlined">
-                  directions_car
-                </span>
-                <p>Transfers</p>
-              </li>
-              <li className="list-inline-item">
-                <span className="material-symbols-outlined">
-                  restaurant
-                </span>
-                <p>Food Included</p>
-              </li> */}
             </ul>
             {
               Array.isArray(flightsDatum.data) && flightsDatum.data.length > 0 &&
-              (<>
+              (<div className='cust-wrapper'>
                 {
                   Array.isArray(flightsDatum.data) && flightsDatum.data.length > 0 && flightsDatum.data.map((flight, index) => {
                     return (<FlightButton index={index} id={`fl-${index}`} flData={modifyFlightData(flight, index)} />)
                   })
                 }
-              </>
+              </div>
               )
             }
           </div>
         </div>
       </div>
       <div className="col-2 text-end">
-        <h2 className="mb-0">{`$${holidayData.price}`}</h2>
+        <h2 className="mb-0">{`$${Number(holidayData.price).toLocaleString('en-US')}`}</h2>
         <p className="mb-4">Per person onwards</p>
         <Button id={"holiday-view-details-btn"} handleBtnClick={handleHolidayViewDetailsClick} btnType={"primary"} classes={"btn-sm"} label={"View details"} />
       </div>

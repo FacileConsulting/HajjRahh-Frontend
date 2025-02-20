@@ -8,7 +8,6 @@ import { handleAPIData } from '../hooks/useCustomApi';
 import CabsFilter from '../components/CabsFilter';
 import CabsSearch from '../components/CabsSearch';
 import CabContainer from '../components/CabContainer';
-import NoDataAvailable from '../components/NoDataAvailable';
 import Select from '../components/Select';
 import DefaultBody from '../components/DefaultBody';
 
@@ -167,8 +166,9 @@ const Cabs = ({ id }) => {
         setCabsData(responseCabs.data);
       }
     } else if (responseCabs && responseCabs.status === 'success' && responseCabs.data.length === 0) {
-      toast.warning('Search Cabs Not Found.', toastOptions);
+      toast.warning('No Cabs Available', toastOptions);
       setCabsData([]);
+      // dispatch(resetHomeFunc());
       console.log('responsezero', responseCabs.data);
     } else {
       toast.error('Something went wrong. Please try again.', toastOptions);
@@ -178,7 +178,7 @@ const Cabs = ({ id }) => {
 
   const renderHeading = () => {
     return (
-      <div className="col-auto py-5 me-auto">
+      <div className="col-auto py-4 me-auto">
         <h2 className="mb-2">{cabsData.length} Cabs Available </h2>
         <p>One Way &nbsp;&nbsp; · &nbsp;&nbsp; 152 kms &nbsp;&nbsp;</p>
       </div>
@@ -186,7 +186,6 @@ const Cabs = ({ id }) => {
   }
 
   useEffect(() => {
-    console.log('useEff', state);
     if (state == null) {
       console.log('useEffinner');
       dispatch(resetHomeFunc());

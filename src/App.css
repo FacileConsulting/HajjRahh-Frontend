@@ -405,10 +405,6 @@ a.coloured-link:hover {
 .app-image {
   text-align: center;
 }
-.form-check-input:checked {
-  background-color: #65558F;
-  border-color: #65558F;
-}
 .tab-margin {
   margin-top: 40px;
 }
@@ -534,6 +530,7 @@ a.coloured-link:hover {
   text-transform: capitalize;
 }
 .holiday-cancel-btn,
+.cab-cancel-btn,
 .flight-cancel-btn {
   margin-right: 10px;
 }
@@ -546,6 +543,14 @@ a.coloured-link:hover {
 }
 .header-section {
   padding: 0 32px;
+}
+.cust-wrapper {
+  width: 100%;
+  max-width: 600px;
+  overflow-x: auto;
+  margin: auto;
+  display: flex;
+  white-space: nowrap;
 }
 
 /* flight page css */
@@ -591,11 +596,16 @@ a.coloured-link:hover {
 .traveller-menu-hide {
   display: none;
 }
+.dropmenu-guest-in-detail-wd {
+  width: 372px;
+}
+.dropmenu-guest-wd {
+  width: 298px;
+}
 .dropmenu-guest {
-    width: 298px;
-    padding: 12px;
-    background-color: #fff;
-    list-style: none;
+  padding: 12px;
+  background-color: #fff;
+  list-style: none;
 }
 .dropmenu-guest >li {
     margin-bottom: 24px;
@@ -1093,6 +1103,14 @@ a.coloured-link:hover {
 .form-check-input:checked {
   background-color: #F66F4D;
   border-color: #F66F4D;
+  box-shadow: none;
+}
+.form-check-input:focus {
+  box-shadow: none;
+  border-color: #F66F4D;
+}
+select option:hover {
+  background-color: green;
 }
 /* .see-all {
   height: 48px;
@@ -1232,7 +1250,7 @@ a.coloured-link:hover {
   height: 52px !important;
 }
 .for-loading-margin {
-  margin-right: 10px;
+  margin-right: 11px;
 }
 .search-holidays-btn.disable,
 .disable {

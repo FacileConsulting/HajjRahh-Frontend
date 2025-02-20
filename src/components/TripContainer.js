@@ -21,7 +21,7 @@ const TripContainer = ({ id, tripData, statusClass }) => {
       <div className="col-5 offset-1">
         <div className="d-flex flex-row">
           <div className="trip-image">
-            <img src={`./assets/images/book_online/${tripData.image}`} className="img-style" alt="" />
+            <img src={`./assets/images/book_online/${tripData.tripImage}`} className="img-style" alt="" />
           </div>
           <div className="ps-3">
             <h3>{tripData.packageName}</h3>
@@ -30,7 +30,7 @@ const TripContainer = ({ id, tripData, statusClass }) => {
           </div>
         </div>
       </div>
-      <div className="col-5 text-end">
+      {/* <div className="col-5 text-end">
       <Button id={"trip-container-view-details-btn"} loading={false} handleBtnClick={handleViewDetailsClick} btnType={"primary"} classes={"btn-sm"} label={"View details"} />
         {
           tripData.status === 'upcoming' &&
@@ -39,7 +39,7 @@ const TripContainer = ({ id, tripData, statusClass }) => {
             <Button id={"trip-container-cancel-trip-btn"} loading={false} handleBtnClick={handleCancelTripClick} btnType={"secondary"} classes={"btn-sm"} label={"Cancel trip"} />
           </>
         }
-      </div>
+      </div> */}
     </div>
   )
 };

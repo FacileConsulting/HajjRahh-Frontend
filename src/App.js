@@ -156,10 +156,13 @@ const App = ({ message }) => {
                 <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
                 <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
               </li>
-              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('hotels')}>
+              {/* <li className="nav-item text-center" onClick={() => handleHeaderIconClick('hotels')}>
                 <span className={`nav-menu-icon img-${activeHeaderIcon.hotels}`}></span> <br />
                 <Link to="/" className={activeHeaderIcon.hotels}>Hotels</Link>
-                {/* <a className="nav-link" href="#">Hotels</a> */}
+              </li> */}
+              <li className="nav-item text-center">
+                <span className="nav-menu-icon img-hotels"></span> <br />
+                <a className="nav-link" aria-current="page">Hotels</a>
               </li>
               <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
                 <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
@@ -187,8 +190,7 @@ const App = ({ message }) => {
                 </>
               } 
               <li className="nav-item">
-                {/* <Link>Support</Link> */}
-                <a className="nav-link" href="#">Support</a>
+                {/* <Link to="/support" >Support</Link> */}
               </li>
               {
                 isLoggedIn ?

@@ -69,12 +69,12 @@ const CabDetails = ({ id }) => {
                 </div>
                 <div className="col-md-6">
                 {
-            Array.isArray(cabDatum.cabTermsAndCondition) && cabDatum.cabTermsAndCondition.length > 0 && cabDatum.cabTermsAndCondition.map((tnc, index) => {
-              return (
-                <p>{tnc}</p>
-              )
-            })
-          }
+                  Array.isArray(cabDatum.cabTermsAndCondition) && cabDatum.cabTermsAndCondition.length > 0 && cabDatum.cabTermsAndCondition.map((tnc, index) => {
+                    return (
+                      <p>{tnc}</p>
+                    )
+                  })
+                }
                 </div>
               </div>
             </div>
@@ -174,7 +174,7 @@ const CabDetails = ({ id }) => {
                       placeholder="Apply coupon" />
                   </div>
                   <div className="col-auto">
-                    <a href="#!" className="btn btn-primary btn-sm">Apply</a>
+                    <a href="#!" className="btn btn-primary btn-sm disable">Apply</a>
                   </div>
                 </div>
                 <p className="booking-details">Taxes (5%) <span>$2</span></p>
@@ -185,7 +185,7 @@ const CabDetails = ({ id }) => {
               </div>
             </div>
             <div className="d-grid gap-2">
-              <a href="#!" className="btn btn-primary btn-block">Pay now</a>
+              <a href="#!" className="btn btn-primary btn-block disable">Pay now</a>
             </div>
           </div>
         </div>

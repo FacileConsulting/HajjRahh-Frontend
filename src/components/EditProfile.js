@@ -126,19 +126,19 @@ const EditProfile = forwardRef((props, ref) => {
           <Input ref={childRefs[0]} id={"my-account-edit-profile-update-name"} keyName={"updateName"} placeholder={"Update name"}/>
         </div>
       </div>
-      <div className="row">
+      {/* <div className="row">
         <div className="col-4 mb-3">
           <Input ref={childRefs[1]} id={"my-account-edit-profile-update-email"} disabled={true} keyName={"updateEmail"} placeholder={"Update email"}/>
         </div>
-      </div>
+      </div> */}
       <div className="row">
         <div className="col-4 mb-3">
-          <Input ref={childRefs[2]} id={"my-account-edit-profile-update-phone"} keyName={"updatePhone"} placeholder={"Update phone"}/>
+          <Input ref={childRefs[1]} id={"my-account-edit-profile-update-phone"} keyName={"updatePhone"} placeholder={"Update phone"}/>
         </div>
       </div>
       <div className="row">
         <div className="col-4 mb-3">
-          <Input ref={childRefs[3]} id={"my-account-edit-profile-update-address"} keyName={"updateAddress"} placeholder={"Update address"}/>
+          <Input ref={childRefs[2]} id={"my-account-edit-profile-update-address"} keyName={"updateAddress"} placeholder={"Update address"}/>
         </div>
       </div>
       <div className="row">

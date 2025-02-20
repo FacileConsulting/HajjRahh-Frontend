@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DatePicker } from 'rsuite';
+import isBefore from 'date-fns/isBefore';
 import SearchInput from './SearchInput';
 import NewSelect from './NewSelect';
 import Traveller from './Traveller';
@@ -245,62 +246,13 @@ const HolidaysModifySearch = ({ id, loading, holidaysCallback }) => {
                   <a href="#!" className="form-selection">
                     <label htmlFor="return" className="form-label">Return Date</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="holiday-search-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                      <DatePicker oneTap id="holiday-search-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} shouldDisableDate={date => isBefore(date, new Date())} placeholder="Select Date" format="dd-MM-yyyy" />
                     </div>
                     <div className="helper-text">{returnDay}</div>
                   </a>
                 </div>
               </div>
             </div>
-            {/* <div className="row">
-              <div className="col-3">
-                <div className="mb-3">
-                <NewSelect
-                  id={"new-select-sacred-type"}
-                  keyName={"sacredType"}
-                  placeholder={"Sacred Type"}
-                  value={"Select"}
-                  options={sacredTypeOptions}
-                />  
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="mb-3">
-                <NewSelect
-                  id={"new-select-flight-type"}
-                  keyName={"flightType"}
-                  placeholder={"Flight Type"}  
-                  value={"Direct"}
-                  options={flightOptions}
-                /> 
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="mb-3">
-                  
-                <NewSelect
-                  id={"new-select-flight-class"}
-                  keyName={"flightClass"}
-                  placeholder={"Flight Class"}  
-                  value={"Economy"}
-                  options={flightClassOptions}
-                />
-
-
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="mb-3">
-                <NewSelect
-                  id={"new-select-food-type"}
-                  keyName={"foodType"}
-                  placeholder={"Food Type"}
-                  value={"Select"}
-                  options={foodOptions}
-                />  
-                </div>
-              </div>
-            </div> */}
             <div className="row">
               <div className="col">
                 <Button id={"search-flights-home-page-btn"} loading={loading} handleBtnClick={handleSearchFlightsClick} btnType={"primary"} classes={"float-end"} label={"Search Holidays"} />

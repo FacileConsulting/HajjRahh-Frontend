@@ -5,6 +5,7 @@ import Counter from '../components/Counter';
 import Button from '../components/Button';
 import { updateFunc, dateFunc, dateResetFunc } from '../reducers/homeSlice';
 import { DatePicker } from 'rsuite';
+import isBefore from 'date-fns/isBefore';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
@@ -525,62 +526,62 @@ const HolidayDetails = ({ id }) => {
             </div>
             <div className="row mb-4">
               <div className="col-12">
-                <div className="flight-details flight-details-big">
-                  {
-                    loading ?
-                      <div className="d-flex justify-content-center padding-top-btm">
-                        <span className="spinner-border spinner-border-lg" role="status"></span>
-                      </div> :
-                      <>
-                        {
-                          flightData.itineraries && flightData.itineraries.length > 0 && flightData.itineraries.map((itinery, itineryIndex) => (
-                            <>
-                              {
-                                itinery.segments.map((segment, segmentIndex) => (
-                                  <section key={`segment_${itineryIndex}_${segmentIndex}`}>
-                                    {
-                                      segment.transitTime &&
-                                      <div className="transit-block">
-                                        <p>Transit time: {segment.transitTime} - {segment.haltAirport} ({segment.departure.iataCode})</p>
-                                        <p>At this stop, you need to: Prepare transit visa if required</p>
-                                      </div>
-                                    }
-                                    <div className="d-flex flex-row">
-                                      <div className="flight-logo">
-                                        <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
-                                      </div>
-                                      <div className="airport-details">
-                                        <span className="travel-line"></span>
-                                        <p>{segment.departureFormattedDate}</p>
-                                        <h3>{segment.departureAirport} ({segment.departure.iataCode})</h3>
-                                        <div className="flight-information">
-                                          <p className="small-text pb-1">Trip time : {segment.tripTime}</p>
-                                          <p className="small-text pb-3">Aircraft : {segment.aeroplane}</p>
-                                          <div className="row">
-                                            <div className="col-6">
-                                              <p className=" mb-2"><i className="bi bi-luggage me-2"></i> Baggage 1 x 23 kg</p>
-                                              <p className=" mb-2"><i className="bi bi-tv me-2"></i> In-flight entertainment</p>
-                                              <p><i className="bi bi-wifi me-2"></i> Free wifi internet</p>
-                                            </div>
-                                            <div className="col-6">
-                                              <p className=" mb-2"><i className="bi bi-suitcase2 me-2"></i> Cabin baggage 1 x 7 kg</p>
-                                              <p><i className="bi bi-1-circle me-2"></i> Priority Boarding</p>
-                                            </div>
-                                          </div>
+              {
+                loading ?
+                  <div className="flight-details flight-details-big">
+                    <div className="d-flex justify-content-center padding-top-btm">
+                      <span className="spinner-border spinner-border-lg" role="status"></span>
+                    </div>
+                  </div> :
+                  <>
+                    {
+                      flightData.itineraries && flightData.itineraries.length > 0 && flightData.itineraries.map((itinery, itineryIndex) => (
+                        <div className="flight-details flight-details-big">
+                          {
+                            itinery.segments.map((segment, segmentIndex) => (
+                              <section key={`segment_${itineryIndex}_${segmentIndex}`}>
+                                {
+                                  segment.transitTime &&
+                                  <div className="transit-block">
+                                    <p>Transit time: {segment.transitTime} - {segment.haltAirport} ({segment.departure.iataCode})</p>
+                                    <p>At this stop, you need to: Prepare transit visa if required</p>
+                                  </div>
+                                }
+                                <div className="d-flex flex-row">
+                                  <div className="flight-logo">
+                                    <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
+                                  </div>
+                                  <div className="airport-details">
+                                    <span className="travel-line"></span>
+                                    <p>{segment.departureFormattedDate}</p>
+                                    <h3>{segment.departureAirport} ({segment.departure.iataCode})</h3>
+                                    <div className="flight-information">
+                                      <p className="small-text pb-1">Trip time : {segment.tripTime}</p>
+                                      <p className="small-text pb-3">Aircraft : {segment.aeroplane}</p>
+                                      <div className="row">
+                                        <div className="col-6">
+                                          <p className=" mb-2"><i className="bi bi-luggage me-2"></i> Baggage 1 x 23 kg</p>
+                                          <p className=" mb-2"><i className="bi bi-tv me-2"></i> In-flight entertainment</p>
+                                          <p><i className="bi bi-wifi me-2"></i> Free wifi internet</p>
                                         </div>
-                                        <p className="mt-4">{segment.arrivalFormattedDate}</p>
-                                        <h3>{segment.arrivalAirport} ({segment.arrival.iataCode})</h3>
+                                        <div className="col-6">
+                                          <p className=" mb-2"><i className="bi bi-suitcase2 me-2"></i> Cabin baggage 1 x 7 kg</p>
+                                          <p><i className="bi bi-1-circle me-2"></i> Priority Boarding</p>
+                                        </div>
                                       </div>
                                     </div>
-                                  </section>
-                                ))
-                              }
-                            </>
-                          ))
-                        }
-                      </>
-                  }
-                </div>
+                                    <p className="mt-4">{segment.arrivalFormattedDate}</p>
+                                    <h3>{segment.arrivalAirport} ({segment.arrival.iataCode})</h3>
+                                  </div>
+                                </div>
+                              </section>
+                            ))
+                          }
+                        </div>
+                      ))
+                    }
+                  </>
+              }
               </div>
             </div>
             <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
@@ -697,18 +698,18 @@ const HolidayDetails = ({ id }) => {
               <h3 className="booking-title">Booking details</h3>
               <div className="booking-details-block booking-dates">
                 <div className="input-group mb-3">
-                  <DatePicker oneTap id="holiday-details-start-date-datepicker" size="lg" style={dateStyles} placeholder="Start Date" onChange={handleHolidayStartDate} format="dd-MM-yyyy" />
+                  <DatePicker oneTap id="holiday-details-start-date-datepicker" size="lg" style={dateStyles} shouldDisableDate={date => isBefore(date, new Date())} placeholder="Start Date" onChange={handleHolidayStartDate} format="dd-MM-yyyy" />
                   
                 </div>
                 <div className="input-group">
-                  <DatePicker oneTap id="holiday-details-end-date-datepicker" size="lg" style={dateStyles} placeholder="End Date" onChange={handleHolidayEndDate} format="dd-MM-yyyy" />
+                  <DatePicker oneTap id="holiday-details-end-date-datepicker" size="lg" style={dateStyles} shouldDisableDate={date => isBefore(date, new Date())} placeholder="End Date" onChange={handleHolidayEndDate} format="dd-MM-yyyy" />
                 </div>
                 <div className="dropdown">
                   <a className="guests-dropdown dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                     id="dropdownMenuClickableInside" data-bs-auto-close="outside" aria-expanded="false">
                     Guests
                   </a>
-                  <ul className="dropdown-menu dropmenu-guest" aria-labelledby="dropdownMenuClickableInside">
+                  <ul className="dropdown-menu dropmenu-guest dropmenu-guest-in-detail-wd" aria-labelledby="dropdownMenuClickableInside">
                     {renderGender()}
                   </ul>
                 </div>

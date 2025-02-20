@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { DatePicker } from 'rsuite';
+import isBefore from 'date-fns/isBefore';
 import Select from './Select';
 import Counter from './Counter';
 import SearchInput from './SearchInput';
@@ -175,9 +176,9 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
               <div className="col">
                 <div className="mb-3 departure-date-home-page">
                   <a href="#!" className="form-selection">
-                    <label htmlFor="depature" className="form-label">Depature Date</label>
+                    <label htmlFor="depature" className="form-label">Departure Date</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="flights-search-home-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                      <DatePicker oneTap id="flights-search-home-departure-date-datepicker" size="lg" style={dateStyles} onChange={handleDepartureDate} shouldDisableDate={date => isBefore(date, new Date())} placeholder="Select Date" format="dd-MM-yyyy" />
                     </div>
                     <div className="helper-text">{departureDay}</div>
                   </a>
@@ -188,7 +189,7 @@ const FlightsSearch = ({ id, loading, flightsCallback }) => {
                   <a href="#!" className="form-selection">
                     <label htmlFor="return" className="form-label">Return Date</label>
                     <div className="input-group">
-                      <DatePicker oneTap id="flights-search-home-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} placeholder="Select Date" format="dd-MM-yyyy" />
+                      <DatePicker oneTap id="flights-search-home-return-date-datepicker" size="lg" style={dateStyles} onChange={handleReturnDate} shouldDisableDate={date => isBefore(date, new Date())} placeholder="Select Date" format="dd-MM-yyyy" />
                     </div>
                     <div className="helper-text">{returnDay}</div>
                   </a>
