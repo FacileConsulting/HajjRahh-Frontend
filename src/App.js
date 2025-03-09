@@ -211,12 +211,12 @@ const App = ({ message }) => {
       <div className="section-bg">
         <div className="container-xxl py-5 section-block">
           <div className="row align-items-center">
-            <div className="col">
+            <div className="col-12 col-md-6 mb-3">
               <div className="logo mb-2">HajjRahh</div>
               <p className="text-dark">© 2024 HajjRahh. All rights reserved.</p>
             </div>
-            <div className="col">
-              <ul className="list-inline float-end">
+            <div className="col-12 col-md-6">
+              <ul className="list-inline">
                 <li className="list-inline-item"><a>Terms of Use</a></li>
                 <li className="list-inline-item">|</li>
                 <li className="list-inline-item"><a>Privacy and Cookies</a></li>

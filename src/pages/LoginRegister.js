@@ -22,7 +22,7 @@ const LoginRegister = () => {
       </div>
       <div className="container-xxl py-5 section-block">
         <div className="row">
-          <div className="col-4 offset-4">
+          <div className="col-8 offset-2 col-md-4 offset-md-4">
             <ul className="nav nav-tabs justify-content-center" id="myTab" role="tablist">
               <li className="nav-item" role="presentation">
                 <button className="nav-link active" id="header-login-btn" data-bs-toggle="tab" data-bs-target="#login-pane" type="button"

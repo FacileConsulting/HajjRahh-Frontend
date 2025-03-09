@@ -90,12 +90,12 @@ const FlightDetails = ({ id }) => {
                                 <p className="small-text pb-1">Trip time : {segment.tripTime}</p>
                                 <p className="small-text pb-3">Aircraft : {segment.aeroplane}</p>
                                 <div className="row">
-                                  <div className="col-6">
+                                  <div className="col-12 col-md-6">
                                     <p className=" mb-2"><i className="bi bi-luggage me-2"></i> Baggage 1 x 23 kg</p>
                                     <p className=" mb-2"><i className="bi bi-tv me-2"></i> In-flight entertainment</p>
                                     <p><i className="bi bi-wifi me-2"></i> Free wifi internet</p>
                                   </div>
-                                  <div className="col-6">
+                                  <div className="col-12 col-md-6">
                                     <p className=" mb-2"><i className="bi bi-suitcase2 me-2"></i> Cabin baggage 1 x 7 kg</p>
                                     <p><i className="bi bi-1-circle me-2"></i> Priority Boarding</p>
                                   </div>
