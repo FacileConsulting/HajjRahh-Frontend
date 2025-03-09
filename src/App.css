@@ -1461,3 +1461,67 @@ li.rc-time-picker-panel-select-option-selected {
   padding-left: 46px;
   padding-right: 46px;
 }
+
+.rs-calendar-month-dropdown-year-active {
+  color: #e75f3c !important;
+}
+
+.rs-calendar-header-error:hover, .rs-calendar-header-error:focus {
+  color: #ffffff !important;
+}
+
+.rs-calendar-month-dropdown-cell-active .rs-calendar-month-dropdown-cell-content {
+  background-color: #F66F4D !important;
+}
+
+.rs-picker-popup .rs-calendar .rs-calendar-month-dropdown-cell-content:hover {
+  background-color: #F66F4D !important;
+  color: #ffffff !important;
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    max-width: 95%;
+  }
+  .booking-form >.row >.col {
+    flex: 1 0 50%;
+  }
+  .listing-filters .filter-type {
+    width: 25%;
+    margin-bottom: 8px;
+    float: left;
+  }
+  .responsive-pt {
+    padding-top: 80px;
+  }
+  .flight-logo {
+    margin-bottom: 16px;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .container {
+    max-width: 95%;
+  }
+  .booking-form >.row >.col {
+    flex: 1 0 100%;
+  }
+  .listing-filters .filter-type {
+    width: 100%;
+    margin-bottom: 8px;
+    float: left;
+    text-align: left;
+  }
+  .responsive-pt {
+    padding-top: 180px;
+  }
+  .flight-logo {
+    margin-bottom: 16px;
+  }
+  .listing-filters .filter-type {
+    align-items: start;
+  }
+  .header-section {
+    padding: 0px;
+  }
+}

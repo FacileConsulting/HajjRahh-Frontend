@@ -83,11 +83,11 @@ const FlightContainer = ({ id, flightData, flightCardCallback }) => {
                 <div className="col-md-2 col-sm-12 flight-logo">
                   <img src="./assets/images/Emirates_logo.svg" className="img-style" alt="" />
                 </div>
-                <div className="col-md-3 col-sm-12">
+                <div className="col-md-3 col-sm-6">
                   <h3>{flightData?.time}</h3>
                   <p>{flightData?.validatingAirlineCodes[0].split('^')[1]}</p>
                 </div>
-                <div className="col-md-4 col-sm-12">
+                <div className="col-md-4 col-sm-6">
                   <h3>{flightData?.duration}</h3>
                   {
                     flightData?.fromToCodes && flightData.fromToCodes.length > 0 && flightData.fromToCodes.map((item) => {
@@ -97,7 +97,7 @@ const FlightContainer = ({ id, flightData, flightCardCallback }) => {
                     })
                   }
                 </div>
-                <div className="col-md-3 col-sm-12">
+                <div className="col-md-3 col-sm-6">
                   <h3>{flightData?.halts.length} {flightData.halts.length > 1 ? 'stops' : 'stop'}</h3>
                   {
                     flightData?.halts && flightData.halts.length > 0 && flightData.halts.map((item) => {
@@ -109,7 +109,7 @@ const FlightContainer = ({ id, flightData, flightCardCallback }) => {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 col-sm-12 text-end">
+            <div className="col-md-4 col-sm-12 text-end mt-3">
               <div className="d-flex justify-content-end">
                 <div>
                   <h2 className="mb-2">${flightData?.price?.grandTotal}</h2>
