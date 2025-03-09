@@ -10,8 +10,10 @@ import HolidayDetails from './pages/HolidayDetails';
 import HolidayBooking from './pages/HolidayBooking';
 import HolidayConfirmed from './pages/HolidayConfirmed';
 import Cabs from './pages/Cabs';
-// import Hotels from './pages/Hotels';
+import Hotels from './pages/Hotels';
 import CabDetails from './pages/CabDetails';
+import HotelDetails from './pages/HotelDetails';
+import HotelConfirm from './pages/HotelConfirm';
 import FlightDetails from './pages/FlightDetails';
 import Flights from './pages/Flights';
 import Trips from './pages/Trips';
@@ -156,13 +158,9 @@ const App = ({ message }) => {
                 <span className={`nav-menu-icon img-${activeHeaderIcon.holidays}`}></span> <br />
                 <Link to="/holidays" className={activeHeaderIcon.holidays}>Holidays</Link>
               </li>
-              {/* <li className="nav-item text-center" onClick={() => handleHeaderIconClick('hotels')}>
+              <li className="nav-item text-center" onClick={() => handleHeaderIconClick('hotels')}>
                 <span className={`nav-menu-icon img-${activeHeaderIcon.hotels}`}></span> <br />
-                <Link to="/" className={activeHeaderIcon.hotels}>Hotels</Link>
-              </li> */}
-              <li className="nav-item text-center">
-                <span className="nav-menu-icon img-hotels"></span> <br />
-                <a className="nav-link" aria-current="page">Hotels</a>
+                <Link to="/hotels" className={activeHeaderIcon.hotels}>Hotels</Link>
               </li>
               <li className="nav-item text-center" onClick={() => handleHeaderIconClick('flights')}>
                 <span className={`nav-menu-icon img-${activeHeaderIcon.flights}`}></span><br />
@@ -257,7 +255,9 @@ const App = ({ message }) => {
           <Route path="/holidayDetails" component={HolidayDetails} />
           <Route path="/holidayBooking" component={HolidayBooking} />
           <Route path="/holidayConfirmed" component={HolidayConfirmed} />
-          {/* <Route path="/hotels" component={Hotels} /> */}
+          <Route path="/hotels" component={Hotels} /> 
+          <Route path="/hotelDetails" component={HotelDetails} />
+          <Route path="/hotelConfirm" component={HotelConfirm} />
           <Route path="/cabs" component={Cabs} />
           <Route path="/cabDetails" component={CabDetails} />
           <Route path="/flights" component={Flights} />

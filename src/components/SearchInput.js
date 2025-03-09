@@ -65,7 +65,7 @@ const SearchInput = ({ id, keyName, placeholder, middle, lowerOne, lowerTwo, opt
                     <div className="result-title">{option.label} ({option.value})</div> : 
                     <div className="result-title">{option.label}</div>
                   }                  
-                  <div className="result-footer">{option.lowerOne} | {option.lowerTwo}</div>
+                  <div className="result-footer">{option.lowerOne} {option.lowerTwo}</div>
                 </div>
               </li>
             )
