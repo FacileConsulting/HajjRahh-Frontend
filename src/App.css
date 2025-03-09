@@ -506,6 +506,12 @@ a.coloured-link:hover {
   width: 82%;
   margin: auto;
 }
+.hotel-block {
+  background-color: #fafafa;
+  border: 1px solid #dddddd;
+  border-radius: 16px;
+  padding: 12px 0px;
+}
 .tour-features {
   margin-top: 12px;
   margin-bottom: 0px;
@@ -1246,6 +1252,7 @@ select option:hover {
 }
 #holidays-modify-search .rs-input-group-lg.rs-input-group > .rs-input,
 #cabs-search .rs-input-group-lg.rs-input-group > .rs-input,
+#hotels-search .rs-input-group-lg.rs-input-group > .rs-input,
 #flights-search .rs-input-group-lg.rs-input-group > .rs-input {
   height: 52px !important;
 }
@@ -1462,6 +1469,7 @@ li.rc-time-picker-panel-select-option-selected {
   padding-right: 46px;
 }
 
+
 .rs-calendar-month-dropdown-year-active {
   color: #e75f3c !important;
 }
@@ -1525,3 +1533,40 @@ li.rc-time-picker-panel-select-option-selected {
     padding: 0px;
   }
 }
+
+
+/* new */
+.hero-text-dark {
+  color: #484646;
+}
+.text-brand {
+  color: #F66F4D;
+}
+/* end */
+
+/* new */
+.progress-title {
+  height: 16px;
+  margin-bottom: 16px;
+}
+.progress {
+  height: 16px;
+  border-radius: 16px;
+  margin-bottom: 16px;
+}
+.progress-bar {
+  background-color: #F66F4D;
+}
+.review-image {
+  height: 60px;
+  width: 60px;
+  overflow: hidden;
+  border-radius: 30px;
+}
+.reply-review {
+  background-color: #f6f6f6;
+  padding: 16px;
+  border-radius: 8px;
+  margin-left: 60px;
+}
+/* end */
