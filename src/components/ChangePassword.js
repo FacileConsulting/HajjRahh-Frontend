@@ -79,18 +79,18 @@ const ChangePassword = forwardRef((props, ref) => {
     <div className="tab-pane fade" id={id} role="tabpanel" tabIndex="0">
       <div className="row">
         <div className="row">
-          <div className="col-4 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <Input ref={childRefs[0]} id={"my-account-change-password-old-password"} keyName={"password"} placeholder={"Enter old password"} type={"password"} />
             {/* <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Enter old password" /> */}
           </div>
         </div>
         <div className="row">
-          <div className="col-4 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <Input ref={childRefs[1]} id={"my-account-change-password-new-password"} keyName={"newPassword"} placeholder={"Enter new password"} type={"password"} />
           </div>
         </div>
         <div className="row">
-          <div className="col-4 mb-3">
+          <div className="col-md-6 col-12 mb-3">
             <Input ref={childRefs[2]} id={"my-account-change-password-confirm-password"} keyName={"confirmPassword"} placeholder={"Reconfirm new password"} />
           </div>
         </div>

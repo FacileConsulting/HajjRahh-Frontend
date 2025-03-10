@@ -18,7 +18,7 @@ const TripContainer = ({ id, tripData, statusClass }) => {
 
   return (
     <div className="row mb-4" id={id} key={id}>
-      <div className="col-5 offset-1">
+      <div className="col-lg-5 col-12 mb-3">
         <div className="d-flex flex-row">
           <div className="trip-image">
             <img src={`./assets/images/book_online/${tripData.tripImage}`} className="img-style" alt="" />
@@ -30,7 +30,7 @@ const TripContainer = ({ id, tripData, statusClass }) => {
           </div>
         </div>
       </div>
-      {/* <div className="col-5 text-end">
+      {/* <div className="col-lg-5 col-12 text-end">
       <Button id={"trip-container-view-details-btn"} loading={false} handleBtnClick={handleViewDetailsClick} btnType={"primary"} classes={"btn-sm"} label={"View details"} />
         {
           tripData.status === 'upcoming' &&

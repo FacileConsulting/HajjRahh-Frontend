@@ -79,7 +79,7 @@ const NotificationSettings = ({ id }) => {
   return (
     <div className="tab-pane fade" id={id} role="tabpanel" tabIndex="0">
       <div className="row">
-        <div className="col-4 mb-3">
+        <div className="col-md-6 col-12 mb-3">
         <p className="mb-1">Notification email</p>
           <div className="form-check">
             <Radio ref={childRefs[0]} id={"my-account-notification-settings-email-enable"} name={"notification-settings-radio"} keyName={"emailSettings"} valueRadioName={"emailEnabled"} defaultValue={emailSettings} />
