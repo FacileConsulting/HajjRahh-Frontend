@@ -192,7 +192,7 @@ const Hotels = ({ id }) => {
         hotelsData.length > 0 ?
           <>
             <HotelsFilter id={"hotels-filter"} loading={loading} toCallback={toCallback} panelClass={panelClass} hotelsCallback={handleHotelSearchFilter} handlePanelCallback={handlePanelCallbackParent} />
-            <div className="container-xxl py-5 section-block">
+            <div className="container-xxl py-5 section-block section-block-hotel">
               <div className="row mt-4">
                 <div class="col-auto me-auto">
                   <h3>Search results</h3>

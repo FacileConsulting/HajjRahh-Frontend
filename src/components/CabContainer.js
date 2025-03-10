@@ -11,7 +11,7 @@ const CabContainer = ({ id, cabData, cabCardCallback }) => {
   return (
     <div id={id} key={id} className="cabs-block" onClick={handleCabCardClick}>
       <div className="row">
-        <div className="col-md-8 col-sm-12">
+        <div className="col-md-8 col-sm-12 mb-2">
           <div className="d-flex flex-row">
             <div className="cab-image">
               <img src={`./assets/images/${cabData.cabImage}.png`} className="img-fluid" alt="" />
