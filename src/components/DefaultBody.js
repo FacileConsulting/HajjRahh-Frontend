@@ -66,21 +66,21 @@ const DefaultBody = ({ id }) => {
           </div>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col-6 col-md-4 mb-4">
             <a>
               <img src="./assets/images/discover_images/img-1.png" className="img-style" alt="" />
               <h3 className="mt-3">Find restaurants near you</h3>
               <p>Discover a variety of delicious and authentic dining options in the holy city</p>
             </a>
           </div>
-          <div className="col">
+          <div className="col-6 col-md-4 mb-4">
             <a>
               <img src="./assets/images/discover_images/img-2.png" className="img-style" alt="" />
               <h3 className="mt-3">Find restaurants near you</h3>
               <p>Discover a variety of delicious and authentic dining options in the holy city</p>
             </a>
           </div>
-          <div className="col">
+          <div className="col-6 col-md-4 mb-4">
             <a>
               <img src="./assets/images/discover_images/img-3.png" className="img-style" alt="" />
               <h3 className="mt-3">Find restaurants near you</h3>
@@ -103,7 +103,7 @@ const DefaultBody = ({ id }) => {
           </div>
         </div>
         <div className="row">
-          <div className="col">
+          <div className="col-md-3 col-sm-6 mb-4">
             <a>
               <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
               <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
@@ -115,7 +115,7 @@ const DefaultBody = ({ id }) => {
                 inclusive taxes and fees</p>
             </a>
           </div>
-          <div className="col">
+          <div className="col-md-3 col-sm-6 mb-4">
             <a>
               <img src="./assets/images/book_online/img-2.png" className="img-style" alt="" />
               <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
@@ -127,7 +127,7 @@ const DefaultBody = ({ id }) => {
                 inclusive taxes and fees</p>
             </a>
           </div>
-          <div className="col">
+          <div className="col-md-3 col-sm-6 mb-4">
             <a>
               <img src="./assets/images/book_online/img-3.png" className="img-style" alt="" />
               <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>
@@ -139,7 +139,7 @@ const DefaultBody = ({ id }) => {
                 inclusive taxes and fees</p>
             </a>
           </div>
-          <div className="col">
+          <div className="col-md-3 col-sm-6 mb-4">
             <a>
               <img src="./assets/images/book_online/img-4.png" className="img-style" alt="" />
               <div className="rating"><span>9/10</span>Exceptional (23 reviews)</div>

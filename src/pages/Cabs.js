@@ -207,7 +207,7 @@ const Cabs = ({ id }) => {
         cabsData.length > 0 ?
           <>
             <CabsFilter id={"cabs-filter"} loading={loading} toCallback={toCallback} panelClass={panelClass} cabsCallback={handleCabSearchFilter} handlePanelCallback={handlePanelCallbackParent} />
-            <div className="container-xxl py-5 section-block">
+            <div className="container-xxl py-5 section-block section-block-cabs">
               {renderHeading()}
 
               <div className="row mb-4 mt-4 d-flex justify-content-end">

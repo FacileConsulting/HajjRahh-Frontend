@@ -488,7 +488,7 @@ const HolidayDetails = ({ id }) => {
         <div className="row align-items-center">
           <div className="col-lg-12 col-md-12">
             <h3 className="mb-2">{holidayData.packageName}</h3>
-            <p className="hero-text">{holidayData.packageDuration[0]}</p>
+            <p className="hero-text-dark">{holidayData.packageDuration[0]}</p>
           </div>
         </div>
       </div>
@@ -502,7 +502,7 @@ const HolidayDetails = ({ id }) => {
           <a className="nav-link" href="#t&c">Terms & Conditions</a>
         </nav>
       </div>
-      <div className="container-xxl section-block mb-5">
+      <div className="container-xxl section-block mb-5 pt-2">
         <div className="row">
           <div className="col-md-8 col-sm-12">
             <div className="row" id="flight-details">

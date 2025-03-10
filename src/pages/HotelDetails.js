@@ -4,11 +4,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
-import FlightsFilter from '../components/FlightsFilter';
-import FlightsSearch from '../components/FlightsSearch';
-import FlightContainer from '../components/FlightContainer';
-import NoDataAvailable from '../components/NoDataAvailable';
-import Select from '../components/Select';
 
 const HotelDetails = ({ id }) => {
   localStorage.setItem('current_route', '/hotelDetails');
@@ -120,7 +115,7 @@ const HotelDetails = ({ id }) => {
   const RenderRoom = ({ id, room }) => {
     return (
       <div className="row mb-4 trip-block" id={id} key={id}>
-        <div className="col-auto me-auto">
+        <div className="col-md-8 col-sm-12 mb-3">
           <div className="d-flex flex-row">
             <div className="trip-image">
               <img src={`./assets/images/book_online/${room.image}`} className="img-style" alt="" />
@@ -144,7 +139,7 @@ const HotelDetails = ({ id }) => {
             </div>
           </div>
         </div>
-        <div className="col-auto text-end">
+        <div className="col-md-4 col-sm-12 text-end">
           <h2 className="mb-0">${room.price}</h2>
           <p className="mb-4">Per day</p>
           <button type="button" className="btn btn-primary btn-sm">Select</button>

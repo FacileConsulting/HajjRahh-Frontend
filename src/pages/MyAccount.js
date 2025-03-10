@@ -36,18 +36,18 @@ const MyAccount = ({id }) => {
         <div className="row align-items-center">
             <div className="col-lg-12 col-md-12 text-center">
                 <h1 className="mb-2">My account</h1>
-                <p className="hero-text">View/manage your account details</p>
+                <p className="hero-text-dark">View/manage your account details</p>
             </div>
         </div>
     </div>
     <div className="container-xxl py-5 section-block">
       <div className="row">
-        <div className="col-3">
+        <div className="col-12 col-lg-3">
           <div className="row">
             <DisplayProfile />
           </div>
         </div>
-        <div className="col-9">
+        <div className="col-12 col-lg-9">
           <ul className="nav nav-tabs justify-content-center" id="my-account-details" role="tablist">
             <li className="nav-item" role="presentation">
             <button className="nav-link active" id="edit-profile" data-bs-toggle="tab" data-bs-target="#my-account-edit-profile" type="button" role="tab" aria-selected="true" onClick={handleEditProfileTabClick}>Edit profile</button>

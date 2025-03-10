@@ -212,7 +212,7 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destinatio
 
   return (
     <div id={id} key={id} className="row mb-4 trip-block">
-      <div className="col-10">
+      <div className="col-8 col-lg-10">
         <div className="d-flex flex-row align-items-start">
           <div className="trip-image">
             <img src="./assets/images/book_online/img-1.png" className="img-style" alt="" />
@@ -248,7 +248,7 @@ const HolidayContainer = ({ id, holidayData, flightsDatum, departure, destinatio
           </div>
         </div>
       </div>
-      <div className="col-2 text-end">
+      <div className="col-4 col-lg-2 text-end">
         <h2 className="mb-0">{`$${Number(holidayData.price).toLocaleString('en-US')}`}</h2>
         <p className="mb-4">Per person onwards</p>
         <Button id={"holiday-view-details-btn"} handleBtnClick={handleHolidayViewDetailsClick} btnType={"primary"} classes={"btn-sm"} label={"View details"} />

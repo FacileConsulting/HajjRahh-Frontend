@@ -27,11 +27,11 @@ const CabDetails = ({ id }) => {
 
   return (
     <>
-      <div className="container-xxl section-block-inner">
+      <div className="container-xxl section-block-inner py-2">
         <div className="row align-items-center">
           <div className="col-lg-12 col-md-12">
             <h3 className="mb-2">{capitalizeWords(cabDatum.cabPickUpPlace)} - {capitalizeWords(cabDatum.cabDropPlace)}</h3>
-            <p className="hero-text">One-way Trip - {getCurrentDateTime()}</p>
+            <p className="hero-text hero-text-dark">One-way Trip - {getCurrentDateTime()}</p>
           </div>
         </div>
       </div>
@@ -98,16 +98,16 @@ const CabDetails = ({ id }) => {
                 <div className="col-12">
                   <h4>Traveller information</h4>
                 </div>
-                <div className="col-3">
+                <div className="col-sm-6 col-lg-4 mb-3">
                   <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Full name" />
                 </div>
-                <div className="col-3">
+                <div className="col-sm-6 col-lg-4 mb-3">
                   <input type="text" className="form-control" id="exampleFormControlInput1" placeholder="Mobile number" />
                 </div>
-                <div className="col-3">
+                <div className="col-sm-6 col-lg-4 mb-3">
                   <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Email address" />
                 </div>
-                <div className="col-3">
+                <div className="col-sm-6 col-lg-4 mb-3">
                   <select className="form-select" aria-label="Large select example">
                     <option selected="">Gender</option>
                     <option value="1">Male</option>

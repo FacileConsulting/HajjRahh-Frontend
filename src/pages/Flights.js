@@ -370,7 +370,7 @@ const Flights = ({ id }) => {
 
   const renderHeading = () => {
     return (
-      <div className="row mb-4 mt-4">
+      <div className="row mb-4 mt-4 responsive-pt">
         <div className="col">
           <h2 className="mb-2">{heading.flyingFrom} - {heading.flyingTo}</h2>
           <p>{flightsData.meta.count} Flights &nbsp;&nbsp; · &nbsp;&nbsp; {heading.roundOneWay === 'roundTrip' ? 'Round Trip' : 'One Way'} &nbsp;&nbsp; · &nbsp;&nbsp; {heading.travelClass} &nbsp;&nbsp; · &nbsp;&nbsp; {heading.guests} Guests</p>

@@ -59,13 +59,13 @@ const Trips = ({ id }) => {
         <div className="row align-items-center">
           <div className="col-lg-12 col-md-12 text-center">
             <h1 className="mb-2">Trips</h1>
-            <p className="hero-text">View all of your trips</p>
+            <p className="hero-text-dark">View all of your trips</p>
           </div>
         </div>
       </div>
       <div className="container-xxl py-5 section-block">
         <div className="row mb-2 mt-4">
-          <div className="col-auto me-auto offset-1">
+          <div className="col-auto me-auto">
             <h3>Upcoming Trips</h3>
           </div>
         </div>
@@ -81,7 +81,7 @@ const Trips = ({ id }) => {
             <NoDataAvailable text={"No Upcoming Trips"} />
         }
         <div className="row mb-2">
-          <div className="col-auto me-auto offset-1">
+          <div className="col-auto me-auto">
             <h3>On-Going Trips</h3>
           </div>
         </div>
@@ -96,7 +96,7 @@ const Trips = ({ id }) => {
             <NoDataAvailable text={"No On-Going Trips"} />
         }
         <div className="row mb-2">
-          <div className="col-auto me-auto offset-1">
+          <div className="col-auto me-auto">
             <h3>Past Trips</h3>
           </div>
         </div>
