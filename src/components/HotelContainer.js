@@ -70,7 +70,7 @@ const HotelContainer = ({ id, hotelData, hotelCardCallback }) => {
   ];
 
   const handleSelectRoomClick = () => {
-    hotelCardCallback();
+    hotelCardCallback(hotelData);
   }
 
   

@@ -10,9 +10,6 @@ import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 
-// 022 68446530 
-
-
 
 const HolidayDetails = ({ id }) => {
   localStorage.setItem('current_route', '/holidayDetails');

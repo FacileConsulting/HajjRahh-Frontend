@@ -12,8 +12,9 @@ import HolidayConfirmed from './pages/HolidayConfirmed';
 import Cabs from './pages/Cabs';
 import Hotels from './pages/Hotels';
 import CabDetails from './pages/CabDetails';
-import HotelDetails from './pages/HotelDetails';
+import HotelDetails from './pages/HotelDetails'; 
 import HotelConfirm from './pages/HotelConfirm';
+import HotelConfirmed from './pages/HotelConfirmed';
 import FlightDetails from './pages/FlightDetails';
 import Flights from './pages/Flights';
 import Trips from './pages/Trips';
@@ -258,6 +259,7 @@ const App = ({ message }) => {
           <Route path="/hotels" component={Hotels} /> 
           <Route path="/hotelDetails" component={HotelDetails} />
           <Route path="/hotelConfirm" component={HotelConfirm} />
+          <Route path="/hotelConfirmed" component={HotelConfirmed} />
           <Route path="/cabs" component={Cabs} />
           <Route path="/cabDetails" component={CabDetails} />
           <Route path="/flights" component={Flights} />
