@@ -199,7 +199,7 @@ const Home = ({ id, options }) => {
 
   return (
     <>
-      <div className="container section-block-hero">
+      <div className="container-lg section-block-hero">
         <div className="row">
           <div className="col-lg-12 col-md-12 text-center">
             <h1 className="mb-2 hero-title">Embark on a Sacred Journey with Us</h1>

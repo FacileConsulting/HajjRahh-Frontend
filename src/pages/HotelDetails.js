@@ -175,7 +175,7 @@ const HotelDetails = ({ id }) => {
               <div class="col-12">
                 <h3>Room options</h3>
                 <div class="row mb-4 trip-block">
-                  <div class="col-auto me-auto">
+                  <div class="col-md-8 col-sm-12 mb-3">
                     <div class="d-flex flex-row">
                       <div class="trip-image">
                         <img src="./assets/images/book_online/img-1.png" class="img-style" alt="" />
@@ -190,14 +190,14 @@ const HotelDetails = ({ id }) => {
                       </div>
                     </div>
                   </div>
-                  <div class="col-auto text-end">
+                  <div class="col-md-4 col-sm-12 text-end">
                     <h2 class="mb-0">$999</h2>
                     <p class="mb-4">Per day</p>
                     <button type="button" class="btn btn-primary btn-sm">Select</button>
                   </div>
                 </div>
                 <div class="row mb-4 trip-block">
-                  <div class="col-auto me-auto">
+                  <div class="col-md-8 col-sm-12 mb-3">
                     <div class="d-flex flex-row">
                       <div class="trip-image">
                         <img src="./assets/images/book_online/img-1.png" class="img-style" alt="" />
@@ -211,7 +211,7 @@ const HotelDetails = ({ id }) => {
                       </div>
                     </div>
                   </div>
-                  <div class="col-auto text-end">
+                  <div class="col-md-4 col-sm-12 text-end">
                     <h2 class="mb-0">$750</h2>
                     <p class="mb-4">Per day</p>
                     <button type="button" class="btn btn-primary btn-sm">Select</button>

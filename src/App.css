@@ -144,7 +144,7 @@ body {
   padding-bottom: 24px;
 }
 .section-block {
-  padding: 64px auto;
+  padding: 64px 12px;
 }
 .section-bg {
   background-color: #FEF3F1;
@@ -503,7 +503,7 @@ a.coloured-link:hover {
   border: 1px solid #dddddd;
   border-radius: 16px;
   padding: 12px 0px;
-  width: 82%;
+  width: 100%;
   margin: auto;
 }
 .hotel-block {
@@ -519,8 +519,8 @@ a.coloured-link:hover {
 .tour-features >li {
   text-align: center;
   margin-right: 16px !important;
+  .tour-features >li >span{
 }
-.tour-features >li >span{
   color: #49454F;
 }
 .tour-features >li >p{
@@ -1228,16 +1228,32 @@ select option:hover {
       margin-bottom: 8px;
       text-align: left !important;
   }
-  .listing-filters .filter-type {
+  /* .listing-filters .filter-type {
       width: 100%;
       margin-bottom: 8px;
-  }
+  } */
   .filter-list {
       margin-bottom: 24px;
   }
+  .listing-filters .filter-type {
+    width: 25%;
+    margin-bottom: 8px;
+    float: left;
+    align-items: start;
+  }
+  .section-block-hero {
+    padding: 24px;
+    width: 98%;
+  }
   /* Holidays List Page ends */
+  .section-block, .section-block-hotel {
+    padding-top: 120px !important;
+  }
+  .section-block-holidays {
+    padding-top: 140px !important;
+  }
 }
-
+  
 
 
 .rs-picker-input-group {
@@ -1494,16 +1510,32 @@ li.rc-time-picker-panel-select-option-selected {
   .booking-form >.row >.col {
     flex: 1 0 50%;
   }
+  .listing-filters {
+    margin-left: 0;
+  }
   .listing-filters .filter-type {
-    width: 25%;
+    width: 33%;
     margin-bottom: 8px;
     float: left;
+    align-items: start;
   }
   .responsive-pt {
     padding-top: 80px;
   }
   .flight-logo {
     margin-bottom: 16px;
+  }
+  .section-block {
+    padding-top: 40px !important;
+  }
+  .section-block-hotel, .section-block-cabs {
+    padding-top: 120px !important;
+  }
+  .section-block-holidays {
+    padding-top: 180px !important;
+  }
+  .cab-conditions {
+    margin-bottom: 12px;
   }
 }
 
@@ -1514,7 +1546,7 @@ li.rc-time-picker-panel-select-option-selected {
   .booking-form >.row >.col {
     flex: 1 0 100%;
   }
-  .listing-filters .filter-type {
+  .listing-filters .filter-type, .listing-filters .filter-type {
     width: 100%;
     margin-bottom: 8px;
     float: left;
@@ -1526,11 +1558,20 @@ li.rc-time-picker-panel-select-option-selected {
   .flight-logo {
     margin-bottom: 16px;
   }
-  .listing-filters .filter-type {
+  .listing-filters .filter-type, .listing-filters .filter-type {
     align-items: start;
   }
   .header-section {
     padding: 0px;
+  }
+  .section-block-hotel {
+    padding-top: 240px !important;
+  }
+  .section-block-cabs {
+    padding-top: 180px !important;
+  }
+  .section-block-holidays {
+    padding-top: 380px !important;
   }
 }
 

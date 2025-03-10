@@ -209,7 +209,7 @@ const Holidays = ({ id }) => {
         holidaysData && holidaysData.length > 0 && flightsDatum.data.length > 0 ?
           <>
             <HolidaysFilter id={"holidays-filter"} loading={loading} toCallback={toCallback} panelClass={panelClass} holidaysCallback={handleHolidaySearchFilter} handlePanelCallback={handlePanelCallbackParent} />
-            <div className="container-xxl py-5 section-block">
+            <div className="container-xxl py-5 section-block section-block-holidays">
               <div className="row mb-4 mt-4">
                 <div className="col-auto me-auto">
                   <h3>Packages based on search</h3>

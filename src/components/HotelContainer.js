@@ -149,9 +149,9 @@ const HotelContainer = ({ id, hotelData, hotelCardCallback }) => {
 
   return (
     <div id={id} key={id} className="hotels-block">
-      <div className="container-xxl py-5 section-block">
+      <div className="container-xxl py-2">
         <div className="row mb-4 hotel-block">
-          <div className="col-auto me-auto">
+          <div className="col-auto me-auto mb-2">
             <div className="d-flex flex-row">
               <div className="trip-image">
                 <img src={`./assets/images/book_online/${hotelData.image}`} className="img-style" alt="" />
@@ -164,10 +164,10 @@ const HotelContainer = ({ id, hotelData, hotelCardCallback }) => {
               </div>
             </div>
           </div>
-          <div className="col-2"> 
+          <div className="col-12 col-sm-4 mb-3"> 
             {renderPopularType(hotelData.popularType)}
           </div>
-          <div className="col-auto text-end">
+          <div className="col-lg-2 col-12 text-end">
             <h2 className="mb-0">${hotelData.pricePerDay}</h2>
             <p className="mb-4">Per day</p>
             <Button id={"select-room-hotel-page-btn"} loading={loading} handleBtnClick={handleSelectRoomClick} btnType={"primary"} classes={"btn-sm"} label={"Select Room"} />
