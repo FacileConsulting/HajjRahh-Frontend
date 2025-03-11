@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Button from '../components/Button';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 
@@ -10,7 +11,12 @@ const HotelDetails = ({ id }) => {
   const location = useLocation();
   const history = useHistory();
   const { state } = location;
-  const [hotelDatum, setHotelDatum] = useState(state?.data || null);
+  const [comment, setComment] = useState(false);
+  const [loading, setLoading] = useState(false); 
+  const [hotelDatum, setHotelDatum] = useState({...state?.data, roomSelectPrice: state?.data?.hotelDetails?.rooms[0]?.price} || null);
+  const [disabled, setDisabled] = useState({id: 'room-0', price: hotelDatum.hotelDetails.rooms[0].price });
+  const [rating, setRating] = useState(0);
+  const { displayName } = useSelector(state => state.myAccount );
 
   const hotelPlaceOptions = [
     {
@@ -107,8 +113,35 @@ const HotelDetails = ({ id }) => {
     )
   }
 
-  const getTotal = () => {
-    return ((1500 * (hotelDatum.taxes / 100)) + (750 * hotelDatum.nightsTotal) + (hotelDatum.serviceFee)).toLocaleString();
+  const getTotal = () => { 
+    return (((disabled.price * hotelDatum.nightsTotal) * (hotelDatum.taxes / 100)) + (disabled.price * hotelDatum.nightsTotal) + (hotelDatum.serviceFee)).toLocaleString();
+  }
+
+  const handleRating = (index) => {
+    setRating(index + 1); 
+  };
+
+  const handleRoomSelectClick = (id, price) => {
+    setDisabled({ id: id, price });
+    setHotelDatum({ ...hotelDatum, roomSelectPrice: price });
+  }
+
+  const handlePostCommentClick = async () => {  
+    if (!comment) {
+      toast.info('Please enter comment.', toastOptions);
+      return;
+    }  
+    setLoading(true);
+    let responseHotel = await handleAPIData('POST', '/api/searchHotels', { hotelId: hotelDatum._id, rating, comment, userName: displayName });
+    console.log('responseHotel', responseHotel);
+
+    if (responseHotel && responseHotel.status === 'success') {
+      toast.success(responseHotel.data.msg, toastOptions);
+      setHotelDatum(responseHotel.data.data);
+    } else {
+      toast.error('Something went wrong. Please try again.', toastOptions);
+    }
+    setLoading(false);
   }
 
 
@@ -142,7 +175,8 @@ const HotelDetails = ({ id }) => {
         <div className="col-md-4 col-sm-12 text-end">
           <h2 className="mb-0">${room.price}</h2>
           <p className="mb-4">Per day</p>
-          <button type="button" className="btn btn-primary btn-sm">Select</button>
+          <Button id={`select-room-btn-${id}`} handleBtnClick={() => handleRoomSelectClick(id, room.price)} btnType={"primary"} classes={`btn-sm ${disabled.id === id ? 'disable' : ''}`} label={"Select"} />
+          {/* <button type="button" className="btn btn-primary btn-sm">Select</button> */}
         </div>
       </div>
     )
@@ -307,81 +341,50 @@ const HotelDetails = ({ id }) => {
                   </div>
                 </div>
               </div>
-              {/* <div className="col-12">
+              <div className="col-12">
                 <h4>Rate your experience</h4>
-                <a href="#!" className="text-warning">
-                  <i className="bi bi-star"></i>
-                  <i className="bi bi-star"></i>
-                  <i className="bi bi-star"></i>
-                  <i className="bi bi-star"></i>
-                  <i className="bi bi-star"></i>
-                </a>
+                <p className="text-warning">
+                  {[...Array(5)].map((_, index) => (
+                    <i
+                      key={index}
+                      className={index < rating ? "bi bi-star-fill" : "bi bi-star"}
+                      onClick={() => handleRating(index)}
+                      style={{ cursor: "pointer" }} // Makes it clickable
+                    ></i>
+                  ))}
+                </p>
                 <div className="mb-3 mt-3">
                   <label htmlFor="exampleFormControlTextarea1" className="form-label">Leave comment</label>
-                  <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" onChange={(e) => setComment(e.target.value)}></textarea>
                 </div>
-                <a href="#!" className="btn btn-primary btn-sm">Post Comment</a>
-              </div> */}
-              {/* <div className="col-12 mt-3 pb-4 border-bottom">
-                <div className="d-md-flex my-2">
-                  <div className="avatar avatar-lg me-3 flex-shrink-0">
-                    <img src="./assets/images/user.png" alt="avatar" className="review-image" /></div>
-                  <div>
-                    <div className="d-flex justify-content-between mt-1 mt-md-0">
+                
+                <Button id={"post-comment-btn"} loading={loading} handleBtnClick={handlePostCommentClick} btnType={"primary"} classes={"btn-sm"} label={"Post Comment"} />
+                {/* <a href="#!" className="btn btn-primary btn-sm">Post Comment</a> */}
+              </div>
+              <div className="col-12 mt-3 pb-4 border-bottom">
+                {
+                  hotelDatum.comments.length > 0 && hotelDatum.comments.map((comment, index) => (
+                    <div className="d-md-flex my-2">
+                      <div className="avatar avatar-lg me-3 flex-shrink-0">
+                        <img src="./assets/images/user.png" alt="avatar" className="review-image" /></div>
                       <div>
-                        <h4 className="me-3 mb-0">John deo</h4>
-                        <p>Stayed on: 23 Oct 2024</p>
+                      <div className="d-flex justify-content-between mt-1 mt-md-0">
+                        <div>
+                          <h4 className="me-3 mb-0">{comment.userName}</h4>
+                          <p>Stayed on: {comment.date}</p>
+                        </div>
+                        <div>
+                          <p className="text-warning">
+                            {renderStars(comment.rating || 0)}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-warning">
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star"></i>
-                          <i className="bi bi-star"></i>
-                        </p>
-                      </div>
+                      <p>{comment.content}</p>
                     </div>
-                    <p>Delivered dejection necessary objection do Mr prevailed. Mr feeling does chiefly cordial in do. Water timed folly right aware if oh truth. Large above be to means. Dashwood does provide stronger is.</p>
                   </div>
-                </div>
-                <div className="d-md-flex reply-review">
-                  <div className="avatar avatar-lg me-3 flex-shrink-0">
-                    <img src="./assets/images/user.png" alt="avatar" className="review-image" /></div>
-                  <div>
-                    <div className="d-flex justify-content-between mt-1 mt-md-0">
-                      <div>
-                        <h4 className="me-3 mb-0">Admin</h4>
-                      </div>
-                    </div>
-                    <p>Delivered dejection necessary objection do Mr prevailed. Mr feeling does chiefly cordial in do. Water timed folly right aware if oh truth. Large above be to means. Dashwood does provide stronger is.</p>
-                  </div>
-                </div>
-              </div> */}
-              {/* <div className="col-12 mt-3">
-                <div className="d-md-flex my-2">
-                  <div className="avatar avatar-lg me-3 flex-shrink-0">
-                    <img src="./assets/images/user.png" alt="avatar" className="review-image" /></div>
-                  <div>
-                    <div className="d-flex justify-content-between mt-1 mt-md-0">
-                      <div>
-                        <h4 className="me-3 mb-0">John deo</h4>
-                        <p>Stayed on: 23 Oct 2024</p>
-                      </div>
-                      <div>
-                        <p className="text-warning">
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star-fill"></i>
-                          <i className="bi bi-star"></i>
-                          <i className="bi bi-star"></i>
-                        </p>
-                      </div>
-                    </div>
-                    <p>Delivered dejection necessary objection do Mr prevailed. Mr feeling does chiefly cordial in do. Water timed folly right aware if oh truth. Large above be to means. Dashwood does provide stronger is.</p>
-                  </div>
-                </div>
-              </div> */}
+                  ))
+                }
+              </div>
             </div>
             <div className="h-line"></div>
             <div className="row" id="t&c">
@@ -408,10 +411,10 @@ const HotelDetails = ({ id }) => {
               <div className="booking-details-block">
                 <p className="booking-details">Check in <span>{hotelDatum.journeyDate}</span></p>
                 <p className="booking-details">Check out <span>{hotelDatum.returnDate}</span></p>
-                <p className="booking-details">Number of guests <span>2 adult 1 kid</span></p>
-                <p className="booking-details">$750 x {hotelDatum.nightsTotal} Nights <span>$1,500</span></p>
+                <p className="booking-details">Number of guests <span>1 adult</span></p>
+                <p className="booking-details">${disabled.price} x {hotelDatum.nightsTotal} Nights <span>${(disabled.price * hotelDatum.nightsTotal).toLocaleString()}</span></p>
                 <p className="booking-details">Service fee <span>${hotelDatum.serviceFee}</span></p>
-                <p className="booking-details">Taxes ({hotelDatum.taxes}%) <span>${1500 * (hotelDatum.taxes / 100)}</span></p>
+                <p className="booking-details">Taxes ({hotelDatum.taxes}%) <span>${((disabled.price * hotelDatum.nightsTotal) * (hotelDatum.taxes / 100))}</span></p>
               </div>
               <div className="booking-grand-total">
                 <p>Grand total</p>

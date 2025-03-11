@@ -5,11 +5,6 @@ import { toast } from 'react-toastify';
 import { toastOptions } from '../toastify';
 import Button from '../components/Button';
 import { handleAPIData } from '../hooks/useCustomApi';
-import FlightsFilter from '../components/FlightsFilter';
-import FlightsSearch from '../components/FlightsSearch';
-import FlightContainer from '../components/FlightContainer';
-import NoDataAvailable from '../components/NoDataAvailable';
-import Select from '../components/Select';
 
 const HotelConfirm = ({ id }) => {
   localStorage.setItem('current_route', '/hotelConfirm');
@@ -24,12 +19,6 @@ const HotelConfirm = ({ id }) => {
   let upiData = '';
   let paymentActive = 'credit';
   const [hotelConfirmDatum, setHotelConfirmDatum] = useState(state?.data || null);
-
-  const getCurrentDateTime = () => {
-    const options = { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };
-    const now = new Date();
-    return now.toLocaleString('en-GB', options).replace(',', '').toLowerCase();
-  }
 
   const hotelPlaceOptions = [
     {
@@ -59,7 +48,7 @@ const HotelConfirm = ({ id }) => {
   ];
 
   const getTotal = () => {
-    return ((1500 * (hotelConfirmDatum.taxes / 100)) + (750 * hotelConfirmDatum.nightsTotal) + (hotelConfirmDatum.serviceFee)).toLocaleString();
+    return (((hotelConfirmDatum.roomSelectPrice * hotelConfirmDatum.nightsTotal) * (hotelConfirmDatum.taxes / 100)) + (hotelConfirmDatum.roomSelectPrice * hotelConfirmDatum.nightsTotal) + (hotelConfirmDatum.serviceFee) - 250).toLocaleString();
   }
 
   const handlePaymentLinkClick = (key) => {
@@ -90,8 +79,6 @@ const HotelConfirm = ({ id }) => {
   }
 
   const handleMakePaymentClick = async () => {  
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRegex = /^\d{10}$/;
       const upiRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+$/;
       const cvvRegex = /^\d{3,4}$/;
       const expiryRegex = /^(0[1-9]|1[0-2])\/\d{4}$/;
@@ -286,8 +273,8 @@ const HotelConfirm = ({ id }) => {
             <div class="booking-block">
               <h3 class="booking-title">Pricing Details</h3>
               <div class="booking-details-block">
-                <p class="booking-details">Number of guests <span>2 adult 1 kid</span></p>
-                <p class="booking-details">$750 x {hotelConfirmDatum.nightsTotal} Nights<span>$1,500</span></p>
+                <p class="booking-details">Number of guests <span>1 adult</span></p>
+                <p class="booking-details">${hotelConfirmDatum.roomSelectPrice} x {hotelConfirmDatum.nightsTotal} Nights<span>${(hotelConfirmDatum.roomSelectPrice * hotelConfirmDatum.nightsTotal).toLocaleString()}</span></p>
                 <p class="booking-sub-title">Coupon applied <span>-$250</span></p>
                 <p class="coupon-type mb-2"><span class="coupon-name">(FLAT $250 off)</span> <a href="#!" class="">delete</a></p>
                 <div class="my-3 row">
@@ -299,7 +286,7 @@ const HotelConfirm = ({ id }) => {
                   </div>
                 </div>
                 <p class="booking-details">Service fee <span>${hotelConfirmDatum.serviceFee}</span></p>
-                <p class="booking-details">Taxes ({hotelConfirmDatum.taxes}%) <span>${1500 * (hotelConfirmDatum.taxes / 100)}</span></p>
+                <p class="booking-details">Taxes ({hotelConfirmDatum.taxes}%) <span>${((hotelConfirmDatum.roomSelectPrice * hotelConfirmDatum.nightsTotal) * (hotelConfirmDatum.taxes / 100))}</span></p> 
               </div>
               <div class="booking-grand-total">
                 <p>Grand total</p>  
