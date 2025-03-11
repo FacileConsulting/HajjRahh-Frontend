@@ -81,11 +81,12 @@ const App = ({ message }) => {
         const { checked, currRoute, userDetailsFromLocalStorage } = checkTokenRouteUser();
         console.log('###@#QW', checked, currRoute, userDetailsFromLocalStorage)
         if (checked && userDetailsFromLocalStorage) {
-          console.log('###@#eee eeeeeeeQW', checked, currRoute, userDetailsFromLocalStorage)
-          const { userId, username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage);
+          // console.log('###@#eee eeeeeeeQW', checked, currRoute, userDetailsFromLocalStorage)
+          const { isGoogle, userId, username, email, phoneNumber, address, creditCard, debitCard, upi, isEnabledEmailNotification } = JSON.parse(userDetailsFromLocalStorage);
           dispatch(resetHomeFunc());
           dispatch(resetMyAccountFunc());
           dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
+          dispatch(changeInputFunc({ keyName: 'isGoogle', value: isGoogle }));
           dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
           dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
           dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));

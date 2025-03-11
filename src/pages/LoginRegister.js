@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
-import { decodeJwt } from 'jose';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
 import Register from '../components/Register';

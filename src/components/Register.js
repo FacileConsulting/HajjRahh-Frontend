@@ -131,6 +131,7 @@ const Register = forwardRef((props, ref) => {
       const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
       const userDetails = { userId, username, email, phoneNumber, address, ...allPaymentMethodObj, isEnabledEmailNotification };      
       dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
+      dispatch(changeInputFunc({ keyName: 'isGoogle', value: false }));
       dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
       dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
       dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));

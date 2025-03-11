@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { resetHomeFunc } from '../reducers/homeSlice';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { decodeJwt } from 'jose';
 import { changeInputFunc, resetInputFunc } from '../reducers/myAccountSlice';
 import { toastOptions } from '../toastify';
 import { handleAPIData } from '../hooks/useCustomApi';
@@ -45,6 +47,25 @@ const Login = forwardRef((props, ref) => {
     }
 
     return obj;
+  }
+
+  const handleResponse = (response, isGoogle) => {
+    const { userId, username, email, phoneNumber, address, paymentMethodType, isEnabledEmailNotification } = response.data;
+    const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
+    const userDetails = { isGoogle, userId, username, email, phoneNumber, address, ...allPaymentMethodObj, isEnabledEmailNotification };
+    dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
+    dispatch(changeInputFunc({ keyName: 'isGoogle', value: isGoogle }));
+    dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
+    dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
+    dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
+    dispatch(changeInputFunc({ keyName: 'displayAddress', value: address }));
+    dispatch(changeInputFunc({ keyName: 'creditCard', value: allPaymentMethodObj.creditCard }));
+    dispatch(changeInputFunc({ keyName: 'debitCard', value: allPaymentMethodObj.debitCard }));
+    dispatch(changeInputFunc({ keyName: 'upi', value: allPaymentMethodObj.upi }));
+    dispatch(changeInputFunc({ keyName: 'emailSettings', value: isEnabledEmailNotification }));
+    localStorage.setItem('access_token', response.data.token);
+    localStorage.setItem('user_data', JSON.stringify(userDetails));
+    history.push('/holidays');
   }
 
 
@@ -98,22 +119,7 @@ const Login = forwardRef((props, ref) => {
       handleCancelClick();
       // dispatch(resetHomeFunc());
       // dispatch(resetInputFunc());
-      const { userId, username, email, phoneNumber, address, paymentMethodType, isEnabledEmailNotification } = response.data;
-      const allPaymentMethodObj = getPaymentMethodType(paymentMethodType);
-      const userDetails = { userId, username, email, phoneNumber, address, ...allPaymentMethodObj, isEnabledEmailNotification };
-      dispatch(changeInputFunc({ keyName: 'userId', value: userId }));
-      dispatch(changeInputFunc({ keyName: 'displayName', value: username }));
-      dispatch(changeInputFunc({ keyName: 'displayEmail', value: email }));
-      dispatch(changeInputFunc({ keyName: 'displayPhone', value: phoneNumber }));
-      dispatch(changeInputFunc({ keyName: 'displayAddress', value: address }));
-      dispatch(changeInputFunc({ keyName: 'creditCard', value: allPaymentMethodObj.creditCard }));
-      dispatch(changeInputFunc({ keyName: 'debitCard', value: allPaymentMethodObj.debitCard }));
-      dispatch(changeInputFunc({ keyName: 'upi', value: allPaymentMethodObj.upi }));
-      dispatch(changeInputFunc({ keyName: 'emailSettings', value: isEnabledEmailNotification }));
-      localStorage.setItem('access_token', response.data.token);
-      localStorage.setItem('user_data', JSON.stringify(userDetails));
-      history.push('/holidays');
-      console.log('response', response.data);
+      handleResponse(response, false);
     } else if (response.status === 'error' && response.data.message) {
       toast.error(response.data.message, toastOptions);
     } else {
@@ -130,6 +136,43 @@ const Login = forwardRef((props, ref) => {
     }
   };
 
+  const handleGoogle = async (cred) => {
+    const payload = {
+      username: cred.name,
+      email: cred.email,
+      phoneNumber: '',
+      address: '',
+      password: 'tempPassword',
+      isGoogle: true
+    };
+    console.log('handleGoogle payload', payload);
+
+    let response = await handleAPIData('POST', '/api/register', payload);
+    // console.log('QQQQQQQQQQQQQQQQQQQQQQQ@@@@@@@@@@', response);
+    if (response.status === 'success' && response?.data?.isDups && response?.data?.message) {
+      // toast.error(response?.data?.message, toastOptions);
+      handleCancelClick();
+      let responses = await handleAPIData('POST', '/api/login', payload);
+      // console.log('QQQQQQQQQQQQQQQQQQQQQQQ', responses);
+      if (responses.status === 'success' && responses.data.userLoggedIn && responses.data.message) {
+        toast.success(responses.data.message, toastOptions);
+        handleCancelClick();        
+        handleResponse(responses, true);
+      } else if (response.status === 'error' && response.data.message) {
+        toast.error(response.data.message, toastOptions);
+      } else {
+        toast.error('Something went wrong. Please try again.', toastOptions);
+      }
+    } else if (response.status === 'success' && response?.data?.userCreated && response?.data?.message) {
+      toast.success(response.data.message, toastOptions);
+      handleCancelClick();      
+      handleResponse(response, true);
+    } else if (response.status === 'error' && response.data?.message) {
+      toast.error(response.data.message, toastOptions);
+    } else {
+      toast.error('Something went wrong. Please try again.', toastOptions);
+    }
+  }
   useImperativeHandle(ref, () => ({
     handleCancelClick
   }));
@@ -153,20 +196,22 @@ const Login = forwardRef((props, ref) => {
         </div>
       </div> */}
       <div className="row">
-        <div className="col">
-          {/* <GoogleLogin
-                          onSuccess={credentialResponse => {
-                            console.log('credentialResponse', credentialResponse);
-                            const cred = decodeJwt(credentialResponse.credential);
-                            console.log('Login Success: currentUser: data', cred);
-                          }}
-                          onError={() => {
-                            console.log('Login Failed');
-                          }}
-                        /> */}
+        <div className="col-4 mt-8">
+          <GoogleLogin
+            size={'large'}
+            type={'icon'}
+            onSuccess={credentialResponse => {
+              const cred = decodeJwt(credentialResponse.credential);
+              handleGoogle(cred);
+            }}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+          />
+        </div>
+        <div className="col-8">
           <Button id={"login-sign-in-btn"} loading={loading} handleBtnClick={handleSignInClick} btnType={"primary"} classes={"float-end"} label={"Sign In"} />
           <Button id={"login-cancel-btn"} handleBtnClick={handleCancelClick} btnType={"secondary"} classes={"float-end mx-4"} label={"Cancel"} />
-
         </div>
       </div>
     </div>

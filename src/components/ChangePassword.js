@@ -11,10 +11,7 @@ const ChangePassword = forwardRef((props, ref) => {
   const { id } = props;
   const dispatch = useDispatch();
   const childRefs = [useRef(), useRef(), useRef()];
-  const { password, newPassword, confirmPassword, displayEmail } = useSelector(state => {
-    console.log('state.myAccount', state)
-    return state.myAccount 
-  });
+  const { password, newPassword, confirmPassword, displayEmail } = useSelector(state => state.myAccount );
   const [loading, setLoading] = useState(false);
 
 
